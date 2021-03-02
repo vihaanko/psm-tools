@@ -1,0 +1,56 @@
+// ----------------------------------------------------------------------------
+// Sass declarations
+// ----------------------------------------------------------------------------
+//$background-color:  #fb9618;
+//$background-color:  #9c4274;
+//$background-color:  #3399ff;
+$background-color:    #D6DBDF;
+$title-color:       rgba(1, 1, 0, 0.7);
+$moreinfo-color:    rgba(1, 1, 0, 0.3);
+
+$table-background:  darken($background-color, 15%);
+
+
+// ----------------------------------------------------------------------------
+// Widget-GoogleTable styles
+// ----------------------------------------------------------------------------
+.widget-google-table {
+
+  background-color: $background-color;
+  position: relative;
+
+  input.table {
+
+    background-color: $table-background;
+    color: #fff;
+
+
+  }
+
+  .title {
+    position: absolute;
+    color: $title-color;
+    top: 5px;
+    left: 5px;
+    right: 5px;
+    font-size: 20px;
+  }
+
+  .chart {
+    position: absolute;
+    color: $title-color;
+    top: 50px;
+    left: 10px;
+    right: 10px;
+  }
+
+  .more-info {
+    color: $moreinfo-color;
+  }
+
+  .updated-at {
+    color: rgba(0, 0, 0, 0.3);
+  }
+
+
+}

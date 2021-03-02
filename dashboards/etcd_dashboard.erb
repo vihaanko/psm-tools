@@ -1,0 +1,153 @@
+<script type='text/javascript'>
+  $(function() {
+     Dashing.widget_base_dimensions = [230, 250]
+     Dashing.numColumns = 6
+ });
+ </script>
+
+<style type="text/css">
+body {
+  font-size: 10px;
+}
+
+h1 {
+   font-size: 30px;
+   margin-bottom: 5px;
+   margin-top: 5px;
+}
+
+h2 {
+   font-size: 30px;
+}
+
+h3 {
+   margin-bottom: 2px;
+   margin-top: 2px;
+   font-size: 25px;
+}
+
+ul {
+   font-size: 12px;
+}
+
+li {
+   font-size: 12px;
+}
+
+.updated-at {
+  font-size: 10px;
+  bottom: 2px;
+}
+
+.more-info {
+  font-size: 12px;
+  bottom: 15px;
+}
+.widget {
+  vertical-align: top;
+  padding: 2px 3px;
+  font-size: 12px;
+}
+
+.widget-number .change-rate {
+     font-size: 19px;
+}
+.widget-number h2 {
+     font-size: 30px;
+}
+.widget-news h1 {
+     font-size: 20px;
+}
+.widget-news h2 {
+     font-size: 20px;
+}
+.widget-time-since_last p {
+     font-size: 5px;
+}
+.widget-list li {
+  margin: 0 3px;
+}
+.widget-list ol {
+  margin: 0 3px;
+}
+.widget-list ul {
+  margin: 0 3px;
+}
+.widget-list .value {
+  margin-left: 4px;
+}
+.widget-comments .title  {
+  margin-bottom: 5px;
+}
+.widget-graph .x_tick .title {
+    font-size: 10px;
+    font-weight: 600;
+}
+.widget-graph .y_tick .title {
+    font-size: 8px;
+    font-weight: 600;
+}
+.widget-comments.twitter_mentions p {
+    font-size: 15px;
+}
+.icon-background {
+  opacity: 0.1;
+  font-size: 125px;
+}
+
+
+</style>
+
+ <% content_for :title do %>PSM Dashboard<% end %>
+
+<div class="gridster">
+<ul>
+
+
+    <li data-row="1" data-col="1" data-sizex="1" data-sizey="15">
+      <div data-id="menu" data-view="Menu" data-title="Dashboard" data-value=""></div>
+    </li>
+
+
+    <li data-row="1" data-col="2" data-sizex="2" data-sizey="1">
+      <div data-id="process_resident_memory_bytesetcdmemtrend" data-view="GoogleLine"  data-title="Etcd Resident Memory Trend in ms" style="background-color: #5dade2"></div>
+    </li>
+
+
+    <li data-row="1" data-col="4" data-sizex="2" data-sizey="1">
+      <div data-id="process_virtual_memory_bytesetcdmemtrend" data-view="GoogleLine"  data-title="Etcd Virtual Memory Trend in ms" style="background-color: #5dade2"></div>
+    </li>
+
+
+    <li data-row="1" data-col="4" data-sizex="2" data-sizey="1">
+      <div data-id="process_open_fdsetcdmemtrend" data-view="GoogleLine"  data-title="Etcd Open Fd Count" style="background-color: #5dade2"></div>
+    </li>
+
+
+     <li data-row="2" data-col="2" data-sizex="2" data-sizey="4">
+      <div data-id="node1etcdmetricstable" data-view="GoogleTable" data-title="Node1 Etcd Cluster Metrics Table" data-height="100%" style="background-color: #D6DBDF"></div>
+    </li>
+
+
+     <li data-row="2" data-col="4" data-sizex="2" data-sizey="4">
+      <div data-id="node2etcdmetricstable" data-view="GoogleTable" data-title="Node2 Etcd Cluster Metrics Table" data-height="100%" style="background-color: #D6DBDF"></div>
+    </li>
+
+
+     <li data-row="2" data-col="6" data-sizex="2" data-sizey="4">
+      <div data-id="node3etcdmetricstable" data-view="GoogleTable" data-title="Node3 Etcd Cluster Metrics Table" data-height="100%" style="background-color: #D6DBDF"></div>
+    </li>
+
+     <li data-row="6" data-col="2" data-sizex="2" data-sizey="3">
+      <div data-id="etcdveniceobjstable" data-view="GoogleTable" data-title="Etcd Venice Objects KV Table" data-height="100%" style="background-color: #D6DBDF"></div>
+     </li>
+
+
+    <li data-row="6" data-col="4" data-sizex="4" data-sizey="3">
+      <div data-id="etcdvenicepiechart" data-view="GooglePie"  data-pie_hole="0.5" data-title="Venice Objects Etcd KV Count" style="background-color:  #d7bde2"></div>
+    </li>
+
+
+
+  </ul>
+</div

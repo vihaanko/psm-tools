@@ -1,0 +1,175 @@
+<script type='text/javascript'>
+  $(function() {
+     Dashing.widget_base_dimensions = [230, 250]
+     Dashing.numColumns = 6
+ });
+ </script>
+
+<style type="text/css">
+body {
+  font-size: 10px;
+}
+
+h1 {
+   font-size: 30px;
+   margin-bottom: 5px;
+   margin-top: 5px;
+}
+
+h2 {
+   font-size: 30px;
+}
+
+h3 {
+   margin-bottom: 2px;
+   margin-top: 2px;
+   font-size: 25px;
+}
+
+ul {
+   font-size: 12px;
+}
+
+li {
+   font-size: 12px;
+}
+
+.updated-at {
+  font-size: 10px;
+  bottom: 2px;
+}
+
+.more-info {
+  font-size: 12px;
+  bottom: 15px;
+}
+.widget {
+  vertical-align: top;
+  padding: 2px 3px;
+  font-size: 12px;
+}
+
+.widget-number .change-rate {
+     font-size: 19px;
+}
+.widget-number h2 {
+     font-size: 30px;
+}
+.widget-news h1 {
+     font-size: 20px;
+}
+.widget-news h2 {
+     font-size: 20px;
+}
+.widget-time-since_last p {
+     font-size: 5px;
+}
+.widget-list li {
+  margin: 0 3px;
+}
+.widget-list ol {
+  margin: 0 3px;
+}
+.widget-list ul {
+  margin: 0 3px;
+}
+.widget-list .value {
+  margin-left: 4px;
+}
+.widget-comments .title  {
+  margin-bottom: 5px;
+}
+.widget-graph .x_tick .title {
+    font-size: 10px;
+    font-weight: 600;
+}
+.widget-graph .y_tick .title {
+    font-size: 8px;
+    font-weight: 600;
+}
+.widget-comments.twitter_mentions p {
+    font-size: 15px;
+}
+.icon-background {
+  opacity: 0.1;
+  font-size: 125px;
+}
+
+
+</style>
+
+ <% content_for :title do %>PSM Dashboard<% end %>
+
+<div class="gridster">
+<ul>
+
+
+     <li data-row="1" data-col="1" data-sizex="1" data-sizey="5">
+      <div data-id="menu" data-view="Menu" data-title="Dashboard" data-value=""></div>
+    </li>
+
+      <li data-row="1" data-col="2" data-sizex="1" data-sizey="1">
+      <div data-id="node1cpugauge" data-view="GoogleGauge"  data-moreinfo="CPU For Node1" data-title="Node1 CPU" data-red_from="90" data-red_to="100" data-height="165" data-width="165" style="background-color: #5dade2"></div>
+      </li>
+      <li data-row="1" data-col="3" data-sizex="1" data-sizey="1">
+      <div data-id="node2cpugauge" data-view="GoogleGauge"  data-moreinfo="CPU For Node2" data-title="Node2 CPU" data-red_from="90" data-red_to="100" data-height="165" data-width="165" style="background-color: #5dade2"></div>
+      </li>
+      <li data-row="1" data-col="4" data-sizex="1" data-sizey="1">
+      <div data-id="node3cpugauge" data-view="GoogleGauge"  data-moreinfo="CPU For Node3" data-title="Node3 CPU" data-red_from="90" data-red_to="100" data-height="165" data-width="165" style="background-color: #5dade2"></div>
+      </li>
+
+
+
+    <li data-row="2" data-col="2" data-sizex="1" data-sizey="1">
+      <div data-id="node1memmeter" data-view="Meter" data-moreinfo="Memory usage for Node1" data-title="Node1 Mem Usage" data-height="140" data-width="140" data-min="0" data-max="100" data-suffix="%" style="background-color:#808080;"></div>
+    </li>
+    <li data-row="2" data-col="3" data-sizex="1" data-sizey="1">
+      <div data-id="node2memmeter" data-view="Meter" data-moreinfo="Memory usage for Node2" data-title="Node2 Mem Usage" data-height="140" data-width="140" data-min="0" data-max="100" data-suffix="%" style="background-color:#808080;"></div>
+    </li>
+    <li data-row="2" data-col="4" data-sizex="1" data-sizey="1">
+      <div data-id="node3memmeter" data-view="Meter" data-moreinfo="Memory usage for Node3" data-title="Node3 Mem Usage" data-height="140" data-width="140" data-min="0" data-max="100" data-suffix="%" style="background-color:#808080;"></div>
+    </li>
+
+
+    <li data-row="3" data-col="2" data-sizex="1" data-sizey="1">
+      <div data-id="node1dumeter" data-view="Meter" data-moreinfo="Disk Usage for Node1" data-height="140" data-width="140" data-title="Node1 Disk Usage" data-min="0" data-max="100" data-suffix="%" style="background-color:#669999;"></div>
+    </li>
+    <li data-row="3" data-col="3" data-sizex="1" data-sizey="1">
+      <div data-id="node2dumeter" data-view="Meter" data-moreinfo="Disk Usage for Node2" data-title="Node2 Disk Usage" data-height="140" data-width="140" data-min="0" data-max="100" data-suffix="%" style="background-color:#669999;"></div>
+    </li>
+    <li data-row="3" data-col="4" data-sizex="1" data-sizey="1">
+      <div data-id="node3dumeter" data-view="Meter" data-moreinfo="Disk Usage for Node3" data-title="Node3 Disk Usage" data-height="140" data-width="140" data-min="0" data-max="100" data-suffix="%" style="background-color:#669999;"></div>
+    </li>
+
+
+
+   <li data-row="1" data-col="4" data-sizex="3" data-sizey="1">
+      <div data-id="logbarchart" data-view="GoogleBar"  data-title="Syslog Level Distribution"></div>
+    </li>
+
+
+    <li data-row="2" data-col="4" data-sizex="3" data-sizey="2">
+      <div data-id="cputrendchart" data-view="GoogleLine"  data-title="PSM Cluster CPU Trend last 1 hr" style="background-color: #5dade2"></div>
+    </li>
+
+
+    <li data-row="5" data-col="1" data-sizex="2" data-sizey="2">
+      <div data-id="node1memdistpie" data-view="GooglePie"  data-title="Process Memory Distribution node1" data-pie_hole="0.5" style="background-color: #bb8fce"></div>
+    </li>
+
+
+    <li data-row="5" data-col="3" data-sizex="2" data-sizey="2">
+      <div data-id="node2memdistpie" data-view="GooglePie"  data-title="Process Memory Distribution node2" data-pie_hole="0.5" style="background-color: #bb8fce"></div>
+    </li>
+
+    <li data-row="5" data-col="5" data-sizex="2" data-sizey="2">
+      <div data-id="node3memdistpie" data-view="GooglePie"  data-title="Process Memory Distribution node3" data-pie_hole="0.5" style="background-color: #bb8fce"></div>
+    </li>
+
+
+
+
+
+
+  </ul>
+</div
