@@ -1,4 +1,4 @@
-# psm-tools
+# PSM Monitoring Dashboard
 PSM Dashboard repository which has a collection of dashboards built using smashing dashboards and Google chart widgets to view system resources and cluster metrics from PSM cluster. It also has a collection of libraries built using Python SDK for Elastic, Etcd, Minio that lets you to connect to these distributed data stores within the PSM cluster and collect rich cluster metrics which can help troubleshoot complex issues. In addition to this has libraries to connect to the Kubernetes master node and get the complete state of the cluster from K8 view.
 
 Please refer https://smashing.github.io/ to know more about Smashing dashboard infrastructure.
