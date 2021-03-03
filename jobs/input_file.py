@@ -2,31 +2,30 @@
 
 
 
+# Please change the IPs and Passwords to your setup details
 influx_host       = '127.0.0.1'
 influx_port       = 8086
 influx_user       = 'admin'
-influx_password   = 'docker'
+influx_password   = 'XXXXXXX'
 
 
 # PSM Details
-psm_cluster_name = 'ent-psm-cluster'
+psm_cluster_name = 'my-psm-cluster'
 
-psm_cluster_dict = { 'node1': { 'ip': '20.0.0.106', 'username': 'root', 'password': 'N0isystem$' }, 'node2': { 'ip': '20.0.0.107', 'username': 'root', 'password': 'N0isystem$' }, 'node3': { 'ip': '20.0.0.108', 'username': 'root', 'password': 'N0isystem$' } }
+# Change to your PSM cluster IPs
+psm_cluster_dict = { 'node1': { 'ip': '10.0.0.106', 'username': 'root', 'password': 'XXXXXX' }, 'node2': { 'ip': '10.0.0.107', 'username': 'root', 'password': 'XXXXXXX' }, 'node3': { 'ip': '10.0.0.108', 'username': 'root', 'password': 'XXXXXXX' } }
 
-psm_cluster_ip_list = [ '20.0.0.106', '20.0.0.106', '20.0.0.106' ]
+psm_cluster_ip_list = [ '10.0.0.106', '10.0.0.106', '10.0.0.106' ]
 
-psm_cluster_ip_list_oob = [ '10.30.1.173', '10.30.1.174', '10.30.1.175' ]
+psm_cluster_ip_list_oob = [ '10.30.1.x', '10.30.1.y', '10.30.1.z' ]
 
 
-k8_master_ip = '20.0.0.106'
+k8_master_ip = '10.0.0.106'
 refresh_interval = 10
-node_ip = '20.0.0.106'
-username = 'root'
-password = 'N0isystem$'
 
 
 
-BASE_DIR = '/root/CERTS/enterprise'
+BASE_DIR = '/root/CERTS'
 
 # Get the following files from /var/lib/pensando/pki/kubernetes/apiserver-client on master node
 k8_key_file               = BASE_DIR + '/k8/key.pem'
@@ -52,7 +51,7 @@ etcd_cert_file            = BASE_DIR + '/etcd/cert.pem'
 # Influx DB details
 influx_host               = '127.0.0.1'
 influx_username           = 'admin'
-influx_password           = 'docker'
+influx_password           = 'XXXXXXXX'
 influx_db_name            = 'psm_monitor'
 
 
@@ -74,7 +73,7 @@ ps_mem_cmd='/var/log/pensando/ps_mem.py'
 mongodb_host                   = '127.0.0.1'
 mongodb_port                   = 27017
 mongodb_username               = 'admin'
-mongodb_password               = 'docker'
+mongodb_password               = 'XXXXXXXX'
 mongodb_name                   = 'psm-data'
 psm_resource_collection        = 'psm-sys-resources'
 psm_minio_collection           = 'psm-minio-metrics'
@@ -85,5 +84,7 @@ go_profile_collection          = 'psm-goagents-profile'
 proc_mem_dist_collection       = 'psm-proc-mem-ditribution'
 
 
-dashing_url        = "http://10.30.17.130:3030/"
-dashing_auth_token = 'docker'
+# Following is the server where smashing is running
+dashing_url        = "http://X.X.X.X:3030/"
+# If you enabled authentication for smashing, set the following
+dashing_auth_token = 'XXXXX'
