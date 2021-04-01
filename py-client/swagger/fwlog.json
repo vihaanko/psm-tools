@@ -1,0 +1,1304 @@
+{
+    "consumes": [
+        "application/json"
+    ],
+    "produces": [
+        "application/json"
+    ],
+    "schemes": [
+        "http",
+        "https"
+    ],
+    "swagger": "2.0",
+    "info": {
+        "description": "Service name\n\n",
+        "title": "Fwlog API reference"
+    },
+    "paths": {
+        "/fwlog/v1/objects/{O.Name}": {
+            "get": {
+                "tags": [
+                    "fwlog/v1"
+                ],
+                "summary": "fwlog/v1/tenants/default/objects/<objectName>",
+                "operationId": "GetDownloadFwLogFileContent_1",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "name": "O.Name",
+                        "in": "path",
+                        "required": true
+                    },
+                    {
+                        "type": "string",
+                        "description": "Tenant to which the object belongs to. This can be automatically filled in many cases based on the tenant the user, who created the object, belongs to. Must be alpha-numerics. Length of string should be between 1 and 48.",
+                        "name": "O.tenant",
+                        "in": "query"
+                    },
+                    {
+                        "type": "string",
+                        "description": "Namespace of the object, for scoped objects. Must start and end with alpha numeric and can have alphanumeric, -, _, . Length of string should be between 2 and 64.",
+                        "name": "O.namespace",
+                        "in": "query"
+                    },
+                    {
+                        "type": "string",
+                        "description": "GenerationID is the generation Id for the object. This is incremented anytime there is an update to the user intent, including Spec update and any update to ObjectMeta. System generated and updated, not updatable by user.",
+                        "name": "O.generation-id",
+                        "in": "query"
+                    },
+                    {
+                        "type": "string",
+                        "description": "Resource version in the object store. This is updated anytime there is any change to the object. System generated and updated, not updatable by user.",
+                        "name": "O.resource-version",
+                        "in": "query"
+                    },
+                    {
+                        "type": "string",
+                        "description": "UUID is the unique identifier for the object. This is generated on creation of the object. System generated, not updatable by user.",
+                        "name": "O.uuid",
+                        "in": "query"
+                    },
+                    {
+                        "type": "string",
+                        "format": "date-time",
+                        "description": "CreationTime is the creation time of the object. System generated and updated, not updatable by user.",
+                        "name": "O.creation-time",
+                        "in": "query"
+                    },
+                    {
+                        "type": "string",
+                        "format": "date-time",
+                        "description": "ModTime is the Last Modification time of the object. System generated and updated, not updatable by user.",
+                        "name": "O.mod-time",
+                        "in": "query"
+                    },
+                    {
+                        "type": "string",
+                        "description": "SelfLink is a link for accessing this object. When the object is served from the API-GW it is the URI path. Example: - \"/v1/tenants/tenants/tenant2\" System generated and updated, not updatable by user.",
+                        "name": "O.self-link",
+                        "in": "query"
+                    },
+                    {
+                        "type": "string",
+                        "description": "LabelSelector to select on labels in list or watch results.",
+                        "name": "label-selector",
+                        "in": "query"
+                    },
+                    {
+                        "type": "string",
+                        "description": "FieldSelector to select on field values in list or watch results.",
+                        "name": "field-selector",
+                        "in": "query"
+                    },
+                    {
+                        "type": "array",
+                        "items": {
+                            "type": "string"
+                        },
+                        "description": "FieldChangeSelector specifies to generate a watch notification on change in field(s) specified.",
+                        "name": "field-change-selector",
+                        "in": "query"
+                    },
+                    {
+                        "type": "integer",
+                        "format": "int32",
+                        "description": "From represents the start index number (1 based - first object starts from index 1), of the results list. The results returned would be in the range [from ... (from + (max-results - 1))]. If From = 0, the server will attempt to return all the results in the list without pagination.",
+                        "name": "from",
+                        "in": "query"
+                    },
+                    {
+                        "type": "integer",
+                        "format": "int32",
+                        "description": "MaxResults is the maximum number of results to be returned as part of the response, per page If MaxResults is more than the maximum number of results per page supported by the server, the server will return an err If MaxResults is 0, the server will return all the results without pagination.",
+                        "name": "max-results",
+                        "in": "query"
+                    },
+                    {
+                        "type": "string",
+                        "description": "order to sort List results in.",
+                        "name": "sort-order",
+                        "in": "query"
+                    },
+                    {
+                        "type": "boolean",
+                        "format": "boolean",
+                        "description": "If MetaOnly is set to true, the watch event notification that matches the watch criteria will not contain the full object. It will only contain the information about the object that changed, i.e. which object and what changed. MetaOnly is not set by default.",
+                        "name": "meta-only",
+                        "in": "query"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "(empty)",
+                        "schema": {
+                            "$ref": "#/definitions/fwlogFwLogList"
+                        }
+                    }
+                }
+            }
+        },
+        "/fwlog/v1/query": {
+            "get": {
+                "tags": [
+                    "fwlog/v1"
+                ],
+                "summary": "Queries firewall logs",
+                "operationId": "GetGetLogs_1",
+                "parameters": [
+                    {
+                        "type": "array",
+                        "items": {
+                            "type": "string"
+                        },
+                        "description": "OR of sources IPs to be matched. Only one source IP is allowed. Should be a valid v4 or v6 IP address.",
+                        "name": "source-ips",
+                        "in": "query"
+                    },
+                    {
+                        "type": "array",
+                        "items": {
+                            "type": "string"
+                        },
+                        "description": "OR of destination IPs to be matched. Only one destination IP is allowed. Should be a valid v4 or v6 IP address.",
+                        "name": "destination-ips",
+                        "in": "query"
+                    },
+                    {
+                        "type": "array",
+                        "items": {
+                            "type": "integer",
+                            "format": "int64"
+                        },
+                        "description": "OR of source ports to be matched. Only one port can be specified and if present, source IP must also be specified. Value should be between 0 and 65535.",
+                        "name": "source-ports",
+                        "in": "query"
+                    },
+                    {
+                        "type": "array",
+                        "items": {
+                            "type": "integer",
+                            "format": "int64"
+                        },
+                        "description": "OR of destination ports to be matched. Only one port can be specified and if present, destination IP must also be specified. Value should be between 0 and 65535.",
+                        "name": "destination-ports",
+                        "in": "query"
+                    },
+                    {
+                        "type": "array",
+                        "items": {
+                            "type": "string"
+                        },
+                        "description": "OR of protocols to be matched. Only one protocol can be specified and can only be specified if either source IP or destination IP is present.",
+                        "name": "protocols",
+                        "in": "query"
+                    },
+                    {
+                        "type": "array",
+                        "items": {
+                            "type": "string"
+                        },
+                        "description": "OR of actions to be matched. Only one action can be specified and can only be specified if either source IP or destination IP is present.",
+                        "name": "actions",
+                        "in": "query"
+                    },
+                    {
+                        "type": "array",
+                        "items": {
+                            "type": "string"
+                        },
+                        "description": "OR of reporter names to be matched. Only one reporter ID can be specified.",
+                        "name": "reporter-ids",
+                        "in": "query"
+                    },
+                    {
+                        "type": "string",
+                        "format": "date-time",
+                        "description": "StartTime selects all logs with timestamp greater than the StartTime, example 2018-10-18T00:12:00Z.",
+                        "name": "start-time",
+                        "in": "query"
+                    },
+                    {
+                        "type": "string",
+                        "format": "date-time",
+                        "description": "EndTime selects all logs with timestamp less than the EndTime, example 2018-09-18T00:12:00Z.",
+                        "name": "end-time",
+                        "in": "query"
+                    },
+                    {
+                        "type": "string",
+                        "description": "SortOrder specifies time ordering of results.",
+                        "name": "sort-order",
+                        "in": "query"
+                    },
+                    {
+                        "type": "integer",
+                        "format": "int32",
+                        "description": "MaxResults is the max-count of search results Default value is 50 and valid range is 0..8192. Value should be between 0 and 8192.",
+                        "name": "max-results",
+                        "in": "query"
+                    },
+                    {
+                        "type": "array",
+                        "items": {
+                            "type": "string"
+                        },
+                        "description": "OR of tenants within the scope of which search needs to be performed. If not specified, it will be set to tenant of the logged in user. Also users in non default tenant can search fwlogs in their tenant scope only.",
+                        "name": "tenants",
+                        "in": "query"
+                    },
+                    {
+                        "type": "string",
+                        "description": "ScrollID to scroll through results fetched by an earlier query.",
+                        "name": "scroll-id",
+                        "in": "query"
+                    },
+                    {
+                        "type": "string",
+                        "description": "ScrollExpiry is time duration after which scroll id expires. Default is 5 min. A duration string is a sequence of decimal number and a unit suffix, such as \"300ms\" or \"2h45m\". Valid time units are \"ns\", \"us\" (or \"\u00b5s\"), \"ms\", \"s\", \"m\", \"h\". Subsequent requests with a scroll id resets the timer for expiry. Should be a valid time duration.",
+                        "name": "scroll-expiry",
+                        "in": "query"
+                    },
+                    {
+                        "type": "integer",
+                        "format": "int32",
+                        "description": "BatchSize is the number of results returned in one batch while scrolling.",
+                        "name": "batch-size",
+                        "in": "query"
+                    },
+                    {
+                        "type": "string",
+                        "description": "ScrollAction specifies actions related to scroll if its duration needs to be extended or scroll needs to be deleted.",
+                        "name": "scroll-action",
+                        "in": "query"
+                    },
+                    {
+                        "type": "boolean",
+                        "format": "boolean",
+                        "description": "if set, returns only number of hits for the search query and not flow logs. Number of hits are greater than or equal to TotalCount value returned in list-meta.",
+                        "name": "count-only",
+                        "in": "query"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "(empty)",
+                        "schema": {
+                            "$ref": "#/definitions/fwlogFwLogList"
+                        }
+                    }
+                }
+            },
+            "post": {
+                "tags": [
+                    "fwlog/v1"
+                ],
+                "summary": "Queries firewall logs",
+                "operationId": "PostGetLogs",
+                "parameters": [
+                    {
+                        "name": "body",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/fwlogFwLogQuery"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "(empty)",
+                        "schema": {
+                            "$ref": "#/definitions/fwlogFwLogList"
+                        }
+                    }
+                }
+            }
+        },
+        "/fwlog/v1/tenants/{O.Tenant}/objects/{O.Name}": {
+            "get": {
+                "tags": [
+                    "fwlog/v1"
+                ],
+                "summary": "fwlog/v1/tenants/default/objects/<objectName>",
+                "operationId": "GetDownloadFwLogFileContent",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "name": "O.Tenant",
+                        "in": "path",
+                        "required": true
+                    },
+                    {
+                        "type": "string",
+                        "name": "O.Name",
+                        "in": "path",
+                        "required": true
+                    },
+                    {
+                        "type": "string",
+                        "description": "Namespace of the object, for scoped objects. Must start and end with alpha numeric and can have alphanumeric, -, _, . Length of string should be between 2 and 64.",
+                        "name": "O.namespace",
+                        "in": "query"
+                    },
+                    {
+                        "type": "string",
+                        "description": "GenerationID is the generation Id for the object. This is incremented anytime there is an update to the user intent, including Spec update and any update to ObjectMeta. System generated and updated, not updatable by user.",
+                        "name": "O.generation-id",
+                        "in": "query"
+                    },
+                    {
+                        "type": "string",
+                        "description": "Resource version in the object store. This is updated anytime there is any change to the object. System generated and updated, not updatable by user.",
+                        "name": "O.resource-version",
+                        "in": "query"
+                    },
+                    {
+                        "type": "string",
+                        "description": "UUID is the unique identifier for the object. This is generated on creation of the object. System generated, not updatable by user.",
+                        "name": "O.uuid",
+                        "in": "query"
+                    },
+                    {
+                        "type": "string",
+                        "format": "date-time",
+                        "description": "CreationTime is the creation time of the object. System generated and updated, not updatable by user.",
+                        "name": "O.creation-time",
+                        "in": "query"
+                    },
+                    {
+                        "type": "string",
+                        "format": "date-time",
+                        "description": "ModTime is the Last Modification time of the object. System generated and updated, not updatable by user.",
+                        "name": "O.mod-time",
+                        "in": "query"
+                    },
+                    {
+                        "type": "string",
+                        "description": "SelfLink is a link for accessing this object. When the object is served from the API-GW it is the URI path. Example: - \"/v1/tenants/tenants/tenant2\" System generated and updated, not updatable by user.",
+                        "name": "O.self-link",
+                        "in": "query"
+                    },
+                    {
+                        "type": "string",
+                        "description": "LabelSelector to select on labels in list or watch results.",
+                        "name": "label-selector",
+                        "in": "query"
+                    },
+                    {
+                        "type": "string",
+                        "description": "FieldSelector to select on field values in list or watch results.",
+                        "name": "field-selector",
+                        "in": "query"
+                    },
+                    {
+                        "type": "array",
+                        "items": {
+                            "type": "string"
+                        },
+                        "description": "FieldChangeSelector specifies to generate a watch notification on change in field(s) specified.",
+                        "name": "field-change-selector",
+                        "in": "query"
+                    },
+                    {
+                        "type": "integer",
+                        "format": "int32",
+                        "description": "From represents the start index number (1 based - first object starts from index 1), of the results list. The results returned would be in the range [from ... (from + (max-results - 1))]. If From = 0, the server will attempt to return all the results in the list without pagination.",
+                        "name": "from",
+                        "in": "query"
+                    },
+                    {
+                        "type": "integer",
+                        "format": "int32",
+                        "description": "MaxResults is the maximum number of results to be returned as part of the response, per page If MaxResults is more than the maximum number of results per page supported by the server, the server will return an err If MaxResults is 0, the server will return all the results without pagination.",
+                        "name": "max-results",
+                        "in": "query"
+                    },
+                    {
+                        "type": "string",
+                        "description": "order to sort List results in.",
+                        "name": "sort-order",
+                        "in": "query"
+                    },
+                    {
+                        "type": "boolean",
+                        "format": "boolean",
+                        "description": "If MetaOnly is set to true, the watch event notification that matches the watch criteria will not contain the full object. It will only contain the information about the object that changed, i.e. which object and what changed. MetaOnly is not set by default.",
+                        "name": "meta-only",
+                        "in": "query"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "(empty)",
+                        "schema": {
+                            "$ref": "#/definitions/fwlogFwLogList"
+                        }
+                    }
+                }
+            }
+        },
+        "/fwlog/v1/watch/query": {
+            "get": {
+                "tags": [
+                    "fwlog/v1"
+                ],
+                "operationId": "GetWatchLogs",
+                "parameters": [
+                    {
+                        "type": "array",
+                        "items": {
+                            "type": "string"
+                        },
+                        "description": "OR of sources IPs to be matched. Only one source IP is allowed. Should be a valid v4 or v6 IP address.",
+                        "name": "source-ips",
+                        "in": "query"
+                    },
+                    {
+                        "type": "array",
+                        "items": {
+                            "type": "string"
+                        },
+                        "description": "OR of destination IPs to be matched. Only one destination IP is allowed. Should be a valid v4 or v6 IP address.",
+                        "name": "destination-ips",
+                        "in": "query"
+                    },
+                    {
+                        "type": "array",
+                        "items": {
+                            "type": "integer",
+                            "format": "int64"
+                        },
+                        "description": "OR of source ports to be matched. Only one port can be specified and if present, source IP must also be specified. Value should be between 0 and 65535.",
+                        "name": "source-ports",
+                        "in": "query"
+                    },
+                    {
+                        "type": "array",
+                        "items": {
+                            "type": "integer",
+                            "format": "int64"
+                        },
+                        "description": "OR of destination ports to be matched. Only one port can be specified and if present, destination IP must also be specified. Value should be between 0 and 65535.",
+                        "name": "destination-ports",
+                        "in": "query"
+                    },
+                    {
+                        "type": "array",
+                        "items": {
+                            "type": "string"
+                        },
+                        "description": "OR of protocols to be matched. Only one protocol can be specified and can only be specified if either source IP or destination IP is present.",
+                        "name": "protocols",
+                        "in": "query"
+                    },
+                    {
+                        "type": "array",
+                        "items": {
+                            "type": "string"
+                        },
+                        "description": "OR of actions to be matched. Only one action can be specified and can only be specified if either source IP or destination IP is present.",
+                        "name": "actions",
+                        "in": "query"
+                    },
+                    {
+                        "type": "array",
+                        "items": {
+                            "type": "string"
+                        },
+                        "description": "OR of reporter names to be matched. Only one reporter ID can be specified.",
+                        "name": "reporter-ids",
+                        "in": "query"
+                    },
+                    {
+                        "type": "string",
+                        "format": "date-time",
+                        "description": "StartTime selects all logs with timestamp greater than the StartTime, example 2018-10-18T00:12:00Z.",
+                        "name": "start-time",
+                        "in": "query"
+                    },
+                    {
+                        "type": "string",
+                        "format": "date-time",
+                        "description": "EndTime selects all logs with timestamp less than the EndTime, example 2018-09-18T00:12:00Z.",
+                        "name": "end-time",
+                        "in": "query"
+                    },
+                    {
+                        "type": "string",
+                        "description": "SortOrder specifies time ordering of results.",
+                        "name": "sort-order",
+                        "in": "query"
+                    },
+                    {
+                        "type": "integer",
+                        "format": "int32",
+                        "description": "MaxResults is the max-count of search results Default value is 50 and valid range is 0..8192. Value should be between 0 and 8192.",
+                        "name": "max-results",
+                        "in": "query"
+                    },
+                    {
+                        "type": "array",
+                        "items": {
+                            "type": "string"
+                        },
+                        "description": "OR of tenants within the scope of which search needs to be performed. If not specified, it will be set to tenant of the logged in user. Also users in non default tenant can search fwlogs in their tenant scope only.",
+                        "name": "tenants",
+                        "in": "query"
+                    },
+                    {
+                        "type": "string",
+                        "description": "ScrollID to scroll through results fetched by an earlier query.",
+                        "name": "scroll-id",
+                        "in": "query"
+                    },
+                    {
+                        "type": "string",
+                        "description": "ScrollExpiry is time duration after which scroll id expires. Default is 5 min. A duration string is a sequence of decimal number and a unit suffix, such as \"300ms\" or \"2h45m\". Valid time units are \"ns\", \"us\" (or \"\u00b5s\"), \"ms\", \"s\", \"m\", \"h\". Subsequent requests with a scroll id resets the timer for expiry. Should be a valid time duration.",
+                        "name": "scroll-expiry",
+                        "in": "query"
+                    },
+                    {
+                        "type": "integer",
+                        "format": "int32",
+                        "description": "BatchSize is the number of results returned in one batch while scrolling.",
+                        "name": "batch-size",
+                        "in": "query"
+                    },
+                    {
+                        "type": "string",
+                        "description": "ScrollAction specifies actions related to scroll if its duration needs to be extended or scroll needs to be deleted.",
+                        "name": "scroll-action",
+                        "in": "query"
+                    },
+                    {
+                        "type": "boolean",
+                        "format": "boolean",
+                        "description": "if set, returns only number of hits for the search query and not flow logs. Number of hits are greater than or equal to TotalCount value returned in list-meta.",
+                        "name": "count-only",
+                        "in": "query"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "(streaming responses)",
+                        "schema": {
+                            "$ref": "#/definitions/fwlogFwLogList"
+                        }
+                    }
+                }
+            }
+        }
+    },
+    "definitions": {
+        "apiAggWatchOptions": {
+            "type": "object",
+            "properties": {
+                "meta": {
+                    "$ref": "#/definitions/apiObjectMeta"
+                },
+                "watch-options": {
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/apiKindWatchOptions"
+                    }
+                }
+            }
+        },
+        "apiKindWatchOptions": {
+            "type": "object",
+            "properties": {
+                "group": {
+                    "type": "string"
+                },
+                "kind": {
+                    "type": "string"
+                },
+                "options": {
+                    "$ref": "#/definitions/apiListWatchOptions"
+                }
+            }
+        },
+        "apiListMeta": {
+            "description": "ListMeta contains the metadata for list of objects.",
+            "type": "object",
+            "properties": {
+                "resource-version": {
+                    "description": "Resource version of object store at the time of list generation.",
+                    "type": "string"
+                },
+                "total-count": {
+                    "description": "TotalCount is the total count of results (non paginated) that the server holds.",
+                    "type": "integer",
+                    "format": "int32"
+                }
+            }
+        },
+        "apiListWatchOptions": {
+            "type": "object",
+            "required": [
+                "sort-order"
+            ],
+            "properties": {
+                "creation-time": {
+                    "type": "string",
+                    "format": "date-time"
+                },
+                "field-change-selector": {
+                    "description": "FieldChangeSelector specifies to generate a watch notification on change in field(s) specified.",
+                    "type": "array",
+                    "items": {
+                        "type": "string"
+                    }
+                },
+                "field-selector": {
+                    "description": "FieldSelector to select on field values in list or watch results.",
+                    "type": "string"
+                },
+                "from": {
+                    "description": "From represents the start index number (1 based - first object starts from index 1), of the results list. The results returned would be in the range [from ... (from + (max-results - 1))]. If From = 0, the server will attempt to return all the results in the list without pagination.",
+                    "type": "integer",
+                    "format": "int32"
+                },
+                "generation-id": {
+                    "type": "string"
+                },
+                "label-selector": {
+                    "description": "LabelSelector to select on labels in list or watch results.",
+                    "type": "string"
+                },
+                "labels": {
+                    "type": "object",
+                    "additionalProperties": {
+                        "type": "string"
+                    }
+                },
+                "max-results": {
+                    "description": "MaxResults is the maximum number of results to be returned as part of the response, per page If MaxResults is more than the maximum number of results per page supported by the server, the server will return an err If MaxResults is 0, the server will return all the results without pagination.",
+                    "type": "integer",
+                    "format": "int32"
+                },
+                "meta-only": {
+                    "description": "If MetaOnly is set to true, the watch event notification that matches the watch criteria will not contain the full object. It will only contain the information about the object that changed, i.e. which object and what changed. MetaOnly is not set by default.",
+                    "type": "boolean",
+                    "format": "boolean",
+                    "default": "false"
+                },
+                "mod-time": {
+                    "type": "string",
+                    "format": "date-time"
+                },
+                "name": {
+                    "description": "Must start and end with alpha numeric and can have alphanumeric, -, _, . Length of string should be between 2 and 64.",
+                    "type": "string",
+                    "maxLength": 64,
+                    "minLength": 2,
+                    "pattern": "^[a-zA-Z0-9][\\w\\-\\.]*[a-zA-Z0-9]$"
+                },
+                "namespace": {
+                    "description": "Must start and end with alpha numeric and can have alphanumeric, -, _, . Length of string should be between 2 and 64.",
+                    "type": "string",
+                    "maxLength": 64,
+                    "minLength": 2,
+                    "pattern": "^[a-zA-Z0-9][\\w\\-\\.]*[a-zA-Z0-9]$"
+                },
+                "resource-version": {
+                    "type": "string"
+                },
+                "self-link": {
+                    "type": "string"
+                },
+                "sort-order": {
+                    "description": "order to sort List results in.",
+                    "type": "string",
+                    "default": "none",
+                    "enum": [
+                        "none",
+                        "by-name",
+                        "by-name-reverse",
+                        "by-version",
+                        "by-version-reverse",
+                        "by-creation-time",
+                        "by-creation-time-reverse",
+                        "by-mod-time",
+                        "by-mod-time-reverse"
+                    ],
+                    "x-ui-hints": {
+                        "by-creation-time": "By Creation Time",
+                        "by-creation-time-reverse": "By Creation Time Reverse",
+                        "by-mod-time": "By Modification Time",
+                        "by-mod-time-reverse": "By Modification Time Reverse",
+                        "by-name": "By Name",
+                        "by-name-reverse": "By Name Reverse",
+                        "by-version": "By Version",
+                        "by-version-reverse": "By Version Reverse",
+                        "none": "None"
+                    }
+                },
+                "tenant": {
+                    "description": "Must be alpha-numerics. Length of string should be between 1 and 48.",
+                    "type": "string",
+                    "maxLength": 48,
+                    "minLength": 1,
+                    "pattern": "^[a-zA-Z0-9]+$"
+                },
+                "uuid": {
+                    "type": "string"
+                }
+            }
+        },
+        "apiObjectMeta": {
+            "description": "ObjectMeta contains metadata that all objects stored in kvstore must have.",
+            "type": "object",
+            "required": [
+                "name"
+            ],
+            "properties": {
+                "creation-time": {
+                    "description": "System generated and updated, not updatable by user.",
+                    "type": "string",
+                    "format": "date-time",
+                    "title": "CreationTime is the creation time of the object"
+                },
+                "generation-id": {
+                    "description": "This is incremented anytime there is an update to the user intent, including Spec update and any update to ObjectMeta. System generated and updated, not updatable by user.",
+                    "type": "string",
+                    "title": "GenerationID is the generation Id for the object"
+                },
+                "labels": {
+                    "type": "object",
+                    "title": "Labels are arbitrary (key,value) pairs associated with any object",
+                    "additionalProperties": {
+                        "type": "string"
+                    }
+                },
+                "mod-time": {
+                    "description": "System generated and updated, not updatable by user.",
+                    "type": "string",
+                    "format": "date-time",
+                    "title": "ModTime is the Last Modification time of the object"
+                },
+                "name": {
+                    "description": "Must start and end with alpha numeric and can have alphanumeric, -, _, . Length of string should be between 2 and 64.",
+                    "type": "string",
+                    "title": "Name of the object, unique within a Namespace for scoped objects",
+                    "maxLength": 64,
+                    "minLength": 2,
+                    "pattern": "^[a-zA-Z0-9][\\w\\-\\.]*[a-zA-Z0-9]$"
+                },
+                "namespace": {
+                    "description": "Namespace of the object, for scoped objects. Must start and end with alpha numeric and can have alphanumeric, -, _, . Length of string should be between 2 and 64.",
+                    "type": "string",
+                    "maxLength": 64,
+                    "minLength": 2,
+                    "pattern": "^[a-zA-Z0-9][\\w\\-\\.]*[a-zA-Z0-9]$"
+                },
+                "resource-version": {
+                    "description": "This is updated anytime there is any change to the object. System generated and updated, not updatable by user.",
+                    "type": "string",
+                    "title": "Resource version in the object store"
+                },
+                "self-link": {
+                    "description": "When the object is served from the API-GW it is the URI path. Example: - \"/v1/tenants/tenants/tenant2\" System generated and updated, not updatable by user.",
+                    "type": "string",
+                    "title": "SelfLink is a link for accessing this object"
+                },
+                "tenant": {
+                    "description": "This can be automatically filled in many cases based on the tenant the user, who created the object, belongs to. Must be alpha-numerics. Length of string should be between 1 and 48.",
+                    "type": "string",
+                    "title": "Tenant to which the object belongs to",
+                    "maxLength": 48,
+                    "minLength": 1,
+                    "pattern": "^[a-zA-Z0-9]+$"
+                },
+                "uuid": {
+                    "description": "This is generated on creation of the object. System generated, not updatable by user.",
+                    "type": "string",
+                    "title": "UUID is the unique identifier for the object"
+                }
+            }
+        },
+        "apiObjectRef": {
+            "description": "ObjectRef contains identifying information about an object.",
+            "type": "object",
+            "properties": {
+                "kind": {
+                    "description": "Kind represents the type of the API object.",
+                    "type": "string"
+                },
+                "name": {
+                    "description": "Name of the object, unique within a Namespace for scoped objects.",
+                    "type": "string"
+                },
+                "namespace": {
+                    "description": "Namespace of the object, for scoped objects.",
+                    "type": "string"
+                },
+                "tenant": {
+                    "description": "Tenant of the object.",
+                    "type": "string"
+                },
+                "uri": {
+                    "description": "URI is a link to accessing the referenced object.",
+                    "type": "string"
+                }
+            }
+        },
+        "apiStatus": {
+            "description": "Status is returned for calls that dont return objects.",
+            "type": "object",
+            "properties": {
+                "api-version": {
+                    "type": "string"
+                },
+                "code": {
+                    "description": "Code is the HTTP status code.",
+                    "type": "integer",
+                    "format": "int32"
+                },
+                "kind": {
+                    "type": "string"
+                },
+                "message": {
+                    "description": "Message contains human readable form of the error.",
+                    "type": "array",
+                    "items": {
+                        "type": "string"
+                    }
+                },
+                "object-ref": {
+                    "description": "Reference to the object (optional) for which this status is being sent.",
+                    "$ref": "#/definitions/apiObjectRef"
+                },
+                "result": {
+                    "description": "Result contains the status of the operation, success or failure.",
+                    "$ref": "#/definitions/apiStatusResult"
+                }
+            }
+        },
+        "apiStatusResult": {
+            "description": "StatusResult contains possible statuses for a NIC.",
+            "type": "object",
+            "properties": {
+                "Str": {
+                    "type": "string"
+                }
+            }
+        },
+        "apiTimestamp": {
+            "type": "object",
+            "properties": {
+                "nanos": {
+                    "type": "integer",
+                    "format": "int32"
+                },
+                "seconds": {
+                    "type": "string",
+                    "format": "int64"
+                }
+            }
+        },
+        "apiTypeMeta": {
+            "description": "TypeMeta contains the metadata about kind and version for all API objects.",
+            "type": "object",
+            "properties": {
+                "api-version": {
+                    "description": "APIVersion defines the version of the API object. This can only be set by the server.",
+                    "type": "string"
+                },
+                "kind": {
+                    "description": "Kind represents the type of the API object.",
+                    "type": "string"
+                }
+            }
+        },
+        "apiWatchControl": {
+            "type": "object",
+            "properties": {
+                "code": {
+                    "type": "integer",
+                    "format": "int64"
+                },
+                "message": {
+                    "type": "string"
+                }
+            }
+        },
+        "apiWatchEvent": {
+            "type": "object",
+            "properties": {
+                "control": {
+                    "$ref": "#/definitions/apiWatchControl"
+                },
+                "object": {
+                    "$ref": "#/definitions/googleprotobufAny"
+                },
+                "type": {
+                    "type": "string"
+                }
+            }
+        },
+        "apiWatchEventList": {
+            "type": "object",
+            "properties": {
+                "events": {
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/apiWatchEvent"
+                    }
+                }
+            }
+        },
+        "fwlogFwLog": {
+            "type": "object",
+            "required": [
+                "action",
+                "direction"
+            ],
+            "properties": {
+                "action": {
+                    "description": "Action.",
+                    "type": "string",
+                    "default": "allow",
+                    "enum": [
+                        "allow",
+                        "deny",
+                        "reject",
+                        "implicit_deny",
+                        "none"
+                    ],
+                    "x-ui-hints": {
+                        "allow": "Allow",
+                        "deny": "Deny",
+                        "implicit_deny": "Implicit-deny",
+                        "none": "None",
+                        "reject": "Reject"
+                    }
+                },
+                "alg": {
+                    "description": "Appliction Layer Gateway.",
+                    "type": "string"
+                },
+                "api-version": {
+                    "type": "string"
+                },
+                "app-id": {
+                    "description": "Application ID.",
+                    "type": "string"
+                },
+                "destination-ip": {
+                    "description": "Destination IP.",
+                    "type": "string"
+                },
+                "destination-port": {
+                    "description": "Destination Port.",
+                    "type": "integer",
+                    "format": "int64"
+                },
+                "destination-vrf": {
+                    "description": "Destination VRF,.",
+                    "type": "string",
+                    "format": "uint64"
+                },
+                "direction": {
+                    "description": "Flow Direction.",
+                    "type": "string",
+                    "default": "from-host",
+                    "enum": [
+                        "from-host",
+                        "from-uplink"
+                    ],
+                    "x-ui-hints": {
+                        "from-host": "From Host",
+                        "from-uplink": "From Uplink"
+                    }
+                },
+                "flow-action": {
+                    "description": "Flow action.",
+                    "type": "string"
+                },
+                "icmp-code": {
+                    "description": "icmp code.",
+                    "type": "integer",
+                    "format": "int64"
+                },
+                "icmp-id": {
+                    "description": "icmp ID.",
+                    "type": "integer",
+                    "format": "int64"
+                },
+                "icmp-type": {
+                    "description": "icmp type.",
+                    "type": "integer",
+                    "format": "int64"
+                },
+                "ipsec-protected": {
+                    "description": "If IP sec protected.",
+                    "type": "boolean",
+                    "format": "boolean"
+                },
+                "ipsec-rule-id": {
+                    "description": "IP sec policy rule ID.",
+                    "type": "string"
+                },
+                "kind": {
+                    "type": "string"
+                },
+                "meta": {
+                    "$ref": "#/definitions/apiObjectMeta"
+                },
+                "policy-name": {
+                    "description": "policy name.",
+                    "type": "string"
+                },
+                "protocol": {
+                    "description": "Protocol,.",
+                    "type": "string"
+                },
+                "reporter-id": {
+                    "description": "Reporter ID.",
+                    "type": "string"
+                },
+                "rule-id": {
+                    "description": "Rule ID.",
+                    "type": "string"
+                },
+                "session-id": {
+                    "description": "Session ID.",
+                    "type": "string"
+                },
+                "source-ip": {
+                    "description": "Source IP,.",
+                    "type": "string"
+                },
+                "source-port": {
+                    "description": "Source Port.",
+                    "type": "integer",
+                    "format": "int64"
+                },
+                "source-vrf": {
+                    "description": "Source VRF,.",
+                    "type": "string",
+                    "format": "uint64"
+                },
+                "vnid": {
+                    "description": "VXLAN ID.",
+                    "type": "string",
+                    "format": "uint64"
+                }
+            }
+        },
+        "fwlogFwLogList": {
+            "description": "list of fw logs.",
+            "type": "object",
+            "required": [
+                "count-relation"
+            ],
+            "properties": {
+                "api-version": {
+                    "type": "string"
+                },
+                "count-relation": {
+                    "description": "CountRelation to qualify total count of search results.",
+                    "type": "string",
+                    "default": "notsupported",
+                    "enum": [
+                        "notsupported",
+                        "equal",
+                        "greaterthan"
+                    ],
+                    "x-ui-hints": {
+                        "equal": "Equal",
+                        "greaterthan": "Greater Than",
+                        "notsupported": "Not Supported"
+                    }
+                },
+                "items": {
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/fwlogFwLog"
+                    }
+                },
+                "kind": {
+                    "type": "string"
+                },
+                "list-meta": {
+                    "$ref": "#/definitions/apiListMeta"
+                },
+                "scroll-id": {
+                    "description": "ScrollID to scroll through results.",
+                    "type": "string"
+                }
+            }
+        },
+        "fwlogFwLogQuery": {
+            "description": "FwLogQuery allows selecting logs by all attributes All fields are ANDed together.",
+            "type": "object",
+            "required": [
+                "source-ips",
+                "destination-ips",
+                "source-ports",
+                "destination-ports",
+                "actions",
+                "sort-order",
+                "max-results",
+                "scroll-expiry",
+                "scroll-action"
+            ],
+            "properties": {
+                "actions": {
+                    "description": "OR of actions to be matched. Only one action can be specified and can only be specified if either source IP or destination IP is present.",
+                    "type": "array",
+                    "default": "allow",
+                    "enum": [
+                        "allow",
+                        "deny",
+                        "reject",
+                        "implicit_deny",
+                        "none"
+                    ],
+                    "items": {
+                        "type": "string"
+                    },
+                    "x-ui-hints": {
+                        "allow": "Allow",
+                        "deny": "Deny",
+                        "implicit_deny": "Implicit-deny",
+                        "none": "None",
+                        "reject": "Reject"
+                    }
+                },
+                "batch-size": {
+                    "description": "BatchSize is the number of results returned in one batch while scrolling.",
+                    "type": "integer",
+                    "format": "int32",
+                    "default": "25"
+                },
+                "count-only": {
+                    "description": "if set, returns only number of hits for the search query and not flow logs. Number of hits are greater than or equal to TotalCount value returned in list-meta.",
+                    "type": "boolean",
+                    "format": "boolean"
+                },
+                "destination-ips": {
+                    "description": "OR of destination IPs to be matched. Only one destination IP is allowed. Should be a valid v4 or v6 IP address.",
+                    "type": "array",
+                    "items": {
+                        "type": "string"
+                    },
+                    "example": "10.1.1.1, ff02::5 "
+                },
+                "destination-ports": {
+                    "description": "OR of destination ports to be matched. Only one port can be specified and if present, destination IP must also be specified. Value should be between 0 and 65535.",
+                    "type": "array",
+                    "maximum": 65535,
+                    "minimum": 0,
+                    "items": {
+                        "type": "integer",
+                        "format": "int64"
+                    }
+                },
+                "end-time": {
+                    "description": "EndTime selects all logs with timestamp less than the EndTime, example 2018-09-18T00:12:00Z.",
+                    "type": "string",
+                    "format": "date-time"
+                },
+                "max-results": {
+                    "description": "MaxResults is the max-count of search results Default value is 50 and valid range is 0..8192. Value should be between 0 and 8192.",
+                    "type": "integer",
+                    "format": "int32",
+                    "default": "50",
+                    "maximum": 8192,
+                    "minimum": 0
+                },
+                "protocols": {
+                    "description": "OR of protocols to be matched. Only one protocol can be specified and can only be specified if either source IP or destination IP is present.",
+                    "type": "array",
+                    "items": {
+                        "type": "string"
+                    }
+                },
+                "reporter-ids": {
+                    "description": "OR of reporter names to be matched. Only one reporter ID can be specified.",
+                    "type": "array",
+                    "items": {
+                        "type": "string"
+                    }
+                },
+                "scroll-action": {
+                    "description": "ScrollAction specifies actions related to scroll if its duration needs to be extended or scroll needs to be deleted.",
+                    "type": "string",
+                    "default": "none",
+                    "enum": [
+                        "none",
+                        "refresh",
+                        "delete"
+                    ]
+                },
+                "scroll-expiry": {
+                    "description": "ScrollExpiry is time duration after which scroll id expires. Default is 5 min. A duration string is a sequence of decimal number and a unit suffix, such as \"300ms\" or \"2h45m\". Valid time units are \"ns\", \"us\" (or \"\u00b5s\"), \"ms\", \"s\", \"m\", \"h\". Subsequent requests with a scroll id resets the timer for expiry. Should be a valid time duration.",
+                    "type": "string",
+                    "default": "5m",
+                    "example": "60s"
+                },
+                "scroll-id": {
+                    "description": "ScrollID to scroll through results fetched by an earlier query.",
+                    "type": "string"
+                },
+                "sort-order": {
+                    "description": "SortOrder specifies time ordering of results.",
+                    "type": "string",
+                    "default": "descending",
+                    "enum": [
+                        "ascending",
+                        "descending"
+                    ]
+                },
+                "source-ips": {
+                    "description": "OR of sources IPs to be matched. Only one source IP is allowed. Should be a valid v4 or v6 IP address.",
+                    "type": "array",
+                    "items": {
+                        "type": "string"
+                    },
+                    "example": "10.1.1.1, ff02::5 "
+                },
+                "source-ports": {
+                    "description": "OR of source ports to be matched. Only one port can be specified and if present, source IP must also be specified. Value should be between 0 and 65535.",
+                    "type": "array",
+                    "maximum": 65535,
+                    "minimum": 0,
+                    "items": {
+                        "type": "integer",
+                        "format": "int64"
+                    }
+                },
+                "start-time": {
+                    "description": "StartTime selects all logs with timestamp greater than the StartTime, example 2018-10-18T00:12:00Z.",
+                    "type": "string",
+                    "format": "date-time"
+                },
+                "tenants": {
+                    "description": "OR of tenants within the scope of which search needs to be performed. If not specified, it will be set to tenant of the logged in user. Also users in non default tenant can search fwlogs in their tenant scope only.",
+                    "type": "array",
+                    "items": {
+                        "type": "string"
+                    }
+                }
+            }
+        },
+        "googleprotobufAny": {
+            "description": "`Any` contains an arbitrary serialized protocol buffer message along with a URL that describes the type of the serialized message. Protobuf library provides support to pack/unpack Any values in the form of utility functions or additional generated methods of the Any type. Example 1: Pack and unpack a message in C++. Foo foo = ...; Any any; any.PackFrom(foo); ... if (any.UnpackTo(&foo)) { ... } Example 2: Pack and unpack a message in Java. Foo foo = ...; Any any = Any.pack(foo); ... if (any.is(Foo.class)) { foo = any.unpack(Foo.class); } Example 3: Pack and unpack a message in Python. foo = Foo(...) any = Any() any.Pack(foo) ... if any.Is(Foo.DESCRIPTOR): any.Unpack(foo) ... Example 4: Pack and unpack a message in Go foo := &pb.Foo{...} any, err := ptypes.MarshalAny(foo) ... foo := &pb.Foo{} if err := ptypes.UnmarshalAny(any, foo); err != nil { ... } The pack methods provided by protobuf library will by default use 'type.googleapis.com/full.type.name' as the type URL and the unpack methods only use the fully qualified type name after the last '/' in the type URL, for example \"foo.bar.com/x/y.z\" will yield type name \"y.z\". JSON ==== The JSON representation of an `Any` value uses the regular representation of the deserialized, embedded message, with an additional field `@type` which contains the type URL. Example: package google.profile; message Person { string first_name = 1; string last_name = 2; } { \"@type\": \"type.googleapis.com/google.profile.Person\", \"firstName\": <string>, \"lastName\": <string> } If the embedded message type is well-known and has a custom JSON representation, that representation will be embedded adding a field `value` which holds the custom JSON in addition to the `@type` field. Example (for message [google.protobuf.Duration][]): { \"@type\": \"type.googleapis.com/google.protobuf.Duration\", \"value\": \"1.212s\" }.",
+            "type": "object",
+            "properties": {
+                "type_url": {
+                    "description": "A URL/resource name that uniquely identifies the type of the serialized protocol buffer message. This string must contain at least one \"/\" character. The last segment of the URL's path must represent the fully qualified name of the type (as in `path/google.protobuf.Duration`). The name should be in a canonical form (e.g., leading \".\" is not accepted). In practice, teams usually precompile into the binary all types that they expect it to use in the context of Any. However, for URLs which use the scheme `http`, `https`, or no scheme, one can optionally set up a type server that maps type URLs to message definitions as follows: * If no scheme is provided, `https` is assumed. * An HTTP GET on the URL must yield a [google.protobuf.Type][] value in binary format, or produce an error. * Applications are allowed to cache lookup results based on the URL, or have them precompiled into a binary to avoid any lookup. Therefore, binary compatibility needs to be preserved on changes to types. (Use versioned type names to manage breaking changes.) Note: this functionality is not currently available in the official protobuf release, and it is not used for type URLs beginning with type.googleapis.com. Schemes other than `http`, `https` (or the empty scheme) might be used with implementation specific semantics.",
+                    "type": "string"
+                },
+                "value": {
+                    "description": "Must be a valid serialized protocol buffer of the above specified type.",
+                    "type": "string",
+                    "format": "byte"
+                }
+            }
+        }
+    }
+}

@@ -1,0 +1,1693 @@
+{
+    "consumes": [
+        "application/json"
+    ],
+    "produces": [
+        "application/json"
+    ],
+    "schemes": [
+        "http",
+        "https"
+    ],
+    "swagger": "2.0",
+    "info": {
+        "description": "Service name\n\n",
+        "title": "Rollout API reference"
+    },
+    "paths": {
+        "/configs/rollout/v1/rollout": {
+            "get": {
+                "tags": [
+                    "rollout/v1"
+                ],
+                "summary": "List Rollout objects",
+                "operationId": "ListRollout",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "Name of the object, unique within a Namespace for scoped objects. Must start and end with alpha numeric and can have alphanumeric, -, _, . Length of string should be between 2 and 64.",
+                        "name": "O.name",
+                        "in": "query"
+                    },
+                    {
+                        "type": "string",
+                        "description": "Tenant to which the object belongs to. This can be automatically filled in many cases based on the tenant the user, who created the object, belongs to. Must be alpha-numerics. Length of string should be between 1 and 48.",
+                        "name": "O.tenant",
+                        "in": "query"
+                    },
+                    {
+                        "type": "string",
+                        "description": "Namespace of the object, for scoped objects. Must start and end with alpha numeric and can have alphanumeric, -, _, . Length of string should be between 2 and 64.",
+                        "name": "O.namespace",
+                        "in": "query"
+                    },
+                    {
+                        "type": "string",
+                        "description": "GenerationID is the generation Id for the object. This is incremented anytime there is an update to the user intent, including Spec update and any update to ObjectMeta. System generated and updated, not updatable by user.",
+                        "name": "O.generation-id",
+                        "in": "query"
+                    },
+                    {
+                        "type": "string",
+                        "description": "Resource version in the object store. This is updated anytime there is any change to the object. System generated and updated, not updatable by user.",
+                        "name": "O.resource-version",
+                        "in": "query"
+                    },
+                    {
+                        "type": "string",
+                        "description": "UUID is the unique identifier for the object. This is generated on creation of the object. System generated, not updatable by user.",
+                        "name": "O.uuid",
+                        "in": "query"
+                    },
+                    {
+                        "type": "string",
+                        "format": "date-time",
+                        "description": "CreationTime is the creation time of the object. System generated and updated, not updatable by user.",
+                        "name": "O.creation-time",
+                        "in": "query"
+                    },
+                    {
+                        "type": "string",
+                        "format": "date-time",
+                        "description": "ModTime is the Last Modification time of the object. System generated and updated, not updatable by user.",
+                        "name": "O.mod-time",
+                        "in": "query"
+                    },
+                    {
+                        "type": "string",
+                        "description": "SelfLink is a link for accessing this object. When the object is served from the API-GW it is the URI path. Example: - \"/v1/tenants/tenants/tenant2\" System generated and updated, not updatable by user.",
+                        "name": "O.self-link",
+                        "in": "query"
+                    },
+                    {
+                        "type": "string",
+                        "description": "LabelSelector to select on labels in list or watch results.",
+                        "name": "label-selector",
+                        "in": "query"
+                    },
+                    {
+                        "type": "string",
+                        "description": "FieldSelector to select on field values in list or watch results.",
+                        "name": "field-selector",
+                        "in": "query"
+                    },
+                    {
+                        "type": "array",
+                        "items": {
+                            "type": "string"
+                        },
+                        "description": "FieldChangeSelector specifies to generate a watch notification on change in field(s) specified.",
+                        "name": "field-change-selector",
+                        "in": "query"
+                    },
+                    {
+                        "type": "integer",
+                        "format": "int32",
+                        "description": "From represents the start index number (1 based - first object starts from index 1), of the results list. The results returned would be in the range [from ... (from + (max-results - 1))]. If From = 0, the server will attempt to return all the results in the list without pagination.",
+                        "name": "from",
+                        "in": "query"
+                    },
+                    {
+                        "type": "integer",
+                        "format": "int32",
+                        "description": "MaxResults is the maximum number of results to be returned as part of the response, per page If MaxResults is more than the maximum number of results per page supported by the server, the server will return an err If MaxResults is 0, the server will return all the results without pagination.",
+                        "name": "max-results",
+                        "in": "query"
+                    },
+                    {
+                        "type": "string",
+                        "description": "order to sort List results in.",
+                        "name": "sort-order",
+                        "in": "query"
+                    },
+                    {
+                        "type": "boolean",
+                        "format": "boolean",
+                        "description": "If MetaOnly is set to true, the watch event notification that matches the watch criteria will not contain the full object. It will only contain the information about the object that changed, i.e. which object and what changed. MetaOnly is not set by default.",
+                        "name": "meta-only",
+                        "in": "query"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "(empty)",
+                        "schema": {
+                            "$ref": "#/definitions/rolloutRolloutList"
+                        }
+                    },
+                    "400": {
+                        "description": "Bad request parameters",
+                        "schema": {
+                            "$ref": "#/definitions/apiStatus"
+                        }
+                    },
+                    "401": {
+                        "description": "Unauthorized request",
+                        "schema": {
+                            "$ref": "#/definitions/apiStatus"
+                        }
+                    },
+                    "409": {
+                        "description": "Conflict while processing request",
+                        "schema": {
+                            "$ref": "#/definitions/apiStatus"
+                        }
+                    },
+                    "412": {
+                        "description": "Pre-condition failed",
+                        "schema": {
+                            "$ref": "#/definitions/apiStatus"
+                        }
+                    },
+                    "500": {
+                        "description": "Internal server error",
+                        "schema": {
+                            "$ref": "#/definitions/apiStatus"
+                        }
+                    },
+                    "501": {
+                        "description": "Request not implemented",
+                        "schema": {
+                            "$ref": "#/definitions/apiStatus"
+                        }
+                    }
+                }
+            }
+        },
+        "/configs/rollout/v1/rollout/CreateRollout": {
+            "post": {
+                "tags": [
+                    "rollout/v1"
+                ],
+                "summary": "Start Rollout operation",
+                "operationId": "CreateRollout",
+                "parameters": [
+                    {
+                        "name": "body",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/rolloutRollout"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "(empty)",
+                        "schema": {
+                            "$ref": "#/definitions/rolloutRollout"
+                        }
+                    },
+                    "400": {
+                        "description": "Bad request parameters",
+                        "schema": {
+                            "$ref": "#/definitions/apiStatus"
+                        }
+                    },
+                    "401": {
+                        "description": "Unauthorized request",
+                        "schema": {
+                            "$ref": "#/definitions/apiStatus"
+                        }
+                    },
+                    "409": {
+                        "description": "Conflict while processing request",
+                        "schema": {
+                            "$ref": "#/definitions/apiStatus"
+                        }
+                    },
+                    "412": {
+                        "description": "Pre-condition failed",
+                        "schema": {
+                            "$ref": "#/definitions/apiStatus"
+                        }
+                    },
+                    "500": {
+                        "description": "Internal server error",
+                        "schema": {
+                            "$ref": "#/definitions/apiStatus"
+                        }
+                    },
+                    "501": {
+                        "description": "Request not implemented",
+                        "schema": {
+                            "$ref": "#/definitions/apiStatus"
+                        }
+                    }
+                }
+            }
+        },
+        "/configs/rollout/v1/rollout/RemoveRollout": {
+            "post": {
+                "tags": [
+                    "rollout/v1"
+                ],
+                "summary": "Remove a Rollout",
+                "operationId": "RemoveRollout",
+                "parameters": [
+                    {
+                        "name": "body",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/rolloutRollout"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "(empty)",
+                        "schema": {
+                            "$ref": "#/definitions/rolloutRollout"
+                        }
+                    },
+                    "400": {
+                        "description": "Bad request parameters",
+                        "schema": {
+                            "$ref": "#/definitions/apiStatus"
+                        }
+                    },
+                    "401": {
+                        "description": "Unauthorized request",
+                        "schema": {
+                            "$ref": "#/definitions/apiStatus"
+                        }
+                    },
+                    "409": {
+                        "description": "Conflict while processing request",
+                        "schema": {
+                            "$ref": "#/definitions/apiStatus"
+                        }
+                    },
+                    "412": {
+                        "description": "Pre-condition failed",
+                        "schema": {
+                            "$ref": "#/definitions/apiStatus"
+                        }
+                    },
+                    "500": {
+                        "description": "Internal server error",
+                        "schema": {
+                            "$ref": "#/definitions/apiStatus"
+                        }
+                    },
+                    "501": {
+                        "description": "Request not implemented",
+                        "schema": {
+                            "$ref": "#/definitions/apiStatus"
+                        }
+                    }
+                }
+            }
+        },
+        "/configs/rollout/v1/rollout/StopRollout": {
+            "post": {
+                "tags": [
+                    "rollout/v1"
+                ],
+                "summary": "Stop a Rollout operation",
+                "operationId": "StopRollout",
+                "parameters": [
+                    {
+                        "name": "body",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/rolloutRollout"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "(empty)",
+                        "schema": {
+                            "$ref": "#/definitions/rolloutRollout"
+                        }
+                    },
+                    "400": {
+                        "description": "Bad request parameters",
+                        "schema": {
+                            "$ref": "#/definitions/apiStatus"
+                        }
+                    },
+                    "401": {
+                        "description": "Unauthorized request",
+                        "schema": {
+                            "$ref": "#/definitions/apiStatus"
+                        }
+                    },
+                    "409": {
+                        "description": "Conflict while processing request",
+                        "schema": {
+                            "$ref": "#/definitions/apiStatus"
+                        }
+                    },
+                    "412": {
+                        "description": "Pre-condition failed",
+                        "schema": {
+                            "$ref": "#/definitions/apiStatus"
+                        }
+                    },
+                    "500": {
+                        "description": "Internal server error",
+                        "schema": {
+                            "$ref": "#/definitions/apiStatus"
+                        }
+                    },
+                    "501": {
+                        "description": "Request not implemented",
+                        "schema": {
+                            "$ref": "#/definitions/apiStatus"
+                        }
+                    }
+                }
+            }
+        },
+        "/configs/rollout/v1/rollout/UpdateRollout": {
+            "post": {
+                "tags": [
+                    "rollout/v1"
+                ],
+                "summary": "Update Rollout configuration",
+                "operationId": "UpdateRollout",
+                "parameters": [
+                    {
+                        "name": "body",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/rolloutRollout"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "(empty)",
+                        "schema": {
+                            "$ref": "#/definitions/rolloutRollout"
+                        }
+                    },
+                    "400": {
+                        "description": "Bad request parameters",
+                        "schema": {
+                            "$ref": "#/definitions/apiStatus"
+                        }
+                    },
+                    "401": {
+                        "description": "Unauthorized request",
+                        "schema": {
+                            "$ref": "#/definitions/apiStatus"
+                        }
+                    },
+                    "409": {
+                        "description": "Conflict while processing request",
+                        "schema": {
+                            "$ref": "#/definitions/apiStatus"
+                        }
+                    },
+                    "412": {
+                        "description": "Pre-condition failed",
+                        "schema": {
+                            "$ref": "#/definitions/apiStatus"
+                        }
+                    },
+                    "500": {
+                        "description": "Internal server error",
+                        "schema": {
+                            "$ref": "#/definitions/apiStatus"
+                        }
+                    },
+                    "501": {
+                        "description": "Request not implemented",
+                        "schema": {
+                            "$ref": "#/definitions/apiStatus"
+                        }
+                    }
+                }
+            }
+        },
+        "/configs/rollout/v1/rollout/{O.Name}": {
+            "get": {
+                "tags": [
+                    "rollout/v1"
+                ],
+                "summary": "Get Rollout object",
+                "operationId": "GetRollout",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "name": "O.Name",
+                        "in": "path",
+                        "required": true
+                    },
+                    {
+                        "type": "string",
+                        "description": "Kind represents the type of the API object.",
+                        "name": "T.kind",
+                        "in": "query"
+                    },
+                    {
+                        "type": "string",
+                        "description": "APIVersion defines the version of the API object. This can only be set by the server.",
+                        "name": "T.api-version",
+                        "in": "query"
+                    },
+                    {
+                        "type": "string",
+                        "description": "Tenant to which the object belongs to. This can be automatically filled in many cases based on the tenant the user, who created the object, belongs to. Must be alpha-numerics. Length of string should be between 1 and 48.",
+                        "name": "meta.tenant",
+                        "in": "query"
+                    },
+                    {
+                        "type": "string",
+                        "description": "Namespace of the object, for scoped objects. Must start and end with alpha numeric and can have alphanumeric, -, _, . Length of string should be between 2 and 64.",
+                        "name": "meta.namespace",
+                        "in": "query"
+                    },
+                    {
+                        "type": "string",
+                        "description": "GenerationID is the generation Id for the object. This is incremented anytime there is an update to the user intent, including Spec update and any update to ObjectMeta. System generated and updated, not updatable by user.",
+                        "name": "meta.generation-id",
+                        "in": "query"
+                    },
+                    {
+                        "type": "string",
+                        "description": "Resource version in the object store. This is updated anytime there is any change to the object. System generated and updated, not updatable by user.",
+                        "name": "meta.resource-version",
+                        "in": "query"
+                    },
+                    {
+                        "type": "string",
+                        "description": "UUID is the unique identifier for the object. This is generated on creation of the object. System generated, not updatable by user.",
+                        "name": "meta.uuid",
+                        "in": "query"
+                    },
+                    {
+                        "type": "string",
+                        "format": "date-time",
+                        "description": "CreationTime is the creation time of the object. System generated and updated, not updatable by user.",
+                        "name": "meta.creation-time",
+                        "in": "query"
+                    },
+                    {
+                        "type": "string",
+                        "format": "date-time",
+                        "description": "ModTime is the Last Modification time of the object. System generated and updated, not updatable by user.",
+                        "name": "meta.mod-time",
+                        "in": "query"
+                    },
+                    {
+                        "type": "string",
+                        "description": "SelfLink is a link for accessing this object. When the object is served from the API-GW it is the URI path. Example: - \"/v1/tenants/tenants/tenant2\" System generated and updated, not updatable by user.",
+                        "name": "meta.self-link",
+                        "in": "query"
+                    },
+                    {
+                        "type": "string",
+                        "description": "New Version of the image to rollout to.",
+                        "name": "spec.version",
+                        "in": "query"
+                    },
+                    {
+                        "type": "string",
+                        "format": "date-time",
+                        "description": "Time, if specified, at which the rollout is supposed to start. (example:\"2002-10-02T15:00:00.05Z\").",
+                        "name": "spec.scheduled-start-time",
+                        "in": "query"
+                    },
+                    {
+                        "type": "string",
+                        "format": "date-time",
+                        "description": "ScheduledEndTime, if specified, after which the rollout is supposed to stop, if not completed by that time Typically represents the end of Maintenance window. (example:\"2002-10-02T15:00:00.05Z\").",
+                        "name": "spec.scheduled-end-time",
+                        "in": "query"
+                    },
+                    {
+                        "type": "string",
+                        "name": "spec.strategy",
+                        "in": "query"
+                    },
+                    {
+                        "type": "integer",
+                        "format": "int64",
+                        "description": "MaxParallel is the maximum number of nodes getting updated at any time This setting is applicable only to DistributedServiceCards. Controller nodes are always upgraded one after another.",
+                        "name": "spec.max-parallel",
+                        "in": "query"
+                    },
+                    {
+                        "type": "integer",
+                        "format": "int64",
+                        "description": "After these many failures are observed during DSC upgrade, the rollout process stops This setting applies to DSCs only. The controller nodes are rollout first and any failure there stops the rollout of DistributedServiceCards.",
+                        "name": "spec.max-nic-failures-before-abort",
+                        "in": "query"
+                    },
+                    {
+                        "type": "boolean",
+                        "format": "boolean",
+                        "description": "When Set to true, the current rollout is suspended. Existing Nodes/Services/DistributedServiceCards in the middle of rollout continue rollout execution but any Nodes/Services/DistributedServiceCards which has not started Rollout will not be scheduled one.",
+                        "name": "spec.suspend",
+                        "in": "query"
+                    },
+                    {
+                        "type": "boolean",
+                        "format": "boolean",
+                        "description": "Dont upgrade Controller but only upgrade DistributedServiceCards.",
+                        "name": "spec.dscs-only",
+                        "in": "query"
+                    },
+                    {
+                        "type": "boolean",
+                        "format": "boolean",
+                        "description": "When DSCMustMatchConstraint is true, Any DSC which does not match OrderConstraints does not go through rollout.",
+                        "name": "spec.dsc-must-match-constraint",
+                        "in": "query"
+                    },
+                    {
+                        "type": "string",
+                        "name": "spec.upgrade-type",
+                        "in": "query"
+                    },
+                    {
+                        "type": "boolean",
+                        "format": "boolean",
+                        "description": "If enabled, will retry rollout of failed naples within the maintenance window upto a max of 5 times.",
+                        "name": "spec.retry",
+                        "in": "query"
+                    },
+                    {
+                        "type": "string",
+                        "name": "status.state",
+                        "in": "query"
+                    },
+                    {
+                        "type": "integer",
+                        "format": "int64",
+                        "description": "Heuristic value of percentage completion of the rollout.",
+                        "name": "status.completion-percent",
+                        "in": "query"
+                    },
+                    {
+                        "type": "string",
+                        "format": "date-time",
+                        "description": "Start time of Rollout.",
+                        "name": "status.start-time",
+                        "in": "query"
+                    },
+                    {
+                        "type": "string",
+                        "format": "date-time",
+                        "description": "End time of Rollout.",
+                        "name": "status.end-time",
+                        "in": "query"
+                    },
+                    {
+                        "type": "string",
+                        "description": "Version of the cluster before the start of rollout.",
+                        "name": "status.prev-version",
+                        "in": "query"
+                    },
+                    {
+                        "type": "string",
+                        "description": "details the reason for overall Failure or Suspend.",
+                        "name": "status.reason",
+                        "in": "query"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "(empty)",
+                        "schema": {
+                            "$ref": "#/definitions/rolloutRollout"
+                        }
+                    },
+                    "400": {
+                        "description": "Bad request parameters",
+                        "schema": {
+                            "$ref": "#/definitions/apiStatus"
+                        }
+                    },
+                    "401": {
+                        "description": "Unauthorized request",
+                        "schema": {
+                            "$ref": "#/definitions/apiStatus"
+                        }
+                    },
+                    "409": {
+                        "description": "Conflict while processing request",
+                        "schema": {
+                            "$ref": "#/definitions/apiStatus"
+                        }
+                    },
+                    "412": {
+                        "description": "Pre-condition failed",
+                        "schema": {
+                            "$ref": "#/definitions/apiStatus"
+                        }
+                    },
+                    "500": {
+                        "description": "Internal server error",
+                        "schema": {
+                            "$ref": "#/definitions/apiStatus"
+                        }
+                    },
+                    "501": {
+                        "description": "Request not implemented",
+                        "schema": {
+                            "$ref": "#/definitions/apiStatus"
+                        }
+                    }
+                }
+            }
+        },
+        "/configs/rollout/v1/watch/rollout": {
+            "get": {
+                "tags": [
+                    "rollout/v1"
+                ],
+                "summary": "Watch Rollout objects. Supports WebSockets or HTTP long poll",
+                "operationId": "WatchRollout",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "Name of the object, unique within a Namespace for scoped objects. Must start and end with alpha numeric and can have alphanumeric, -, _, . Length of string should be between 2 and 64.",
+                        "name": "O.name",
+                        "in": "query"
+                    },
+                    {
+                        "type": "string",
+                        "description": "Tenant to which the object belongs to. This can be automatically filled in many cases based on the tenant the user, who created the object, belongs to. Must be alpha-numerics. Length of string should be between 1 and 48.",
+                        "name": "O.tenant",
+                        "in": "query"
+                    },
+                    {
+                        "type": "string",
+                        "description": "Namespace of the object, for scoped objects. Must start and end with alpha numeric and can have alphanumeric, -, _, . Length of string should be between 2 and 64.",
+                        "name": "O.namespace",
+                        "in": "query"
+                    },
+                    {
+                        "type": "string",
+                        "description": "GenerationID is the generation Id for the object. This is incremented anytime there is an update to the user intent, including Spec update and any update to ObjectMeta. System generated and updated, not updatable by user.",
+                        "name": "O.generation-id",
+                        "in": "query"
+                    },
+                    {
+                        "type": "string",
+                        "description": "Resource version in the object store. This is updated anytime there is any change to the object. System generated and updated, not updatable by user.",
+                        "name": "O.resource-version",
+                        "in": "query"
+                    },
+                    {
+                        "type": "string",
+                        "description": "UUID is the unique identifier for the object. This is generated on creation of the object. System generated, not updatable by user.",
+                        "name": "O.uuid",
+                        "in": "query"
+                    },
+                    {
+                        "type": "string",
+                        "format": "date-time",
+                        "description": "CreationTime is the creation time of the object. System generated and updated, not updatable by user.",
+                        "name": "O.creation-time",
+                        "in": "query"
+                    },
+                    {
+                        "type": "string",
+                        "format": "date-time",
+                        "description": "ModTime is the Last Modification time of the object. System generated and updated, not updatable by user.",
+                        "name": "O.mod-time",
+                        "in": "query"
+                    },
+                    {
+                        "type": "string",
+                        "description": "SelfLink is a link for accessing this object. When the object is served from the API-GW it is the URI path. Example: - \"/v1/tenants/tenants/tenant2\" System generated and updated, not updatable by user.",
+                        "name": "O.self-link",
+                        "in": "query"
+                    },
+                    {
+                        "type": "string",
+                        "description": "LabelSelector to select on labels in list or watch results.",
+                        "name": "label-selector",
+                        "in": "query"
+                    },
+                    {
+                        "type": "string",
+                        "description": "FieldSelector to select on field values in list or watch results.",
+                        "name": "field-selector",
+                        "in": "query"
+                    },
+                    {
+                        "type": "array",
+                        "items": {
+                            "type": "string"
+                        },
+                        "description": "FieldChangeSelector specifies to generate a watch notification on change in field(s) specified.",
+                        "name": "field-change-selector",
+                        "in": "query"
+                    },
+                    {
+                        "type": "integer",
+                        "format": "int32",
+                        "description": "From represents the start index number (1 based - first object starts from index 1), of the results list. The results returned would be in the range [from ... (from + (max-results - 1))]. If From = 0, the server will attempt to return all the results in the list without pagination.",
+                        "name": "from",
+                        "in": "query"
+                    },
+                    {
+                        "type": "integer",
+                        "format": "int32",
+                        "description": "MaxResults is the maximum number of results to be returned as part of the response, per page If MaxResults is more than the maximum number of results per page supported by the server, the server will return an err If MaxResults is 0, the server will return all the results without pagination.",
+                        "name": "max-results",
+                        "in": "query"
+                    },
+                    {
+                        "type": "string",
+                        "description": "order to sort List results in.",
+                        "name": "sort-order",
+                        "in": "query"
+                    },
+                    {
+                        "type": "boolean",
+                        "format": "boolean",
+                        "description": "If MetaOnly is set to true, the watch event notification that matches the watch criteria will not contain the full object. It will only contain the information about the object that changed, i.e. which object and what changed. MetaOnly is not set by default.",
+                        "name": "meta-only",
+                        "in": "query"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "(streaming responses)",
+                        "schema": {
+                            "$ref": "#/definitions/rolloutAutoMsgRolloutWatchHelper"
+                        }
+                    },
+                    "400": {
+                        "description": "Bad request parameters",
+                        "schema": {
+                            "$ref": "#/definitions/apiStatus"
+                        }
+                    },
+                    "401": {
+                        "description": "Unauthorized request",
+                        "schema": {
+                            "$ref": "#/definitions/apiStatus"
+                        }
+                    },
+                    "409": {
+                        "description": "Conflict while processing request",
+                        "schema": {
+                            "$ref": "#/definitions/apiStatus"
+                        }
+                    },
+                    "412": {
+                        "description": "Pre-condition failed",
+                        "schema": {
+                            "$ref": "#/definitions/apiStatus"
+                        }
+                    },
+                    "500": {
+                        "description": "Internal server error",
+                        "schema": {
+                            "$ref": "#/definitions/apiStatus"
+                        }
+                    },
+                    "501": {
+                        "description": "Request not implemented",
+                        "schema": {
+                            "$ref": "#/definitions/apiStatus"
+                        }
+                    }
+                }
+            }
+        }
+    },
+    "definitions": {
+        "apiAggWatchOptions": {
+            "type": "object",
+            "properties": {
+                "meta": {
+                    "$ref": "#/definitions/apiObjectMeta"
+                },
+                "watch-options": {
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/apiKindWatchOptions"
+                    }
+                }
+            }
+        },
+        "apiKindWatchOptions": {
+            "type": "object",
+            "properties": {
+                "group": {
+                    "type": "string"
+                },
+                "kind": {
+                    "type": "string"
+                },
+                "options": {
+                    "$ref": "#/definitions/apiListWatchOptions"
+                }
+            }
+        },
+        "apiLabel": {
+            "description": "Label is the input for label operations.",
+            "type": "object",
+            "properties": {
+                "api-version": {
+                    "type": "string"
+                },
+                "creation-time": {
+                    "type": "string",
+                    "format": "date-time"
+                },
+                "generation-id": {
+                    "type": "string"
+                },
+                "kind": {
+                    "type": "string"
+                },
+                "labels": {
+                    "type": "object",
+                    "additionalProperties": {
+                        "type": "string"
+                    }
+                },
+                "mod-time": {
+                    "type": "string",
+                    "format": "date-time"
+                },
+                "name": {
+                    "description": "Must start and end with alpha numeric and can have alphanumeric, -, _, . Length of string should be between 2 and 64.",
+                    "type": "string",
+                    "maxLength": 64,
+                    "minLength": 2,
+                    "pattern": "^[a-zA-Z0-9][\\w\\-\\.]*[a-zA-Z0-9]$"
+                },
+                "namespace": {
+                    "description": "Must start and end with alpha numeric and can have alphanumeric, -, _, . Length of string should be between 2 and 64.",
+                    "type": "string",
+                    "maxLength": 64,
+                    "minLength": 2,
+                    "pattern": "^[a-zA-Z0-9][\\w\\-\\.]*[a-zA-Z0-9]$"
+                },
+                "resource-version": {
+                    "type": "string"
+                },
+                "self-link": {
+                    "type": "string"
+                },
+                "tenant": {
+                    "description": "Must be alpha-numerics. Length of string should be between 1 and 48.",
+                    "type": "string",
+                    "maxLength": 48,
+                    "minLength": 1,
+                    "pattern": "^[a-zA-Z0-9]+$"
+                },
+                "uuid": {
+                    "type": "string"
+                }
+            }
+        },
+        "apiListMeta": {
+            "description": "ListMeta contains the metadata for list of objects.",
+            "type": "object",
+            "properties": {
+                "resource-version": {
+                    "description": "Resource version of object store at the time of list generation.",
+                    "type": "string"
+                },
+                "total-count": {
+                    "description": "TotalCount is the total count of results (non paginated) that the server holds.",
+                    "type": "integer",
+                    "format": "int32"
+                }
+            }
+        },
+        "apiListWatchOptions": {
+            "type": "object",
+            "required": [
+                "sort-order"
+            ],
+            "properties": {
+                "creation-time": {
+                    "type": "string",
+                    "format": "date-time"
+                },
+                "field-change-selector": {
+                    "description": "FieldChangeSelector specifies to generate a watch notification on change in field(s) specified.",
+                    "type": "array",
+                    "items": {
+                        "type": "string"
+                    }
+                },
+                "field-selector": {
+                    "description": "FieldSelector to select on field values in list or watch results.",
+                    "type": "string"
+                },
+                "from": {
+                    "description": "From represents the start index number (1 based - first object starts from index 1), of the results list. The results returned would be in the range [from ... (from + (max-results - 1))]. If From = 0, the server will attempt to return all the results in the list without pagination.",
+                    "type": "integer",
+                    "format": "int32"
+                },
+                "generation-id": {
+                    "type": "string"
+                },
+                "label-selector": {
+                    "description": "LabelSelector to select on labels in list or watch results.",
+                    "type": "string"
+                },
+                "labels": {
+                    "type": "object",
+                    "additionalProperties": {
+                        "type": "string"
+                    }
+                },
+                "max-results": {
+                    "description": "MaxResults is the maximum number of results to be returned as part of the response, per page If MaxResults is more than the maximum number of results per page supported by the server, the server will return an err If MaxResults is 0, the server will return all the results without pagination.",
+                    "type": "integer",
+                    "format": "int32"
+                },
+                "meta-only": {
+                    "description": "If MetaOnly is set to true, the watch event notification that matches the watch criteria will not contain the full object. It will only contain the information about the object that changed, i.e. which object and what changed. MetaOnly is not set by default.",
+                    "type": "boolean",
+                    "format": "boolean",
+                    "default": "false"
+                },
+                "mod-time": {
+                    "type": "string",
+                    "format": "date-time"
+                },
+                "name": {
+                    "description": "Must start and end with alpha numeric and can have alphanumeric, -, _, . Length of string should be between 2 and 64.",
+                    "type": "string",
+                    "maxLength": 64,
+                    "minLength": 2,
+                    "pattern": "^[a-zA-Z0-9][\\w\\-\\.]*[a-zA-Z0-9]$"
+                },
+                "namespace": {
+                    "description": "Must start and end with alpha numeric and can have alphanumeric, -, _, . Length of string should be between 2 and 64.",
+                    "type": "string",
+                    "maxLength": 64,
+                    "minLength": 2,
+                    "pattern": "^[a-zA-Z0-9][\\w\\-\\.]*[a-zA-Z0-9]$"
+                },
+                "resource-version": {
+                    "type": "string"
+                },
+                "self-link": {
+                    "type": "string"
+                },
+                "sort-order": {
+                    "description": "order to sort List results in.",
+                    "type": "string",
+                    "default": "none",
+                    "enum": [
+                        "none",
+                        "by-name",
+                        "by-name-reverse",
+                        "by-version",
+                        "by-version-reverse",
+                        "by-creation-time",
+                        "by-creation-time-reverse",
+                        "by-mod-time",
+                        "by-mod-time-reverse"
+                    ],
+                    "x-ui-hints": {
+                        "by-creation-time": "By Creation Time",
+                        "by-creation-time-reverse": "By Creation Time Reverse",
+                        "by-mod-time": "By Modification Time",
+                        "by-mod-time-reverse": "By Modification Time Reverse",
+                        "by-name": "By Name",
+                        "by-name-reverse": "By Name Reverse",
+                        "by-version": "By Version",
+                        "by-version-reverse": "By Version Reverse",
+                        "none": "None"
+                    }
+                },
+                "tenant": {
+                    "description": "Must be alpha-numerics. Length of string should be between 1 and 48.",
+                    "type": "string",
+                    "maxLength": 48,
+                    "minLength": 1,
+                    "pattern": "^[a-zA-Z0-9]+$"
+                },
+                "uuid": {
+                    "type": "string"
+                }
+            }
+        },
+        "apiObjectMeta": {
+            "description": "ObjectMeta contains metadata that all objects stored in kvstore must have.",
+            "type": "object",
+            "required": [
+                "name"
+            ],
+            "properties": {
+                "creation-time": {
+                    "description": "System generated and updated, not updatable by user.",
+                    "type": "string",
+                    "format": "date-time",
+                    "title": "CreationTime is the creation time of the object"
+                },
+                "generation-id": {
+                    "description": "This is incremented anytime there is an update to the user intent, including Spec update and any update to ObjectMeta. System generated and updated, not updatable by user.",
+                    "type": "string",
+                    "title": "GenerationID is the generation Id for the object"
+                },
+                "labels": {
+                    "type": "object",
+                    "title": "Labels are arbitrary (key,value) pairs associated with any object",
+                    "additionalProperties": {
+                        "type": "string"
+                    }
+                },
+                "mod-time": {
+                    "description": "System generated and updated, not updatable by user.",
+                    "type": "string",
+                    "format": "date-time",
+                    "title": "ModTime is the Last Modification time of the object"
+                },
+                "name": {
+                    "description": "Must start and end with alpha numeric and can have alphanumeric, -, _, . Length of string should be between 2 and 64.",
+                    "type": "string",
+                    "title": "Name of the object, unique within a Namespace for scoped objects",
+                    "maxLength": 64,
+                    "minLength": 2,
+                    "pattern": "^[a-zA-Z0-9][\\w\\-\\.]*[a-zA-Z0-9]$"
+                },
+                "namespace": {
+                    "description": "Namespace of the object, for scoped objects. Must start and end with alpha numeric and can have alphanumeric, -, _, . Length of string should be between 2 and 64.",
+                    "type": "string",
+                    "maxLength": 64,
+                    "minLength": 2,
+                    "pattern": "^[a-zA-Z0-9][\\w\\-\\.]*[a-zA-Z0-9]$"
+                },
+                "resource-version": {
+                    "description": "This is updated anytime there is any change to the object. System generated and updated, not updatable by user.",
+                    "type": "string",
+                    "title": "Resource version in the object store"
+                },
+                "self-link": {
+                    "description": "When the object is served from the API-GW it is the URI path. Example: - \"/v1/tenants/tenants/tenant2\" System generated and updated, not updatable by user.",
+                    "type": "string",
+                    "title": "SelfLink is a link for accessing this object"
+                },
+                "tenant": {
+                    "description": "This can be automatically filled in many cases based on the tenant the user, who created the object, belongs to. Must be alpha-numerics. Length of string should be between 1 and 48.",
+                    "type": "string",
+                    "title": "Tenant to which the object belongs to",
+                    "maxLength": 48,
+                    "minLength": 1,
+                    "pattern": "^[a-zA-Z0-9]+$"
+                },
+                "uuid": {
+                    "description": "This is generated on creation of the object. System generated, not updatable by user.",
+                    "type": "string",
+                    "title": "UUID is the unique identifier for the object"
+                }
+            }
+        },
+        "apiObjectRef": {
+            "description": "ObjectRef contains identifying information about an object.",
+            "type": "object",
+            "properties": {
+                "kind": {
+                    "description": "Kind represents the type of the API object.",
+                    "type": "string"
+                },
+                "name": {
+                    "description": "Name of the object, unique within a Namespace for scoped objects.",
+                    "type": "string"
+                },
+                "namespace": {
+                    "description": "Namespace of the object, for scoped objects.",
+                    "type": "string"
+                },
+                "tenant": {
+                    "description": "Tenant of the object.",
+                    "type": "string"
+                },
+                "uri": {
+                    "description": "URI is a link to accessing the referenced object.",
+                    "type": "string"
+                }
+            }
+        },
+        "apiStatus": {
+            "description": "Status is returned for calls that dont return objects.",
+            "type": "object",
+            "properties": {
+                "api-version": {
+                    "type": "string"
+                },
+                "code": {
+                    "description": "Code is the HTTP status code.",
+                    "type": "integer",
+                    "format": "int32"
+                },
+                "kind": {
+                    "type": "string"
+                },
+                "message": {
+                    "description": "Message contains human readable form of the error.",
+                    "type": "array",
+                    "items": {
+                        "type": "string"
+                    }
+                },
+                "object-ref": {
+                    "description": "Reference to the object (optional) for which this status is being sent.",
+                    "$ref": "#/definitions/apiObjectRef"
+                },
+                "result": {
+                    "description": "Result contains the status of the operation, success or failure.",
+                    "$ref": "#/definitions/apiStatusResult"
+                }
+            }
+        },
+        "apiStatusResult": {
+            "description": "StatusResult contains possible statuses for a NIC.",
+            "type": "object",
+            "properties": {
+                "Str": {
+                    "type": "string"
+                }
+            }
+        },
+        "apiTimestamp": {
+            "type": "object",
+            "properties": {
+                "nanos": {
+                    "type": "integer",
+                    "format": "int32"
+                },
+                "seconds": {
+                    "type": "string",
+                    "format": "int64"
+                }
+            }
+        },
+        "apiTypeMeta": {
+            "description": "TypeMeta contains the metadata about kind and version for all API objects.",
+            "type": "object",
+            "properties": {
+                "api-version": {
+                    "description": "APIVersion defines the version of the API object. This can only be set by the server.",
+                    "type": "string"
+                },
+                "kind": {
+                    "description": "Kind represents the type of the API object.",
+                    "type": "string"
+                }
+            }
+        },
+        "apiWatchControl": {
+            "type": "object",
+            "properties": {
+                "code": {
+                    "type": "integer",
+                    "format": "int64"
+                },
+                "message": {
+                    "type": "string"
+                }
+            }
+        },
+        "apiWatchEvent": {
+            "type": "object",
+            "properties": {
+                "control": {
+                    "$ref": "#/definitions/apiWatchControl"
+                },
+                "object": {
+                    "$ref": "#/definitions/googleprotobufAny"
+                },
+                "type": {
+                    "type": "string"
+                }
+            }
+        },
+        "apiWatchEventList": {
+            "type": "object",
+            "properties": {
+                "events": {
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/apiWatchEvent"
+                    }
+                }
+            }
+        },
+        "googleprotobufAny": {
+            "description": "`Any` contains an arbitrary serialized protocol buffer message along with a URL that describes the type of the serialized message. Protobuf library provides support to pack/unpack Any values in the form of utility functions or additional generated methods of the Any type. Example 1: Pack and unpack a message in C++. Foo foo = ...; Any any; any.PackFrom(foo); ... if (any.UnpackTo(&foo)) { ... } Example 2: Pack and unpack a message in Java. Foo foo = ...; Any any = Any.pack(foo); ... if (any.is(Foo.class)) { foo = any.unpack(Foo.class); } Example 3: Pack and unpack a message in Python. foo = Foo(...) any = Any() any.Pack(foo) ... if any.Is(Foo.DESCRIPTOR): any.Unpack(foo) ... Example 4: Pack and unpack a message in Go foo := &pb.Foo{...} any, err := ptypes.MarshalAny(foo) ... foo := &pb.Foo{} if err := ptypes.UnmarshalAny(any, foo); err != nil { ... } The pack methods provided by protobuf library will by default use 'type.googleapis.com/full.type.name' as the type URL and the unpack methods only use the fully qualified type name after the last '/' in the type URL, for example \"foo.bar.com/x/y.z\" will yield type name \"y.z\". JSON ==== The JSON representation of an `Any` value uses the regular representation of the deserialized, embedded message, with an additional field `@type` which contains the type URL. Example: package google.profile; message Person { string first_name = 1; string last_name = 2; } { \"@type\": \"type.googleapis.com/google.profile.Person\", \"firstName\": <string>, \"lastName\": <string> } If the embedded message type is well-known and has a custom JSON representation, that representation will be embedded adding a field `value` which holds the custom JSON in addition to the `@type` field. Example (for message [google.protobuf.Duration][]): { \"@type\": \"type.googleapis.com/google.protobuf.Duration\", \"value\": \"1.212s\" }.",
+            "type": "object",
+            "properties": {
+                "type_url": {
+                    "description": "A URL/resource name that uniquely identifies the type of the serialized protocol buffer message. This string must contain at least one \"/\" character. The last segment of the URL's path must represent the fully qualified name of the type (as in `path/google.protobuf.Duration`). The name should be in a canonical form (e.g., leading \".\" is not accepted). In practice, teams usually precompile into the binary all types that they expect it to use in the context of Any. However, for URLs which use the scheme `http`, `https`, or no scheme, one can optionally set up a type server that maps type URLs to message definitions as follows: * If no scheme is provided, `https` is assumed. * An HTTP GET on the URL must yield a [google.protobuf.Type][] value in binary format, or produce an error. * Applications are allowed to cache lookup results based on the URL, or have them precompiled into a binary to avoid any lookup. Therefore, binary compatibility needs to be preserved on changes to types. (Use versioned type names to manage breaking changes.) Note: this functionality is not currently available in the official protobuf release, and it is not used for type URLs beginning with type.googleapis.com. Schemes other than `http`, `https` (or the empty scheme) might be used with implementation specific semantics.",
+                    "type": "string"
+                },
+                "value": {
+                    "description": "Must be a valid serialized protocol buffer of the above specified type.",
+                    "type": "string",
+                    "format": "byte"
+                }
+            }
+        },
+        "labelsRequirement": {
+            "description": "Requirement defines a single matching condition for a selector.",
+            "type": "object",
+            "required": [
+                "operator"
+            ],
+            "properties": {
+                "key": {
+                    "description": "The label key that the condition applies to.",
+                    "type": "string"
+                },
+                "operator": {
+                    "description": "Condition checked for the key.",
+                    "type": "string",
+                    "default": "equals",
+                    "enum": [
+                        "equals",
+                        "notequals",
+                        "in",
+                        "notin"
+                    ],
+                    "x-ui-hints": {
+                        "notequals": "not equals",
+                        "notin": "not in"
+                    }
+                },
+                "values": {
+                    "description": "Values contains one or more values corresponding to the label key. \"equals\" and \"notEquals\" operators need a single Value. \"in\" and \"notIn\" operators can have one or more values.",
+                    "type": "array",
+                    "items": {
+                        "type": "string"
+                    }
+                }
+            }
+        },
+        "labelsSelector": {
+            "description": "Selector is used to select objects by labels. Requirements in the selector are ANDed. A selector with no Requirements does not select anything.",
+            "type": "object",
+            "properties": {
+                "requirements": {
+                    "description": "Requirements are ANDed.",
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/labelsRequirement"
+                    }
+                }
+            }
+        },
+        "rolloutAutoMsgRolloutActionWatchHelper": {
+            "description": "AutoMsgRolloutActionWatchHelper is a wrapper object for watch events for RolloutAction objects.",
+            "type": "object",
+            "properties": {
+                "events": {
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/rolloutAutoMsgRolloutActionWatchHelperWatchEvent"
+                    }
+                }
+            }
+        },
+        "rolloutAutoMsgRolloutActionWatchHelperWatchEvent": {
+            "type": "object",
+            "properties": {
+                "object": {
+                    "$ref": "#/definitions/rolloutRolloutAction"
+                },
+                "type": {
+                    "type": "string"
+                }
+            }
+        },
+        "rolloutAutoMsgRolloutWatchHelper": {
+            "description": "AutoMsgRolloutWatchHelper is a wrapper object for watch events for Rollout objects.",
+            "type": "object",
+            "properties": {
+                "events": {
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/rolloutAutoMsgRolloutWatchHelperWatchEvent"
+                    }
+                }
+            }
+        },
+        "rolloutAutoMsgRolloutWatchHelperWatchEvent": {
+            "type": "object",
+            "properties": {
+                "object": {
+                    "$ref": "#/definitions/rolloutRollout"
+                },
+                "type": {
+                    "type": "string"
+                }
+            }
+        },
+        "rolloutRollout": {
+            "description": "Rollout object captures the admin's intent and status of the software version running on the cluster It is incorrect to have two different Rollouts active at the same time.",
+            "type": "object",
+            "properties": {
+                "api-version": {
+                    "type": "string"
+                },
+                "kind": {
+                    "type": "string"
+                },
+                "meta": {
+                    "$ref": "#/definitions/apiObjectMeta"
+                },
+                "spec": {
+                    "$ref": "#/definitions/rolloutRolloutSpec"
+                },
+                "status": {
+                    "$ref": "#/definitions/rolloutRolloutStatus"
+                }
+            }
+        },
+        "rolloutRolloutAction": {
+            "description": "RolloutAction object acts as a lock to make sure only one outstanding rollout is in progress in the cluster.",
+            "type": "object",
+            "properties": {
+                "api-version": {
+                    "type": "string"
+                },
+                "kind": {
+                    "type": "string"
+                },
+                "meta": {
+                    "$ref": "#/definitions/apiObjectMeta"
+                },
+                "spec": {
+                    "$ref": "#/definitions/rolloutRolloutSpec"
+                },
+                "status": {
+                    "$ref": "#/definitions/rolloutRolloutActionStatus"
+                }
+            }
+        },
+        "rolloutRolloutActionList": {
+            "description": "RolloutActionList is a container object for list of RolloutAction objects.",
+            "type": "object",
+            "properties": {
+                "api-version": {
+                    "type": "string"
+                },
+                "items": {
+                    "description": "List of RolloutAction objects.",
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/rolloutRolloutAction"
+                    }
+                },
+                "kind": {
+                    "type": "string"
+                },
+                "list-meta": {
+                    "$ref": "#/definitions/apiListMeta"
+                }
+            }
+        },
+        "rolloutRolloutActionStatus": {
+            "description": "RolloutAction Status gives the status of the rollout at the top level as well as details of individual components.",
+            "type": "object",
+            "required": [
+                "state"
+            ],
+            "properties": {
+                "completion-percent": {
+                    "description": "Heuristic value of percentage completion of the rollout.",
+                    "type": "integer",
+                    "format": "int64"
+                },
+                "end-time": {
+                    "description": "End time of Rollout.",
+                    "type": "string",
+                    "format": "date-time"
+                },
+                "prev-version": {
+                    "description": "Version of the cluster before the start of rollout.",
+                    "type": "string"
+                },
+                "start-time": {
+                    "description": "Start time of Rollout.",
+                    "type": "string",
+                    "format": "date-time"
+                },
+                "state": {
+                    "type": "string",
+                    "default": "progressing",
+                    "enum": [
+                        "progressing",
+                        "failure",
+                        "success",
+                        "scheduled",
+                        "suspended",
+                        "suspend-in-progress",
+                        "deadline-exceeded",
+                        "precheck-in-progress",
+                        "scheduled-for-retry"
+                    ]
+                }
+            }
+        },
+        "rolloutRolloutList": {
+            "description": "RolloutList is a container object for list of Rollout objects.",
+            "type": "object",
+            "properties": {
+                "api-version": {
+                    "type": "string"
+                },
+                "items": {
+                    "description": "List of Rollout objects.",
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/rolloutRollout"
+                    }
+                },
+                "kind": {
+                    "type": "string"
+                },
+                "list-meta": {
+                    "$ref": "#/definitions/apiListMeta"
+                }
+            }
+        },
+        "rolloutRolloutPhase": {
+            "description": "RolloutPhase gives details of status of Rollout on each Node/Service/DistributedServiceCard.",
+            "type": "object",
+            "required": [
+                "phase"
+            ],
+            "properties": {
+                "end-time": {
+                    "description": "Time at which rollout completed for this node/service.",
+                    "type": "string",
+                    "format": "date-time"
+                },
+                "message": {
+                    "description": "A detailed message indicating details about the transition.",
+                    "type": "string"
+                },
+                "name": {
+                    "description": "Name of the Node, Service or DistributedServiceCard.",
+                    "type": "string"
+                },
+                "num-retries": {
+                    "description": "Number of retries rollout performed.",
+                    "type": "integer",
+                    "format": "int64",
+                    "default": "0"
+                },
+                "phase": {
+                    "description": "Phase indicates a certain rollout phase/condition.",
+                    "type": "string",
+                    "default": "pre-check",
+                    "enum": [
+                        "pre-check",
+                        "dependencies-check",
+                        "waiting-for-turn",
+                        "progressing",
+                        "complete",
+                        "fail"
+                    ],
+                    "x-ui-hints": {
+                        "complete": "Complete",
+                        "dependencies-check": "DependenciesCheck",
+                        "fail": "Fail",
+                        "pre-check": "PreCheck",
+                        "progressing": "Progressing",
+                        "waiting-for-turn": "WaitingForTurn"
+                    }
+                },
+                "reason": {
+                    "description": "The reason for the Phase last transition, if any.",
+                    "type": "string"
+                },
+                "start-time": {
+                    "description": "The time of starting the rollout for this node/service. This does not include the pre-check which can happen way before the actual rollout.",
+                    "type": "string",
+                    "format": "date-time"
+                }
+            }
+        },
+        "rolloutRolloutSpec": {
+            "description": "RolloutSpec is the Spec of a Rollout.",
+            "type": "object",
+            "required": [
+                "strategy",
+                "upgrade-type"
+            ],
+            "properties": {
+                "dsc-must-match-constraint": {
+                    "description": "When DSCMustMatchConstraint is true, Any DSC which does not match OrderConstraints does not go through rollout.",
+                    "type": "boolean",
+                    "format": "boolean"
+                },
+                "dscs-only": {
+                    "description": "Dont upgrade Controller but only upgrade DistributedServiceCards.",
+                    "type": "boolean",
+                    "format": "boolean"
+                },
+                "max-nic-failures-before-abort": {
+                    "description": "After these many failures are observed during DSC upgrade, the rollout process stops This setting applies to DSCs only. The controller nodes are rollout first and any failure there stops the rollout of DistributedServiceCards.",
+                    "type": "integer",
+                    "format": "int64"
+                },
+                "max-parallel": {
+                    "description": "MaxParallel is the maximum number of nodes getting updated at any time This setting is applicable only to DistributedServiceCards. Controller nodes are always upgraded one after another.",
+                    "type": "integer",
+                    "format": "int64",
+                    "default": "2"
+                },
+                "order-constraints": {
+                    "description": "If specified, this is the sequence in which the DistributedServiceCards are upgraded based on their labels. if a DistributedServiceCard matches multiple constraints, the first one is used. Any DistributedServiceCard which does not match the constraints is upgraded at the end. This order is mainly for the DSCs on Hosts Controller nodes are always rollout one after other.",
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/labelsSelector"
+                    }
+                },
+                "retry": {
+                    "description": "If enabled, will retry rollout of failed naples within the maintenance window upto a max of 5 times.",
+                    "type": "boolean",
+                    "format": "boolean"
+                },
+                "scheduled-end-time": {
+                    "description": "ScheduledEndTime, if specified, after which the rollout is supposed to stop, if not completed by that time Typically represents the end of Maintenance window. (example:\"2002-10-02T15:00:00.05Z\").",
+                    "type": "string",
+                    "format": "date-time"
+                },
+                "scheduled-start-time": {
+                    "description": "Time, if specified, at which the rollout is supposed to start. (example:\"2002-10-02T15:00:00.05Z\").",
+                    "type": "string",
+                    "format": "date-time"
+                },
+                "strategy": {
+                    "type": "string",
+                    "default": "linear",
+                    "enum": [
+                        "linear",
+                        "exponential"
+                    ],
+                    "x-ui-hints": {
+                        "exponential": "Exponential",
+                        "linear": "Linear"
+                    }
+                },
+                "suspend": {
+                    "description": "When Set to true, the current rollout is suspended. Existing Nodes/Services/DistributedServiceCards in the middle of rollout continue rollout execution but any Nodes/Services/DistributedServiceCards which has not started Rollout will not be scheduled one.",
+                    "type": "boolean",
+                    "format": "boolean"
+                },
+                "upgrade-type": {
+                    "type": "string",
+                    "default": "graceful",
+                    "enum": [
+                        "graceful",
+                        "on-next-reboot",
+                        "disruptive"
+                    ],
+                    "x-ui-hints": {
+                        "disruptive": "Disruptive - Deprecated",
+                        "graceful": "Graceful",
+                        "on-next-reboot": "OnNextHostReboot"
+                    }
+                },
+                "version": {
+                    "description": "New Version of the image to rollout to.",
+                    "type": "string"
+                }
+            }
+        },
+        "rolloutRolloutStatus": {
+            "description": "Rollout Status gives the status of the rollout at the top level as well as details of individual components.",
+            "type": "object",
+            "required": [
+                "state"
+            ],
+            "properties": {
+                "completion-percent": {
+                    "description": "Heuristic value of percentage completion of the rollout.",
+                    "type": "integer",
+                    "format": "int64"
+                },
+                "controller-nodes-status": {
+                    "description": "Rollout status of Controller Node.",
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/rolloutRolloutPhase"
+                    }
+                },
+                "controller-services-status": {
+                    "description": "Rollout status of Various Controller Services.",
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/rolloutRolloutPhase"
+                    }
+                },
+                "dscs-status": {
+                    "description": "Rollout status of DistributedServiceCards in the cluster. Has entries for DistributedServiceCards on Controller nodes as well as workload nodes The entries are group by parallelism based on the order-constraints and max-parallel specified by the user.",
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/rolloutRolloutPhase"
+                    }
+                },
+                "end-time": {
+                    "description": "End time of Rollout.",
+                    "type": "string",
+                    "format": "date-time"
+                },
+                "prev-version": {
+                    "description": "Version of the cluster before the start of rollout.",
+                    "type": "string"
+                },
+                "reason": {
+                    "description": "details the reason for overall Failure or Suspend.",
+                    "type": "string"
+                },
+                "start-time": {
+                    "description": "Start time of Rollout.",
+                    "type": "string",
+                    "format": "date-time"
+                },
+                "state": {
+                    "type": "string",
+                    "default": "progressing",
+                    "enum": [
+                        "progressing",
+                        "failure",
+                        "success",
+                        "scheduled",
+                        "suspended",
+                        "suspend-in-progress",
+                        "deadline-exceeded",
+                        "precheck-in-progress",
+                        "scheduled-for-retry"
+                    ]
+                }
+            }
+        }
+    }
+}

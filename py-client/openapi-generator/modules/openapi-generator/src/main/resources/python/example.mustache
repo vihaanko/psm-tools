@@ -1,0 +1,51 @@
+{{>partial_header}}
+
+{{#apiInfo}}{{#apis}}{{#-last}}{{#hasHttpSignatureMethods}}import datetime{{/hasHttpSignatureMethods}}{{/-last}}{{/apis}}{{/apiInfo}}
+import time
+import requests
+import json
+from dateutil.parser import parse as dateutil_parser
+import {{{packageName}}}
+from {{{packageName}}}.models import *
+from pprint import pprint
+from {{apiPackage}} import *
+{{#apiInfo}}
+{{#apis}}
+{{#-first}}
+from {{apiPackage}} import {{classVarName}}
+{{#imports}}
+{{{import}}}
+{{/imports}}
+{{#operations}}
+{{#operation}}
+{{#-first}}
+{{> python_doc_auth_partial}}
+
+configuration.host = "https://10.30.1.175"
+configuration.verify_ssl = False
+
+data = {'username': 'admin','password': 'Systest-1$','tenant': 'default'}
+
+response = requests.post(configuration.host+"/v1/login", data=json.dumps(data), verify=False)
+resp_cookie = response.cookies.items()[0]
+cookie = resp_cookie[0] + "=" + resp_cookie[1]
+
+# Enter a context with an instance of the API client
+with {{{packageName}}}.ApiClient(configuration, cookie=cookie) as api_client:
+    # Create an instance of the API class
+    api_instance = {{classVarName}}.{{{classname}}}(api_client)
+    {{#allParams}}{{paramName}} = {{{example}}} # {{{dataType}}} | {{{description}}}{{^required}} (optional){{/required}}{{#defaultValue}} (default to {{{.}}}){{/defaultValue}}
+    {{/allParams}}
+
+    try:
+    {{#summary}}    # {{{.}}}
+    {{/summary}}    {{#returnType}}api_response = {{/returnType}}api_instance.{{{operationId}}}({{#allParams}}{{#required}}{{paramName}}{{/required}}{{^required}}{{paramName}}={{paramName}}{{/required}}{{^-last}}, {{/-last}}{{/allParams}}){{#returnType}}
+        pprint(api_response){{/returnType}}
+    except {{{packageName}}}.ApiException as e:
+        print("Exception when calling {{classname}}->{{operationId}}: %s\n" % e)
+{{/-first}}
+{{/operation}}
+{{/operations}}
+{{/-first}}
+{{/apis}}
+{{/apiInfo}}

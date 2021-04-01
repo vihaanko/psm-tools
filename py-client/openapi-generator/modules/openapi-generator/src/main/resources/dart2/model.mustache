@@ -1,0 +1,12 @@
+{{>header}}
+{{>part_of}}
+{{#models}}
+{{#model}}
+{{#isEnum}}
+{{>enum}}
+{{/isEnum}}
+{{^isEnum}}
+{{>class}}
+{{/isEnum}}
+{{/model}}
+{{/models}}

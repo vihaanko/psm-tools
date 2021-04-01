@@ -1,0 +1,1157 @@
+{
+    "consumes": [
+        "application/json"
+    ],
+    "produces": [
+        "application/json"
+    ],
+    "schemes": [
+        "http",
+        "https"
+    ],
+    "swagger": "2.0",
+    "info": {
+        "description": "Service name\n\n",
+        "title": "Search API reference"
+    },
+    "paths": {
+        "/search/v1/policy-query": {
+            "get": {
+                "tags": [
+                    "search/v1"
+                ],
+                "summary": "Security Policy Query",
+                "operationId": "GetPolicyQuery_1",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "Tenant Name, to perform query within a Tenant's scope. The default tenant is \"default\". In the backend this field gets auto-filled & validated by apigw-hook based on user login context.",
+                        "name": "tenant",
+                        "in": "query"
+                    },
+                    {
+                        "type": "string",
+                        "description": "Namespace is optional. If provided policy-search will be limited to the specified namespace.",
+                        "name": "namespace",
+                        "in": "query"
+                    },
+                    {
+                        "type": "string",
+                        "description": "NetworkSecurityPolicy name is optional. If provided policy-search will be limited to the specified SGpolicy object name.",
+                        "name": "sg-policy",
+                        "in": "query"
+                    },
+                    {
+                        "type": "string",
+                        "description": "App specification,  predefined apps and alg config.",
+                        "name": "app",
+                        "in": "query"
+                    },
+                    {
+                        "type": "string",
+                        "description": "Protocol eg: tcp, udp, icmp.",
+                        "name": "protocol",
+                        "in": "query"
+                    },
+                    {
+                        "type": "string",
+                        "description": "TCP or UDP Port number.",
+                        "name": "port",
+                        "in": "query"
+                    },
+                    {
+                        "type": "string",
+                        "description": "Inbound ip-address, use any to refer to all ipaddresses eg: 10.1.1.1, any.",
+                        "name": "from-ip-address",
+                        "in": "query"
+                    },
+                    {
+                        "type": "string",
+                        "description": "Outbound ip-address, use any to refer to all ipaddresses eg: 20.1.1.1, any.",
+                        "name": "to-ip-address",
+                        "in": "query"
+                    },
+                    {
+                        "type": "string",
+                        "description": "Inbound security group.",
+                        "name": "from-security-group",
+                        "in": "query"
+                    },
+                    {
+                        "type": "string",
+                        "description": "Outbound security group.",
+                        "name": "to-security-group",
+                        "in": "query"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "(empty)",
+                        "schema": {
+                            "$ref": "#/definitions/searchPolicySearchResponse"
+                        }
+                    }
+                }
+            },
+            "post": {
+                "tags": [
+                    "search/v1"
+                ],
+                "summary": "Security Policy Query",
+                "operationId": "PostPolicyQuery",
+                "parameters": [
+                    {
+                        "name": "body",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/searchPolicySearchRequest"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "(empty)",
+                        "schema": {
+                            "$ref": "#/definitions/searchPolicySearchResponse"
+                        }
+                    }
+                }
+            }
+        },
+        "/search/v1/query": {
+            "get": {
+                "tags": [
+                    "search/v1"
+                ],
+                "summary": "Structured or free-form search",
+                "operationId": "GetQuery_1",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "Simple query string This can be specified as URI parameter. For advanced query cases, Users should use specify SearchQuery and pass the SearchRequest in a GET/POST Body The max query-string length is 256 bytes. Length of string should be between 0 and 256.",
+                        "name": "query-string",
+                        "in": "query"
+                    },
+                    {
+                        "type": "integer",
+                        "format": "int32",
+                        "description": "From represents the start offset (zero based), used in paginated search requests The results returned would be in the range [From ... From+MaxResults-1] This can be specified as URI parameter. Default value is 0 and valid range is 0..8192. Value should be between 0 and 8192.",
+                        "name": "from",
+                        "in": "query"
+                    },
+                    {
+                        "type": "integer",
+                        "format": "int32",
+                        "description": "MaxResults is the max-count of search results This can be specified as URI parameter. Default value is 50 and valid range is 0..8192. Value should be between 0 and 8192.",
+                        "name": "max-results",
+                        "in": "query"
+                    },
+                    {
+                        "type": "string",
+                        "description": "SortyBy is an optional parameter and contains the field name to be sorted by, For eg: \"meta.name\" This can be specified as URI parameter. Length of string should be between 0 and 256.",
+                        "name": "sort-by",
+                        "in": "query"
+                    },
+                    {
+                        "type": "string",
+                        "description": "SortOrder is an optional parameter and contains whether to sort ascending or descending This can be specified as URI parameter.",
+                        "name": "sort-order",
+                        "in": "query"
+                    },
+                    {
+                        "type": "string",
+                        "description": "Query Mode.",
+                        "name": "mode",
+                        "in": "query"
+                    },
+                    {
+                        "type": "array",
+                        "items": {
+                            "type": "string"
+                        },
+                        "description": "OR of Categories to be matched, AND and Exclude are not supported for this type The max category string length is 64 bytes. Length of string should be between 0 and 64.",
+                        "name": "query.categories",
+                        "in": "query"
+                    },
+                    {
+                        "type": "array",
+                        "items": {
+                            "type": "string"
+                        },
+                        "description": "OR of Kinds to be matched, AND and Exclude are not supported for this type. Should be a valid object Kind.",
+                        "name": "query.kinds",
+                        "in": "query"
+                    },
+                    {
+                        "type": "array",
+                        "items": {
+                            "type": "string"
+                        },
+                        "description": "OR of tenants within the scope of which search needs to be performed. If not specified, it will be set to tenant of the logged in user.",
+                        "name": "tenants",
+                        "in": "query"
+                    },
+                    {
+                        "type": "boolean",
+                        "format": "boolean",
+                        "description": "Indicates whether to perform aggregation on the search results or not.",
+                        "name": "aggregate",
+                        "in": "query"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "(empty)",
+                        "schema": {
+                            "$ref": "#/definitions/searchSearchResponse"
+                        }
+                    }
+                }
+            },
+            "post": {
+                "tags": [
+                    "search/v1"
+                ],
+                "summary": "Structured or free-form search",
+                "operationId": "PostQuery",
+                "parameters": [
+                    {
+                        "name": "body",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/searchSearchRequest"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "(empty)",
+                        "schema": {
+                            "$ref": "#/definitions/searchSearchResponse"
+                        }
+                    }
+                }
+            }
+        }
+    },
+    "definitions": {
+        "apiAggWatchOptions": {
+            "type": "object",
+            "properties": {
+                "meta": {
+                    "$ref": "#/definitions/apiObjectMeta"
+                },
+                "watch-options": {
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/apiKindWatchOptions"
+                    }
+                }
+            }
+        },
+        "apiAny": {
+            "description": "Any is wrapper around the proto Any object.",
+            "type": "object",
+            "properties": {
+                "type_url": {
+                    "type": "string"
+                },
+                "value": {
+                    "type": "string",
+                    "format": "byte"
+                }
+            }
+        },
+        "apiKindWatchOptions": {
+            "type": "object",
+            "properties": {
+                "group": {
+                    "type": "string"
+                },
+                "kind": {
+                    "type": "string"
+                },
+                "options": {
+                    "$ref": "#/definitions/apiListWatchOptions"
+                }
+            }
+        },
+        "apiListWatchOptions": {
+            "type": "object",
+            "required": [
+                "sort-order"
+            ],
+            "properties": {
+                "creation-time": {
+                    "type": "string",
+                    "format": "date-time"
+                },
+                "field-change-selector": {
+                    "description": "FieldChangeSelector specifies to generate a watch notification on change in field(s) specified.",
+                    "type": "array",
+                    "items": {
+                        "type": "string"
+                    }
+                },
+                "field-selector": {
+                    "description": "FieldSelector to select on field values in list or watch results.",
+                    "type": "string"
+                },
+                "from": {
+                    "description": "From represents the start index number (1 based - first object starts from index 1), of the results list. The results returned would be in the range [from ... (from + (max-results - 1))]. If From = 0, the server will attempt to return all the results in the list without pagination.",
+                    "type": "integer",
+                    "format": "int32"
+                },
+                "generation-id": {
+                    "type": "string"
+                },
+                "label-selector": {
+                    "description": "LabelSelector to select on labels in list or watch results.",
+                    "type": "string"
+                },
+                "labels": {
+                    "type": "object",
+                    "additionalProperties": {
+                        "type": "string"
+                    }
+                },
+                "max-results": {
+                    "description": "MaxResults is the maximum number of results to be returned as part of the response, per page If MaxResults is more than the maximum number of results per page supported by the server, the server will return an err If MaxResults is 0, the server will return all the results without pagination.",
+                    "type": "integer",
+                    "format": "int32"
+                },
+                "meta-only": {
+                    "description": "If MetaOnly is set to true, the watch event notification that matches the watch criteria will not contain the full object. It will only contain the information about the object that changed, i.e. which object and what changed. MetaOnly is not set by default.",
+                    "type": "boolean",
+                    "format": "boolean",
+                    "default": "false"
+                },
+                "mod-time": {
+                    "type": "string",
+                    "format": "date-time"
+                },
+                "name": {
+                    "description": "Must start and end with alpha numeric and can have alphanumeric, -, _, . Length of string should be between 2 and 64.",
+                    "type": "string",
+                    "maxLength": 64,
+                    "minLength": 2,
+                    "pattern": "^[a-zA-Z0-9][\\w\\-\\.]*[a-zA-Z0-9]$"
+                },
+                "namespace": {
+                    "description": "Must start and end with alpha numeric and can have alphanumeric, -, _, . Length of string should be between 2 and 64.",
+                    "type": "string",
+                    "maxLength": 64,
+                    "minLength": 2,
+                    "pattern": "^[a-zA-Z0-9][\\w\\-\\.]*[a-zA-Z0-9]$"
+                },
+                "resource-version": {
+                    "type": "string"
+                },
+                "self-link": {
+                    "type": "string"
+                },
+                "sort-order": {
+                    "description": "order to sort List results in.",
+                    "type": "string",
+                    "default": "none",
+                    "enum": [
+                        "none",
+                        "by-name",
+                        "by-name-reverse",
+                        "by-version",
+                        "by-version-reverse",
+                        "by-creation-time",
+                        "by-creation-time-reverse",
+                        "by-mod-time",
+                        "by-mod-time-reverse"
+                    ],
+                    "x-ui-hints": {
+                        "by-creation-time": "By Creation Time",
+                        "by-creation-time-reverse": "By Creation Time Reverse",
+                        "by-mod-time": "By Modification Time",
+                        "by-mod-time-reverse": "By Modification Time Reverse",
+                        "by-name": "By Name",
+                        "by-name-reverse": "By Name Reverse",
+                        "by-version": "By Version",
+                        "by-version-reverse": "By Version Reverse",
+                        "none": "None"
+                    }
+                },
+                "tenant": {
+                    "description": "Must be alpha-numerics. Length of string should be between 1 and 48.",
+                    "type": "string",
+                    "maxLength": 48,
+                    "minLength": 1,
+                    "pattern": "^[a-zA-Z0-9]+$"
+                },
+                "uuid": {
+                    "type": "string"
+                }
+            }
+        },
+        "apiObjectMeta": {
+            "description": "ObjectMeta contains metadata that all objects stored in kvstore must have.",
+            "type": "object",
+            "required": [
+                "name"
+            ],
+            "properties": {
+                "creation-time": {
+                    "description": "System generated and updated, not updatable by user.",
+                    "type": "string",
+                    "format": "date-time",
+                    "title": "CreationTime is the creation time of the object"
+                },
+                "generation-id": {
+                    "description": "This is incremented anytime there is an update to the user intent, including Spec update and any update to ObjectMeta. System generated and updated, not updatable by user.",
+                    "type": "string",
+                    "title": "GenerationID is the generation Id for the object"
+                },
+                "labels": {
+                    "type": "object",
+                    "title": "Labels are arbitrary (key,value) pairs associated with any object",
+                    "additionalProperties": {
+                        "type": "string"
+                    }
+                },
+                "mod-time": {
+                    "description": "System generated and updated, not updatable by user.",
+                    "type": "string",
+                    "format": "date-time",
+                    "title": "ModTime is the Last Modification time of the object"
+                },
+                "name": {
+                    "description": "Must start and end with alpha numeric and can have alphanumeric, -, _, . Length of string should be between 2 and 64.",
+                    "type": "string",
+                    "title": "Name of the object, unique within a Namespace for scoped objects",
+                    "maxLength": 64,
+                    "minLength": 2,
+                    "pattern": "^[a-zA-Z0-9][\\w\\-\\.]*[a-zA-Z0-9]$"
+                },
+                "namespace": {
+                    "description": "Namespace of the object, for scoped objects. Must start and end with alpha numeric and can have alphanumeric, -, _, . Length of string should be between 2 and 64.",
+                    "type": "string",
+                    "maxLength": 64,
+                    "minLength": 2,
+                    "pattern": "^[a-zA-Z0-9][\\w\\-\\.]*[a-zA-Z0-9]$"
+                },
+                "resource-version": {
+                    "description": "This is updated anytime there is any change to the object. System generated and updated, not updatable by user.",
+                    "type": "string",
+                    "title": "Resource version in the object store"
+                },
+                "self-link": {
+                    "description": "When the object is served from the API-GW it is the URI path. Example: - \"/v1/tenants/tenants/tenant2\" System generated and updated, not updatable by user.",
+                    "type": "string",
+                    "title": "SelfLink is a link for accessing this object"
+                },
+                "tenant": {
+                    "description": "This can be automatically filled in many cases based on the tenant the user, who created the object, belongs to. Must be alpha-numerics. Length of string should be between 1 and 48.",
+                    "type": "string",
+                    "title": "Tenant to which the object belongs to",
+                    "maxLength": 48,
+                    "minLength": 1,
+                    "pattern": "^[a-zA-Z0-9]+$"
+                },
+                "uuid": {
+                    "description": "This is generated on creation of the object. System generated, not updatable by user.",
+                    "type": "string",
+                    "title": "UUID is the unique identifier for the object"
+                }
+            }
+        },
+        "apiObjectRef": {
+            "description": "ObjectRef contains identifying information about an object.",
+            "type": "object",
+            "properties": {
+                "kind": {
+                    "description": "Kind represents the type of the API object.",
+                    "type": "string"
+                },
+                "name": {
+                    "description": "Name of the object, unique within a Namespace for scoped objects.",
+                    "type": "string"
+                },
+                "namespace": {
+                    "description": "Namespace of the object, for scoped objects.",
+                    "type": "string"
+                },
+                "tenant": {
+                    "description": "Tenant of the object.",
+                    "type": "string"
+                },
+                "uri": {
+                    "description": "URI is a link to accessing the referenced object.",
+                    "type": "string"
+                }
+            }
+        },
+        "apiStatus": {
+            "description": "Status is returned for calls that dont return objects.",
+            "type": "object",
+            "properties": {
+                "api-version": {
+                    "type": "string"
+                },
+                "code": {
+                    "description": "Code is the HTTP status code.",
+                    "type": "integer",
+                    "format": "int32"
+                },
+                "kind": {
+                    "type": "string"
+                },
+                "message": {
+                    "description": "Message contains human readable form of the error.",
+                    "type": "array",
+                    "items": {
+                        "type": "string"
+                    }
+                },
+                "object-ref": {
+                    "description": "Reference to the object (optional) for which this status is being sent.",
+                    "$ref": "#/definitions/apiObjectRef"
+                },
+                "result": {
+                    "description": "Result contains the status of the operation, success or failure.",
+                    "$ref": "#/definitions/apiStatusResult"
+                }
+            }
+        },
+        "apiStatusResult": {
+            "description": "StatusResult contains possible statuses for a NIC.",
+            "type": "object",
+            "properties": {
+                "Str": {
+                    "type": "string"
+                }
+            }
+        },
+        "apiTimestamp": {
+            "type": "object",
+            "properties": {
+                "nanos": {
+                    "type": "integer",
+                    "format": "int32"
+                },
+                "seconds": {
+                    "type": "string",
+                    "format": "int64"
+                }
+            }
+        },
+        "apiWatchControl": {
+            "type": "object",
+            "properties": {
+                "code": {
+                    "type": "integer",
+                    "format": "int64"
+                },
+                "message": {
+                    "type": "string"
+                }
+            }
+        },
+        "apiWatchEvent": {
+            "type": "object",
+            "properties": {
+                "control": {
+                    "$ref": "#/definitions/apiWatchControl"
+                },
+                "object": {
+                    "$ref": "#/definitions/googleprotobufAny"
+                },
+                "type": {
+                    "type": "string"
+                }
+            }
+        },
+        "apiWatchEventList": {
+            "type": "object",
+            "properties": {
+                "events": {
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/apiWatchEvent"
+                    }
+                }
+            }
+        },
+        "fieldsRequirement": {
+            "description": "Requirement defines a single matching condition for a selector.",
+            "type": "object",
+            "required": [
+                "operator"
+            ],
+            "properties": {
+                "key": {
+                    "description": "The label key that the condition applies to.",
+                    "type": "string"
+                },
+                "operator": {
+                    "description": "Condition checked for the key.",
+                    "type": "string",
+                    "default": "equals",
+                    "enum": [
+                        "equals",
+                        "notequals",
+                        "in",
+                        "notin",
+                        "gt",
+                        "gte",
+                        "lt",
+                        "lte",
+                        "infield"
+                    ],
+                    "x-ui-hints": {
+                        "gt": "greater than",
+                        "gte": "greater than or equals",
+                        "lt": "less than",
+                        "lte": "less than or equals",
+                        "notequals": "not equals",
+                        "notin": "not in"
+                    }
+                },
+                "values": {
+                    "description": "Values contains one or more values corresponding to the label key. \"equals\" and \"notEquals\" operators need a single Value. \"in\" and \"notIn\" operators can have one or more values.",
+                    "type": "array",
+                    "items": {
+                        "type": "string"
+                    }
+                }
+            }
+        },
+        "fieldsSelector": {
+            "description": "Selector is used to select objects by fields. Requirements in the selector are ANDed. A selector with no Requirements does not select anything.",
+            "type": "object",
+            "properties": {
+                "requirements": {
+                    "description": "Requirements are ANDed.",
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/fieldsRequirement"
+                    }
+                }
+            }
+        },
+        "googleprotobufAny": {
+            "description": "`Any` contains an arbitrary serialized protocol buffer message along with a URL that describes the type of the serialized message. Protobuf library provides support to pack/unpack Any values in the form of utility functions or additional generated methods of the Any type. Example 1: Pack and unpack a message in C++. Foo foo = ...; Any any; any.PackFrom(foo); ... if (any.UnpackTo(&foo)) { ... } Example 2: Pack and unpack a message in Java. Foo foo = ...; Any any = Any.pack(foo); ... if (any.is(Foo.class)) { foo = any.unpack(Foo.class); } Example 3: Pack and unpack a message in Python. foo = Foo(...) any = Any() any.Pack(foo) ... if any.Is(Foo.DESCRIPTOR): any.Unpack(foo) ... Example 4: Pack and unpack a message in Go foo := &pb.Foo{...} any, err := ptypes.MarshalAny(foo) ... foo := &pb.Foo{} if err := ptypes.UnmarshalAny(any, foo); err != nil { ... } The pack methods provided by protobuf library will by default use 'type.googleapis.com/full.type.name' as the type URL and the unpack methods only use the fully qualified type name after the last '/' in the type URL, for example \"foo.bar.com/x/y.z\" will yield type name \"y.z\". JSON ==== The JSON representation of an `Any` value uses the regular representation of the deserialized, embedded message, with an additional field `@type` which contains the type URL. Example: package google.profile; message Person { string first_name = 1; string last_name = 2; } { \"@type\": \"type.googleapis.com/google.profile.Person\", \"firstName\": <string>, \"lastName\": <string> } If the embedded message type is well-known and has a custom JSON representation, that representation will be embedded adding a field `value` which holds the custom JSON in addition to the `@type` field. Example (for message [google.protobuf.Duration][]): { \"@type\": \"type.googleapis.com/google.protobuf.Duration\", \"value\": \"1.212s\" }.",
+            "type": "object",
+            "properties": {
+                "type_url": {
+                    "description": "A URL/resource name that uniquely identifies the type of the serialized protocol buffer message. This string must contain at least one \"/\" character. The last segment of the URL's path must represent the fully qualified name of the type (as in `path/google.protobuf.Duration`). The name should be in a canonical form (e.g., leading \".\" is not accepted). In practice, teams usually precompile into the binary all types that they expect it to use in the context of Any. However, for URLs which use the scheme `http`, `https`, or no scheme, one can optionally set up a type server that maps type URLs to message definitions as follows: * If no scheme is provided, `https` is assumed. * An HTTP GET on the URL must yield a [google.protobuf.Type][] value in binary format, or produce an error. * Applications are allowed to cache lookup results based on the URL, or have them precompiled into a binary to avoid any lookup. Therefore, binary compatibility needs to be preserved on changes to types. (Use versioned type names to manage breaking changes.) Note: this functionality is not currently available in the official protobuf release, and it is not used for type URLs beginning with type.googleapis.com. Schemes other than `http`, `https` (or the empty scheme) might be used with implementation specific semantics.",
+                    "type": "string"
+                },
+                "value": {
+                    "description": "Must be a valid serialized protocol buffer of the above specified type.",
+                    "type": "string",
+                    "format": "byte"
+                }
+            }
+        },
+        "labelsRequirement": {
+            "description": "Requirement defines a single matching condition for a selector.",
+            "type": "object",
+            "required": [
+                "operator"
+            ],
+            "properties": {
+                "key": {
+                    "description": "The label key that the condition applies to.",
+                    "type": "string"
+                },
+                "operator": {
+                    "description": "Condition checked for the key.",
+                    "type": "string",
+                    "default": "equals",
+                    "enum": [
+                        "equals",
+                        "notequals",
+                        "in",
+                        "notin"
+                    ],
+                    "x-ui-hints": {
+                        "notequals": "not equals",
+                        "notin": "not in"
+                    }
+                },
+                "values": {
+                    "description": "Values contains one or more values corresponding to the label key. \"equals\" and \"notEquals\" operators need a single Value. \"in\" and \"notIn\" operators can have one or more values.",
+                    "type": "array",
+                    "items": {
+                        "type": "string"
+                    }
+                }
+            }
+        },
+        "labelsSelector": {
+            "description": "Selector is used to select objects by labels. Requirements in the selector are ANDed. A selector with no Requirements does not select anything.",
+            "type": "object",
+            "properties": {
+                "requirements": {
+                    "description": "Requirements are ANDed.",
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/labelsRequirement"
+                    }
+                }
+            }
+        },
+        "searchCategoryAggregation": {
+            "description": "CategoryAggregation contains map of search result entries grouped by two levels: first by Category and then by Kind.",
+            "type": "object",
+            "properties": {
+                "categories": {
+                    "type": "object",
+                    "additionalProperties": {
+                        "$ref": "#/definitions/searchKindAggregation"
+                    }
+                }
+            }
+        },
+        "searchCategoryPreview": {
+            "description": "CategoryPreview contains map of search summary (#hits) grouped by two levels: first by Category and then by Kind.",
+            "type": "object",
+            "properties": {
+                "categories": {
+                    "type": "object",
+                    "additionalProperties": {
+                        "$ref": "#/definitions/searchKindPreview"
+                    }
+                }
+            }
+        },
+        "searchEntry": {
+            "description": "Entry represent a single search result entry and contents of this entity vary based on Kind. For Events and Alerts Kind, the result will be entire object respectively. For rest of the configs objects, the result will be ConfigEntry with only the type & object meta data fields.",
+            "type": "object",
+            "properties": {
+                "object": {
+                    "description": "TODO: Right now our api codegen does not support nested inline and hence this attribute cannot be be made embedded/inline. api.Any is already had embededed attribute Any. Once infra supports nested inline or an alternative, this attribute should be embedded and made inline to make json response user friendly for search.",
+                    "$ref": "#/definitions/apiAny"
+                }
+            }
+        },
+        "searchEntryList": {
+            "description": "EntryList is list of search result entries.",
+            "type": "object",
+            "properties": {
+                "entries": {
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/searchEntry"
+                    }
+                }
+            }
+        },
+        "searchError": {
+            "description": "Error contains the error code, description and associated details.",
+            "type": "object",
+            "properties": {
+                "reason": {
+                    "description": "Reason or description of the failure.",
+                    "type": "string"
+                },
+                "type": {
+                    "description": "Type of error.",
+                    "type": "string"
+                }
+            }
+        },
+        "searchKindAggregation": {
+            "description": "KindAggregation contains map of search result entries grouped by Kind.",
+            "type": "object",
+            "properties": {
+                "kinds": {
+                    "type": "object",
+                    "additionalProperties": {
+                        "$ref": "#/definitions/searchEntryList"
+                    }
+                }
+            }
+        },
+        "searchKindPreview": {
+            "description": "KindPreview contains map of search summary (#hits) grouped by Kind.",
+            "type": "object",
+            "properties": {
+                "kinds": {
+                    "type": "object",
+                    "additionalProperties": {
+                        "type": "string",
+                        "format": "int64"
+                    }
+                }
+            }
+        },
+        "searchPolicyMatchEntries": {
+            "description": "PolicyMatchEntries multiple PolicyMatchEntry in entries.",
+            "type": "object",
+            "properties": {
+                "entries": {
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/searchPolicyMatchEntry"
+                    }
+                }
+            }
+        },
+        "searchPolicyMatchEntry": {
+            "description": "PolicyMatchEntry contains the matching SGrule and Index within the NetworkSecurityPolicy ruleset.",
+            "type": "object",
+            "properties": {
+                "index": {
+                    "description": "Index of the matching SG rule.",
+                    "type": "integer",
+                    "format": "int64"
+                },
+                "rule": {
+                    "description": "Matching SGRule.",
+                    "$ref": "#/definitions/securitySGRule"
+                }
+            }
+        },
+        "searchPolicySearchRequest": {
+            "description": "PolicySearchRequest is input to the security/firewall policy search request.",
+            "type": "object",
+            "properties": {
+                "app": {
+                    "description": "App specification,  predefined apps and alg config.",
+                    "type": "string"
+                },
+                "from-ip-address": {
+                    "description": "Inbound ip-address, use any to refer to all ipaddresses eg: 10.1.1.1, any.",
+                    "type": "string"
+                },
+                "from-security-group": {
+                    "description": "Inbound security group.",
+                    "type": "string"
+                },
+                "namespace": {
+                    "description": "Namespace is optional. If provided policy-search will be limited to the specified namespace.",
+                    "type": "string",
+                    "default": "default"
+                },
+                "port": {
+                    "description": "TCP or UDP Port number.",
+                    "type": "string"
+                },
+                "protocol": {
+                    "description": "Protocol eg: tcp, udp, icmp.",
+                    "type": "string"
+                },
+                "sg-policy": {
+                    "description": "NetworkSecurityPolicy name is optional. If provided policy-search will be limited to the specified SGpolicy object name.",
+                    "type": "string"
+                },
+                "tenant": {
+                    "description": "Tenant Name, to perform query within a Tenant's scope. The default tenant is \"default\". In the backend this field gets auto-filled & validated by apigw-hook based on user login context.",
+                    "type": "string",
+                    "default": "default"
+                },
+                "to-ip-address": {
+                    "description": "Outbound ip-address, use any to refer to all ipaddresses eg: 20.1.1.1, any.",
+                    "type": "string"
+                },
+                "to-security-group": {
+                    "description": "Outbound security group.",
+                    "type": "string"
+                }
+            }
+        },
+        "searchPolicySearchResponse": {
+            "description": "PolicySearchResponse is response to the security/firewall policy search request.",
+            "type": "object",
+            "required": [
+                "status"
+            ],
+            "properties": {
+                "results": {
+                    "description": "Result is Map of <NetworkSecurityPolicy object name, PolicyMatch Entry>.",
+                    "type": "object",
+                    "additionalProperties": {
+                        "$ref": "#/definitions/searchPolicyMatchEntries"
+                    }
+                },
+                "status": {
+                    "description": "Status of firewall policy search.",
+                    "type": "string",
+                    "default": "match",
+                    "enum": [
+                        "match",
+                        "miss"
+                    ]
+                }
+            }
+        },
+        "searchSearchQuery": {
+            "type": "object",
+            "properties": {
+                "categories": {
+                    "description": "OR of Categories to be matched, AND and Exclude are not supported for this type The max category string length is 64 bytes. Length of string should be between 0 and 64.",
+                    "type": "array",
+                    "maxLength": 64,
+                    "items": {
+                        "type": "string"
+                    }
+                },
+                "fields": {
+                    "description": "Field Selector is AND of field.Requirements.",
+                    "$ref": "#/definitions/fieldsSelector"
+                },
+                "kinds": {
+                    "description": "OR of Kinds to be matched, AND and Exclude are not supported for this type. Should be a valid object Kind.",
+                    "type": "array",
+                    "items": {
+                        "type": "string"
+                    },
+                    "example": "Network"
+                },
+                "labels": {
+                    "description": "Label Selector is AND of label.Requirememts.",
+                    "$ref": "#/definitions/labelsSelector"
+                },
+                "texts": {
+                    "description": "OR of Text-requirements to be matched, Exclude is not supported for Text search.",
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/searchTextRequirement"
+                    }
+                }
+            }
+        },
+        "searchSearchRequest": {
+            "description": "SearchRequest is the input to the search API Simple queries can be specified as URI param using \"QueryString\". For advanced queries, it is recommended to use the \"SearchQuery\" structure and specify them in BODY of the GET/POST method. Examples of search query in query-string format: 1. Find all occurrences matching text \u201cNetwork\u201d Network 2. Find all occurrences matching phrase \u201clink down\u201d \u201clink down\u201d 3. Find all occurrences matching text production OR \"staging\" production staging 4. Find all occurrences matching text \u201cNetwork\u201d AND \"link down\" Network,\"link down\" Network AND \"link down\" 5. Find all config objects with label1=foo category:config label:label1=foo 6. Find all objects created on or after certain date+time category:config field:meta.created-time>=\u201ddate-time-string\u201d 7. Find all Network objects with type=vlan kind:Network field:spec.type=vlan 8. Find all Naples nodes with admission-phase = pending or rejected kind:DistributedServiceCard field:spec.phase in (pending, rejected) 9. Find all events with text matching \u201cdisconnected\u201d category:events disconnected 10. Find all Critical events for Network objects category:events kind:Network field:severity=CRITICAL 11. Find all Alerts generated from Naples MAC1 category:alerts field:status.source.node=MAC1 category:alerts MAC1 12. Find all Naples nodes with metric filter : mem>90 && cpu>90 category:metrics kind:DistributedServiceCard field:metric.mem>90,metric.cpu>90 13. Find all Endpoints with label Tier=Web with counter1>=100 category:metrics kind:Endpoint label:Tier=Web field:metric.counter1 > 100 14. Find all Endpoints objects with label target=prod with crc-error-count != 0 category:metrics kind:Endpoint label:target=prod field:status.crc-error-count!=0 15. Find all occurences matching the words and phrase in a certain category & kinds with certain field and label match production \"status down\" category:Network kind:Network,Service field:spec.service-type=external label:tier=web.",
+            "type": "object",
+            "required": [
+                "from",
+                "max-results",
+                "sort-order",
+                "mode"
+            ],
+            "properties": {
+                "aggregate": {
+                    "description": "Indicates whether to perform aggregation on the search results or not.",
+                    "type": "boolean",
+                    "format": "boolean",
+                    "default": "true"
+                },
+                "from": {
+                    "description": "From represents the start offset (zero based), used in paginated search requests The results returned would be in the range [From ... From+MaxResults-1] This can be specified as URI parameter. Default value is 0 and valid range is 0..8192. Value should be between 0 and 8192.",
+                    "type": "integer",
+                    "format": "int32",
+                    "maximum": 8192,
+                    "minimum": 0
+                },
+                "max-results": {
+                    "description": "MaxResults is the max-count of search results This can be specified as URI parameter. Default value is 50 and valid range is 0..8192. Value should be between 0 and 8192.",
+                    "type": "integer",
+                    "format": "int32",
+                    "default": "50",
+                    "maximum": 8192,
+                    "minimum": 0
+                },
+                "mode": {
+                    "description": "Query Mode.",
+                    "type": "string",
+                    "default": "full",
+                    "enum": [
+                        "full",
+                        "preview"
+                    ]
+                },
+                "query": {
+                    "description": "Search query contains the search requirements This is intended for advanced query use cases involving boolean query, structured term query and supports various combinations of text, phrase strings and search modifiers for specific categories, kinds, fields and labels. This cannot be specified as URI parameter.",
+                    "$ref": "#/definitions/searchSearchQuery"
+                },
+                "query-string": {
+                    "description": "Simple query string This can be specified as URI parameter. For advanced query cases, Users should use specify SearchQuery and pass the SearchRequest in a GET/POST Body The max query-string length is 256 bytes. Length of string should be between 0 and 256.",
+                    "type": "string",
+                    "maxLength": 256
+                },
+                "sort-by": {
+                    "description": "SortyBy is an optional parameter and contains the field name to be sorted by, For eg: \"meta.name\" This can be specified as URI parameter. Length of string should be between 0 and 256.",
+                    "type": "string",
+                    "maxLength": 256
+                },
+                "sort-order": {
+                    "description": "SortOrder is an optional parameter and contains whether to sort ascending or descending This can be specified as URI parameter.",
+                    "type": "string",
+                    "default": "ascending",
+                    "enum": [
+                        "ascending",
+                        "descending"
+                    ]
+                },
+                "tenants": {
+                    "description": "OR of tenants within the scope of which search needs to be performed. If not specified, it will be set to tenant of the logged in user.",
+                    "type": "array",
+                    "items": {
+                        "type": "string"
+                    }
+                }
+            }
+        },
+        "searchSearchResponse": {
+            "description": "SearchResponse is the output provided by the search API Based on the search request, search results would be part of one of the entities : Entries or NestedAggregation. In case of failures, Error would indicate the error status and description.",
+            "type": "object",
+            "properties": {
+                "actual-hits": {
+                    "description": "ActualHits indicates the actual hits returned in this response.",
+                    "type": "string",
+                    "format": "int64"
+                },
+                "aggregated-entries": {
+                    "description": "AggregatedEntries is a three level grouping of full search results, Grouped by tenant, category and kind in that order. This attribute is populated and valid only in Full request-mode.",
+                    "$ref": "#/definitions/searchTenantAggregation"
+                },
+                "entries": {
+                    "description": "EntryList is list of all search results with no grouping. This attribute is populated and valid only in Full request-mode.",
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/searchEntry"
+                    }
+                },
+                "error": {
+                    "description": "Error status for failures.",
+                    "$ref": "#/definitions/searchError"
+                },
+                "preview-entries": {
+                    "description": "PreviewEntries is a three level grouping of search summary (#hits), grouped by tenant, category and kind in that order. This attribute is populated and valid only in Preview request-mode.",
+                    "$ref": "#/definitions/searchTenantPreview"
+                },
+                "time-taken-msecs": {
+                    "description": "TimeTakenMsecs is the time taken for search response in millisecs.",
+                    "type": "string",
+                    "format": "int64"
+                },
+                "total-hits": {
+                    "description": "TotalHits indicates total number of hits matched.",
+                    "type": "string",
+                    "format": "int64"
+                }
+            }
+        },
+        "searchTenantAggregation": {
+            "description": "TenantAggregation contains map of search result entries grouped by three levels: first by Tenant, second by Category and finally by Kind.",
+            "type": "object",
+            "properties": {
+                "tenants": {
+                    "type": "object",
+                    "additionalProperties": {
+                        "$ref": "#/definitions/searchCategoryAggregation"
+                    }
+                }
+            }
+        },
+        "searchTenantPreview": {
+            "description": "TenantPreview contains map of search summary (#hits) grouped by three levels: first by Tenant, second by Category and finally by Kind.",
+            "type": "object",
+            "properties": {
+                "tenants": {
+                    "type": "object",
+                    "additionalProperties": {
+                        "$ref": "#/definitions/searchCategoryPreview"
+                    }
+                }
+            }
+        },
+        "searchTextRequirement": {
+            "description": "TextRequirement is AND of text-strings in the list It is comprised of words or phrases for text search support. If a text-string has space separated multi-word, it will be interpreted as a phrase. In the example below : - \"link down\" will be a phrase query - network, production, staging will be a word query For eg: network                      (match network) link down                    (match \"link down\" phrase) network,production           (match network AND production) network,link down,staging    (match network AND \"link down\" AND staging).",
+            "type": "object",
+            "properties": {
+                "text": {
+                    "description": "AND of words or phrases to be matched The max text-string length is 256 bytes. Length of string should be between 0 and 256.",
+                    "type": "array",
+                    "maxLength": 256,
+                    "items": {
+                        "type": "string"
+                    }
+                }
+            }
+        },
+        "securityProtoPort": {
+            "type": "object",
+            "properties": {
+                "ports": {
+                    "description": "TCP or UDP port number(s): comma separate port numbers, or dash separate port range.",
+                    "type": "string"
+                },
+                "protocol": {
+                    "description": "protocol is ip (v4/v6) protocol name/number; names can be: tcp, udp, icmp.",
+                    "type": "string"
+                }
+            }
+        },
+        "securitySGRule": {
+            "type": "object",
+            "required": [
+                "action"
+            ],
+            "properties": {
+                "action": {
+                    "description": "SGRule action, either PERMIT, DENY or REJECT.",
+                    "type": "string",
+                    "default": "permit",
+                    "enum": [
+                        "permit",
+                        "deny",
+                        "reject"
+                    ],
+                    "x-ui-hints": {
+                        "deny": "Deny",
+                        "permit": "Permit",
+                        "reject": "Reject"
+                    }
+                },
+                "apps": {
+                    "description": "list of apps objects to which the rule applies to.",
+                    "type": "array",
+                    "items": {
+                        "type": "string"
+                    }
+                },
+                "description": {
+                    "description": "describes rule. Length of string should be between 0 and 256.",
+                    "type": "string",
+                    "maxLength": 256
+                },
+                "from-ip-addresses": {
+                    "description": "inbound rule from a given ip-address/ip-mask/ip-range. Use any to refer to all ipaddresses cli-tags: id=from-ip.",
+                    "type": "array",
+                    "items": {
+                        "type": "string"
+                    }
+                },
+                "from-security-groups": {
+                    "description": "inbound rule from a given security group.",
+                    "type": "array",
+                    "items": {
+                        "type": "string"
+                    }
+                },
+                "proto-ports": {
+                    "description": "list of (protocol, ports) pairs to which the rule applies to, in addition to apps.",
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/securityProtoPort"
+                    }
+                },
+                "to-ip-addresses": {
+                    "description": "outbound rule from a given ip-address/ip-mask/ip-range. Use any to refer to all ipaddresses cli-tags: id=to-ip.",
+                    "type": "array",
+                    "items": {
+                        "type": "string"
+                    }
+                },
+                "to-security-groups": {
+                    "description": "outbound rule from a given security group.",
+                    "type": "array",
+                    "items": {
+                        "type": "string"
+                    }
+                }
+            }
+        }
+    }
+}
