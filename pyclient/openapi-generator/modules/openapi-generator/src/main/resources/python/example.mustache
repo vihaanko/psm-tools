@@ -1,0 +1,45 @@
+{{>partial_header}}
+
+{{#apiInfo}}{{#apis}}{{#-last}}{{#hasHttpSignatureMethods}}import datetime{{/hasHttpSignatureMethods}}{{/-last}}{{/apis}}{{/apiInfo}}
+import os
+import time
+import requests
+import json
+from dateutil.parser import parse as dateutil_parser
+import {{{packageName}}}
+from {{{packageName}}}.models import *
+from pprint import pprint
+from {{apiPackage}} import *
+{{#apiInfo}}
+{{#apis}}
+{{#-first}}
+from {{apiPackage}} import {{classVarName}}
+{{#imports}}
+{{{import}}}
+{{/imports}}
+{{#operations}}
+{{#operation}}
+{{#-first}}
+
+HOME = os.environ["HOME"]
+{{> python_doc_auth_partial}}
+
+# Enter a context with an instance of the API client
+with {{{packageName}}}.ApiClient(configuration) as api_client:
+    # Create an instance of the API class
+    api_instance = {{classVarName}}.{{{classname}}}(api_client)
+    {{#allParams}}{{paramName}} = {{{example}}} # {{{dataType}}} | {{{description}}}{{^required}} (optional){{/required}}{{#defaultValue}} (default to {{{.}}}){{/defaultValue}}
+    {{/allParams}}
+
+    try:
+    {{#summary}}    # {{{.}}}
+    {{/summary}}    {{#returnType}}api_response = {{/returnType}}api_instance.{{{operationId}}}({{#allParams}}{{#required}}{{paramName}}{{/required}}{{^required}}{{paramName}}={{paramName}}{{/required}}{{^-last}}, {{/-last}}{{/allParams}}){{#returnType}}
+        pprint(api_response){{/returnType}}
+    except {{{packageName}}}.ApiException as e:
+        print("Exception when calling {{classname}}->{{operationId}}: %s\n" % e)
+{{/-first}}
+{{/operation}}
+{{/operations}}
+{{/-first}}
+{{/apis}}
+{{/apiInfo}}
