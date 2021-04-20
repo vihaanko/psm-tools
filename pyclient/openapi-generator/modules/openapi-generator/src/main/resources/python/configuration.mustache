@@ -186,9 +186,15 @@ conf = {{{packageName}}}.Configuration(
         self.cookie = None
         self.psm_config_path = psm_config_path
         self.psm_config = self.get_psm_config()
+        if "psm-ip" not in self.psm_config:
+            print("'psm-ip' not set in PSM config file.")
+            self.psm_config = self.update_psm_config(this.psm_config)
         host = self.psm_config["psm-ip"]
         self._base_path = self.psm_config["psm-ip"] if host is None else host
-        self.login()
+        if "token" in self.psm_config:
+            self.cookie = self.psm_config["token"]
+        else:
+            self.login()
         """Default Base url
         """
         self.server_index = 0 if server_index is None and host is None else server_index
@@ -648,9 +654,36 @@ conf = {{{packageName}}}.Configuration(
         self._base_path = value
         self.server_index = None
 
+    def update_psm_config(self, path):
+        psmip = input("Enter PSM IP address:")
+        with open(path, "w") as f:
+            data = {"psmip": psmip}
+            json.dump(data, f)
+        return data
+
     def get_psm_config(self):
-        with open(self.psm_config_path, "r") as f:
-            psm_config = json.load(f)
+        configpath = self.psm_config_path
+        if not os.path.exists(self.psm_config_path):
+            print("PSM config does not exist at "+ self.psm_config_path)
+            cont = input("Create config at "+self.psm_config_path+" ? [y/n]")
+            if cont.lower() != 'y':
+                return
+            if self.psm_config_path[0] == "~":
+                HOME = os.environ["HOME"]
+                configpath = HOME + configpath[1:]
+            foldersplit = configpath.split(os.sep)
+            if foldersplit[-1]:
+                # create directories if needed
+                os.makedirs(foldersplit[:-1].join(os.sep))
+                # create config file
+                data = self.update_psm_config(configpath)
+                return data
+            else:
+                print("ERROR: Invalid PSM config path")
+                exit()
+        else:
+            with open(configpath, "r") as f:
+                psm_config = json.load(f)
         return psm_config
     
     def write_psm_config(self, data):

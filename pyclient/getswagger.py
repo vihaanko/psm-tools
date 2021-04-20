@@ -6,8 +6,13 @@ import os
 HOME = os.environ["HOME"]
 
 config = {}
-with open(HOME+"/.psm/config.json", "r") as f:
-    config = json.load(f)
+
+try:
+    with open(HOME+"/.psm/config.json", "r") as f:
+        config = json.load(f)
+except Exception as e:
+    print("ASDFASD")
+
 
 def downloadSwaggerFiles():
     host = config["psm-ip"]
@@ -41,6 +46,8 @@ def processSwagger(filename, jsondata):
         del jsondata["definitions"]["apiObjectMeta"]["properties"]["name"]["pattern"]
         del jsondata["definitions"]["apiObjectMeta"]["properties"]["tenant"]["pattern"]
         del jsondata["definitions"]["apiObjectMeta"]["properties"]["namespace"]["pattern"]
+    if filename == "cluster":
+        jsondata["definitions"]["clusterDistributedServiceCardSpec"]["required"] = []
     return jsondata
 
 
