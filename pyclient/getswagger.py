@@ -19,11 +19,11 @@ def downloadSwaggerFiles():
     if not os.path.exists("swagger"):
         os.mkdir("swagger")
 
-    response = requests.get(host+"/docs/generated/swaggeruri.html", verify=False)
+    response = requests.get("https://"+host+"/docs/generated/swaggeruri.html", verify=False)
     matches = re.findall("href=\"([^\"]*)", response.text)
 
     for match in matches:
-        resp = requests.get(host+match, verify=False)
+        resp = requests.get("https://"+host+match, verify=False)
         filename = match.replace("/swagger/", "")
         jsondata = processSwagger(filename, resp.json())
         with open("swagger/"+filename+".json", "w") as f:

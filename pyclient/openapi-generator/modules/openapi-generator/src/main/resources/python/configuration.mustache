@@ -189,7 +189,7 @@ conf = {{{packageName}}}.Configuration(
         if "psm-ip" not in self.psm_config:
             print("'psm-ip' not set in PSM config file.")
             self.psm_config = self.update_psm_config(this.psm_config)
-        host = self.psm_config["psm-ip"]
+        host = "https://" + self.psm_config["psm-ip"]
         self._base_path = self.psm_config["psm-ip"] if host is None else host
         if "token" in self.psm_config:
             self.cookie = self.psm_config["token"]
