@@ -13,7 +13,7 @@ RUN apt install -y default-jdk
 RUN java --version
 
 RUN mkdir $HOME/.psm/
-RUN read -p "Enter PSM IP:" psmip
+ENV psmip=10.7.100.21
 RUN echo {\"psm-ip\": \"$psmip\"} > $HOME/.psm/config.json
 RUN make
 
