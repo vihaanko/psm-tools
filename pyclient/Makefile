@@ -6,4 +6,4 @@ getswagger:
 	python3 getswagger.py
 
 genclient: getswagger
-	sh gen.sh
+	./gen.sh
