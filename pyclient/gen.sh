@@ -1,5 +1,5 @@
 cd openapi-generator
-mvn clean install
+mvn clean install -U -DskipTests
 cd ..
 
 for file in ./swagger/*
