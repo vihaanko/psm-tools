@@ -1,7 +1,7 @@
 from ubuntu:20.04
 
 RUN apt update
-RUN apt install -y git python3 make python3-distutils curl
+RUN apt install -y git python3 make python3-distutils curl maven
 RUN curl https://bootstrap.pypa.io/get-pip.py -o get-pip.py
 RUN python3 get-pip.py
 RUN rm get-pip.py
