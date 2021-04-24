@@ -44,6 +44,12 @@ public class CodegenConstants {
     public static final String MODEL_PACKAGE = "modelPackage";
     public static final String MODEL_PACKAGE_DESC = "package for generated models";
 
+    public static final String LIBNAME = "libName";
+    public static final String LIBNAME_DESC = "parent folder which contains all generated apigroups";
+
+    public static final String GROUP = "group";
+    public static final String GROUP_DESC = "containing directory for generated apigroups";
+
     public static final String TEMPLATE_DIR = "templateDir";
 
     public static final String ALLOW_UNICODE_IDENTIFIERS = "allowUnicodeIdentifiers";

@@ -148,7 +148,7 @@ public class DefaultCodegen implements CodegenConfig {
     protected Set<String> reservedWords = new HashSet<String>();
     protected Set<String> languageSpecificPrimitives = new HashSet<String>();
     protected Map<String, String> importMapping = new HashMap<String, String>();
-    protected String modelPackage = "", apiPackage = "", fileSuffix;
+    protected String modelPackage = "", apiPackage = "", libName = "", group = "",fileSuffix;
     protected String modelNamePrefix = "", modelNameSuffix = "";
     protected String apiNamePrefix = "", apiNameSuffix = "Api";
     protected String testPackage = "";
@@ -256,6 +256,16 @@ public class DefaultCodegen implements CodegenConfig {
     public void processOpts() {
         if (additionalProperties.containsKey(CodegenConstants.TEMPLATE_DIR)) {
             this.setTemplateDir((String) additionalProperties.get(CodegenConstants.TEMPLATE_DIR));
+        }
+
+        // Class: Api group name
+        if (additionalProperties.containsKey(CodegenConstants.GROUP)) {
+            this.setGroup((String) additionalProperties.get(CodegenConstants.GROUP));
+        }
+
+        // Libname: Parent folder holding all apigroups 
+        if (additionalProperties.containsKey(CodegenConstants.LIBNAME)) {
+            this.setLibName((String) additionalProperties.get(CodegenConstants.LIBNAME));
         }
 
         if (additionalProperties.containsKey(CodegenConstants.MODEL_PACKAGE)) {
@@ -991,6 +1001,14 @@ public class DefaultCodegen implements CodegenConfig {
         return modelPackage;
     }
 
+    public String group() {
+        return group;
+    }
+
+    public String libName() {
+        return libName;
+    }
+
     public String apiPackage() {
         return apiPackage;
     }
@@ -1105,6 +1123,14 @@ public class DefaultCodegen implements CodegenConfig {
 
     public void setModelPackage(String modelPackage) {
         this.modelPackage = modelPackage;
+    }
+
+    public void setLibName(String libName) {
+        this.libName = libName;
+    }
+
+    public void setGroup(String group) {
+        this.group = group;
     }
 
     public String getModelNamePrefix() {

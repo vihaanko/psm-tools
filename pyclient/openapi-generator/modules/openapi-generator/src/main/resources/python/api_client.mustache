@@ -15,10 +15,10 @@ from urllib3.fields import RequestField
 import tornado.gen
 {{/tornado}}
 
-from {{packageName}} import rest
-from {{packageName}}.configuration import Configuration
-from {{packageName}}.exceptions import ApiTypeError, ApiValueError, ApiException
-from {{packageName}}.model_utils import (
+from {{libName}}.{{group}}.{{packageName}} import rest
+from {{libName}}.{{group}}.{{packageName}}.configuration import Configuration
+from {{libName}}.{{group}}.{{packageName}}.exceptions import ApiTypeError, ApiValueError, ApiException
+from {{libName}}.{{group}}.{{packageName}}.model_utils import (
     ModelNormal,
     ModelSimple,
     ModelComposed,
@@ -189,6 +189,9 @@ class ApiClient(object):
         else:
             # use server/host defined in path or operation instead
             url = _host + resource_path
+        
+        if self.configuration.debugMode:
+            print("[DEBUG] REQUEST:", url, query_params, post_params)
 
         try:
             # perform request and return response
@@ -203,6 +206,9 @@ class ApiClient(object):
                 self.__call_api(resource_path, method, path_params, query_params, header_params, body, post_params, files, response_type, auth_settings, _return_http_data_only, collection_formats, _preload_content, _request_timeout, _host, _check_type)
             e.body = e.body.decode('utf-8')
             raise e
+        
+        if self.configuration.debugMode:
+            print("[DEBUG] REQUEST RESPONSE:", response_data.data)
 
         content_type = response_data.getheader('content-type')
 

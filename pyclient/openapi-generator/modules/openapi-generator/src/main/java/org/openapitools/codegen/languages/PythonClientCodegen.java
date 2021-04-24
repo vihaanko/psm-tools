@@ -317,7 +317,7 @@ public class PythonClientCodegen extends PythonLegacyClientCodegen {
     @Override
     public String toModelImport(String name) {
         // name looks like Cat
-        return "from " + modelPackage() + "." + toModelFilename(name) + " import " + toModelName(name);
+        return "from " + libName() + "." + group() + "." + modelPackage() + "." + toModelFilename(name) + " import " + toModelName(name);
     }
 
     @Override

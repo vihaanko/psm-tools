@@ -10,7 +10,7 @@ do
   str3="${str2/\//}"
   str4="${str3/svc_/}"
 
-  java -jar openapi-generator/modules/openapi-generator-cli/target/openapi-generator-cli.jar generate -i "$file" -c genconfig.json -g python -o apigroups/$str4
+  java -jar openapi-generator/modules/openapi-generator-cli/target/openapi-generator-cli.jar generate -i "$file" -p group=$str4 -c genconfig.json -g python -o apigroups/$str4
 
   echo "$str4"
 done

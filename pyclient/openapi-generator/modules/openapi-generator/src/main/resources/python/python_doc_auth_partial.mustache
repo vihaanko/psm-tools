@@ -1,6 +1,6 @@
 # Defining the host is optional and defaults to {{{basePath}}}
 # See configuration.py for a list of all supported configuration parameters.
-configuration = {{{packageName}}}.Configuration(
+configuration = {{libName}}.{{group}}.{{{packageName}}}.Configuration(
     psm_config_path=HOME+"/.psm/config.json"
 )
 configuration.verify_ssl = False
@@ -15,7 +15,7 @@ configuration.verify_ssl = False
 {{#isBasicBasic}}
 
 # Configure HTTP basic authorization: {{{name}}}
-configuration = {{{packageName}}}.Configuration(
+configuration = {{libName}}.{{group}}.{{{packageName}}}.Configuration(
     username = 'YOUR_USERNAME',
     password = 'YOUR_PASSWORD'
 )
@@ -23,7 +23,7 @@ configuration = {{{packageName}}}.Configuration(
 {{#isBasicBearer}}
 
 # Configure Bearer authorization{{#bearerFormat}} ({{{.}}}){{/bearerFormat}}: {{{name}}}
-configuration = {{{packageName}}}.Configuration(
+configuration = {{libName}}.{{group}}.{{{packageName}}}.Configuration(
     access_token = 'YOUR_BEARER_TOKEN'
 )
 {{/isBasicBearer}}
@@ -65,22 +65,22 @@ configuration = {{{packageName}}}.Configuration(
 # the API server.
 #
 # See {{{packageName}}}.signing for a list of all supported parameters.
-configuration = {{{packageName}}}.Configuration(
+configuration = {{libName}}.{{group}}.{{{packageName}}}.Configuration(
     host = "{{{basePath}}}",
-    signing_info = {{{packageName}}}.signing.HttpSigningConfiguration(
+    signing_info = {{libName}}.{{group}}.{{{packageName}}}.signing.HttpSigningConfiguration(
         key_id = 'my-key-id',
         private_key_path = 'private_key.pem',
         private_key_passphrase = 'YOUR_PASSPHRASE',
-        signing_scheme = {{{packageName}}}.signing.SCHEME_HS2019,
-        signing_algorithm = {{{packageName}}}.signing.ALGORITHM_ECDSA_MODE_FIPS_186_3,
-        hash_algorithm = {{{packageName}}}.signing.SCHEME_RSA_SHA256,
+        signing_scheme = {{libName}}.{{group}}.{{{packageName}}}.signing.SCHEME_HS2019,
+        signing_algorithm = {{libName}}.{{group}}.{{{packageName}}}.signing.ALGORITHM_ECDSA_MODE_FIPS_186_3,
+        hash_algorithm = {{libName}}.{{group}}.{{{packageName}}}.signing.SCHEME_RSA_SHA256,
         signed_headers = [
-                            {{{packageName}}}.signing.HEADER_REQUEST_TARGET,
-                            {{{packageName}}}.signing.HEADER_CREATED,
-                            {{{packageName}}}.signing.HEADER_EXPIRES,
-                            {{{packageName}}}.signing.HEADER_HOST,
-                            {{{packageName}}}.signing.HEADER_DATE,
-                            {{{packageName}}}.signing.HEADER_DIGEST,
+                            {{libName}}.{{group}}.{{{packageName}}}.signing.HEADER_REQUEST_TARGET,
+                            {{libName}}.{{group}}.{{{packageName}}}.signing.HEADER_CREATED,
+                            {{libName}}.{{group}}.{{{packageName}}}.signing.HEADER_EXPIRES,
+                            {{libName}}.{{group}}.{{{packageName}}}.signing.HEADER_HOST,
+                            {{libName}}.{{group}}.{{{packageName}}}.signing.HEADER_DATE,
+                            {{libName}}.{{group}}.{{{packageName}}}.signing.HEADER_DIGEST,
                             'Content-Type',
                             'Content-Length',
                             'User-Agent'
@@ -101,7 +101,7 @@ configuration.api_key['{{{name}}}'] = 'YOUR_API_KEY'
 {{#isOAuth}}
 
 # Configure OAuth2 access token for authorization: {{{name}}}
-configuration = {{{packageName}}}.Configuration(
+configuration = {{libName}}.{{group}}.{{{packageName}}}.Configuration(
     host = "{{{basePath}}}"
 )
 configuration.access_token = 'YOUR_ACCESS_TOKEN'
