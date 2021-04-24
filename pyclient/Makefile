@@ -9,4 +9,4 @@ genclient: getswagger
 	./gen.sh
 
 setpythonpath:
-	export PYTHONPATH=$(pwd)
+	export PYTHONPATH=$(PWD)
