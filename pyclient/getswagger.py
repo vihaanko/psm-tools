@@ -11,7 +11,7 @@ try:
     with open(HOME+"/.psm/config.json", "r") as f:
         config = json.load(f)
 except Exception as e:
-    print("ASDFASD")
+    print("PSM config not found at /.psm/config.json")
 
 
 def downloadSwaggerFiles():
