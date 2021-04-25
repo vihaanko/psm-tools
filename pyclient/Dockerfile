@@ -5,8 +5,9 @@ RUN apt install -y git python3 make python3-distutils curl
 RUN curl https://bootstrap.pypa.io/get-pip.py -o get-pip.py
 RUN python3 get-pip.py
 RUN rm get-pip.py
-RUN git clone https://github.com/pensando/psm-tools.git
-WORKDIR psm-tools/pyclient
+# RUN git clone https://github.com/pensando/psm-tools.git
+ADD . /pyclient
+WORKDIR pyclient
 RUN pip install -r requirements.txt
 
 ENV DEBIAN_FRONTEND=noninteractive
@@ -16,9 +17,10 @@ ENV JAVA_HOME=/usr/lib/jvm/java-11-openjdk-amd64
 RUN mkdir $HOME/.psm/
 ENV psmip=10.7.100.21:10001
 RUN echo {\"psm-ip\": \"$psmip\"} > $HOME/.psm/config.json
+
 RUN chmod +x gen.sh
 RUN make
-WORKDIR utilities/
-RUN python3 clusterping.py
+
+ENV PYTHONPATH=/pyclient
 
 CMD ["echo", "Hello World!"]
