@@ -8,7 +8,8 @@ warnings.simplefilter("ignore")
 HOME = os.environ['HOME']
 
 configuration = configuration.Configuration(
-    psm_config_path=HOME+"/.psm/config.json"
+    psm_config_path=HOME+"/.psm/config.json",
+    interactive_mode=True
 )
 configuration.verify_ssl = False
 
@@ -45,3 +46,5 @@ response = api_instance.list_distributed_service_card()
 
 for dsc in response.items:
     print("\tDSC " + dsc.meta.name + " is " + dsc.status.conditions[0].type)
+
+response = api_instance.get_distributed_service_card("00ae.cd00.112e")

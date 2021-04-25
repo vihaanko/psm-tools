@@ -6,7 +6,7 @@ getswagger:
 	python3 getswagger.py
 
 genclient: getswagger
-	./gen.sh
+	bash gen.sh
 
 setpythonpath:
 	export PYTHONPATH=$(PWD)

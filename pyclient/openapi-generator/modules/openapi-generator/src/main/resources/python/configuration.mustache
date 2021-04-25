@@ -9,6 +9,7 @@ import sys
 import urllib3
 import requests
 import os
+import sys
 import json
 import getpass
 
@@ -179,16 +180,27 @@ conf = {{{packageName}}}.Configuration(
 {{/hasHttpSignatureMethods}}
                  server_index=None, server_variables=None,
                  server_operation_index=None, server_operation_variables=None,
-                 ssl_ca_cert=None,
+                 ssl_ca_cert=None, debugMode=False, interactive_mode=False,
                  ):
         """Constructor
         """
+
+        self.interactive_mode = False
+        if interactive_mode:
+            self.interactive_mode = True
+
         self.cookie = None
         self.psm_config_path = psm_config_path
         self.psm_config = self.get_psm_config()
         if "psm-ip" not in self.psm_config:
-            print("'psm-ip' not set in PSM config file.")
-            self.psm_config = self.update_psm_config(this.psm_config)
+            logging.error("'psm-ip' not set in PSM config file.")
+            if self.interactive_mode:
+                self.psm_config = self.update_psm_config(this.psm_config)
+        
+        self.debugMode = False
+        if ("debug" in self.psm_config and self.psm_config["debug"] == "true") or debugMode:
+            logging.basicConfig(format='%(levelname)s: %(msg)s', level=logging.DEBUG)
+        
         host = "https://" + self.psm_config["psm-ip"]
         self._base_path = self.psm_config["psm-ip"] if host is None else host
         if "token" in self.psm_config:
@@ -196,9 +208,6 @@ conf = {{{packageName}}}.Configuration(
         else:
             self.login()
 
-        self.debugMode = False
-        if "debug" in self.psm_config and self.psm_config["debug"] == "true":
-            self.debugMode = True
         """Default Base url
         """
         self.server_index = 0 if server_index is None and host is None else server_index
@@ -668,23 +677,25 @@ conf = {{{packageName}}}.Configuration(
     def get_psm_config(self):
         configpath = self.psm_config_path
         if not os.path.exists(self.psm_config_path):
-            print("PSM config does not exist at "+ self.psm_config_path)
-            cont = input("Create config at "+self.psm_config_path+" ? [y/n]")
-            if cont.lower() != 'y':
-                return
+            logging.error("PSM config does not exist at "+ self.psm_config_path)
+            if self.interactive_mode:
+                cont = input("Create config at "+self.psm_config_path+" ? [y/n]")
+                if cont.lower() != 'y':
+                    sys.exit(1)
+                    return
+            else:
+                sys.exit(1)
             if self.psm_config_path[0] == "~":
                 HOME = os.environ["HOME"]
                 configpath = HOME + configpath[1:]
             foldersplit = configpath.split(os.sep)
-            if foldersplit[-1]:
-                # create directories if needed
+            if foldersplit[-1] and self.interactive_mode:
                 os.makedirs(foldersplit[:-1].join(os.sep))
-                # create config file
                 data = self.update_psm_config(configpath)
                 return data
             else:
-                print("ERROR: Invalid PSM config path")
-                exit()
+                logging.error("Invalid PSM config path")
+                sys.exit(1)
         else:
             with open(configpath, "r") as f:
                 psm_config = json.load(f)
@@ -696,12 +707,19 @@ conf = {{{packageName}}}.Configuration(
     
     def login(self):
         loginpath = self._base_path+"/v1/login"
-        if 'PSM_USER' not in os.environ or 'PSM_PASSWORD' not in os.environ:
-            username = input("Username: ")
-            password = getpass.getpass()
+        creds_set = 'PSM_USER' not in os.environ or 'PSM_PASSWORD' not in os.environ
+        
+        if creds_set:
+            if self.interactive_mode:
+                username = input("Username: ")
+                password = getpass.getpass()
+            else:
+                username = os.environ['PSM_USER']
+                password = os.environ['PSM_PASSWORD']
         else:
-            username = os.environ['PSM_USER']
-            password = os.environ['PSM_PASSWORD']
+            logging.error("PSM_USER and PSM_PASSWORD not set in environment variables.")
+            sys.exit(1)
+
         data = {'username': username, 'password': password, 'tenant': 'default'}
         response = requests.post(loginpath, data=json.dumps(data), verify=False)
         resp_cookie = response.cookies.items()[0]
