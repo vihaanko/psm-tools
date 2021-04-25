@@ -2,6 +2,8 @@ import json
 import requests
 import re
 import os
+import sys
+import logging
 
 HOME = os.environ["HOME"]
 
@@ -11,7 +13,8 @@ try:
     with open(HOME+"/.psm/config.json", "r") as f:
         config = json.load(f)
 except Exception as e:
-    print("PSM config not found at /.psm/config.json")
+    logging.error("PSM config not found at /.psm/config.json")
+    sys.exit(1)
 
 
 def downloadSwaggerFiles():

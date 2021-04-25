@@ -13,9 +13,6 @@ RUN pip install -r requirements.txt
 ENV DEBIAN_FRONTEND=noninteractive
 RUN apt install -y default-jdk maven
 ENV JAVA_HOME=/usr/lib/jvm/java-11-openjdk-amd64
-RUN chmod +x gen.sh
-RUN make
-
 ENV PYTHONPATH=/pyclient
 
 CMD ["echo", "Hello World!"]
