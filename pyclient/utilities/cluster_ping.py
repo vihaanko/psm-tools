@@ -1,7 +1,7 @@
 from datetime import date
 import os
-from apigroups.cluster.client.api import cluster_v1_api
-from apigroups.cluster.client import configuration, api_client
+from apigroups.cluster import ClusterV1Api
+from apigroups.cluster import configuration, api_client
 import warnings
 warnings.simplefilter("ignore")
 
@@ -14,7 +14,7 @@ configuration = configuration.Configuration(
 configuration.verify_ssl = False
 
 client = api_client.ApiClient(configuration)
-api_instance = cluster_v1_api.ClusterV1Api(client)
+api_instance = ClusterV1Api(client)
 response = api_instance.get_cluster()
 
 # Cluster Uptime
