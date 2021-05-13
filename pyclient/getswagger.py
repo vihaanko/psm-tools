@@ -51,6 +51,8 @@ def processSwagger(filename, jsondata):
         del jsondata["definitions"]["apiObjectMeta"]["properties"]["namespace"]["pattern"]
     if filename == "cluster":
         jsondata["definitions"]["clusterDistributedServiceCardSpec"]["required"] = []
+    if filename == "workload":
+        jsondata["definitions"]["workloadWorkloadIntfSpec"]["required"] = []
     return jsondata
 
 
