@@ -6,7 +6,7 @@ RUN curl https://bootstrap.pypa.io/get-pip.py -o get-pip.py
 RUN python3 get-pip.py
 RUN rm get-pip.py
 # RUN git clone https://github.com/pensando/psm-tools.git
-ADD . /pyclient
+ADD ./requirements.txt /pyclient/requirements.txt
 WORKDIR pyclient
 RUN pip install -r requirements.txt
 
