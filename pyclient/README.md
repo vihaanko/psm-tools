@@ -20,14 +20,16 @@ make
 ```
 
 ## Advanced operations
-1. For non interactive mode, you must do a few additional setup
-* Create ~/.psm/config.json file with PSM coordinates
+* For non interactive mode, you must do a few additional setup
+1. Create ~/.psm/config.json file with PSM coordinates
 ```
 $ cat ~/.psm/config.json
 {
   "psm-ip": "psm's ip address",
 }
-* Specify the PSM credentials either by setting PSM_USER and PSM_PASSWORD variables or modify the ~/.psm/config.json as follows
+```
+
+2. Specify the PSM credentials either by setting PSM_USER and PSM_PASSWORD variables or modify the ~/.psm/config.json as follows
 ```
 {
   "psm-ip": "psm's ip address",
