@@ -1,7 +1,4 @@
 #!/bin/bash
-cd openapi-generator
-mvn clean install -U -DskipTests
-cd ..
 
 for file in ./swagger/*
 do
