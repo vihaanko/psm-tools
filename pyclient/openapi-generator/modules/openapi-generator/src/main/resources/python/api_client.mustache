@@ -16,10 +16,10 @@ from urllib3.fields import RequestField
 import tornado.gen
 {{/tornado}}
 
-from {{libName}}.{{group}}.{{packageName}} import rest
-from {{libName}}.{{group}}.{{packageName}}.configuration import Configuration
-from {{libName}}.{{group}}.{{packageName}}.exceptions import ApiTypeError, ApiValueError, ApiException
-from {{libName}}.{{group}}.{{packageName}}.model_utils import (
+from {{libName}}.{{packageName}} import rest
+from {{libName}}.{{packageName}}.configuration import Configuration
+from {{libName}}.{{packageName}}.exceptions import ApiTypeError, ApiValueError, ApiException
+from {{libName}}.{{packageName}}.model_utils import (
     ModelNormal,
     ModelSimple,
     ModelComposed,
