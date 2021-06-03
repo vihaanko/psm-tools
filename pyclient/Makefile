@@ -10,6 +10,4 @@ genclient:
 	bash gen.sh
 
 build-generator:
-	cd openapi-generator
-	mvn clean install -U -DskipTests
-	cd ..
+	cd openapi-generator && mvn clean install -U -DskipTests
