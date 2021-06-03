@@ -1,5 +1,6 @@
 default:
 	make getswagger
+	make build-generator
 	make genclient
 
 getswagger:

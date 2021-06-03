@@ -61,7 +61,16 @@ def downloadSwaggerFiles():
         with open("swagger/"+filename+".json", "w") as f:
             json.dump(jsondata, f, indent=4)
 
+def removeRequired(filename, jsondata):
+    for key in jsondata["definitions"]:
+        if "required" in jsondata["definitions"][key] and len(jsondata["definitions"][key]["required"]):
+            print(filename, key, jsondata["definitions"][key]["required"])
+            jsondata["definitions"][key]["required"] = []
+    return jsondata
+
 def processSwagger(filename, jsondata):
+
+    jsondata = removeRequired(filename, jsondata)
     if filename == "fwlog":
         # fwlog api group
         # remove minLength for fwlogList
@@ -78,10 +87,10 @@ def processSwagger(filename, jsondata):
         del jsondata["definitions"]["apiObjectMeta"]["properties"]["name"]["pattern"]
         del jsondata["definitions"]["apiObjectMeta"]["properties"]["tenant"]["pattern"]
         del jsondata["definitions"]["apiObjectMeta"]["properties"]["namespace"]["pattern"]
-    if filename == "cluster":
-        jsondata["definitions"]["clusterDistributedServiceCardSpec"]["required"] = []
-    if filename == "workload":
-        jsondata["definitions"]["workloadWorkloadIntfSpec"]["required"] = []
+    # if filename == "cluster":
+    #     jsondata["definitions"]["clusterDistributedServiceCardSpec"]["required"] = []
+    # if filename == "workload":
+    #     jsondata["definitions"]["workloadWorkloadIntfSpec"]["required"] = []
     return jsondata
 
 if __name__ == "__main__":
