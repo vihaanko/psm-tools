@@ -87,10 +87,6 @@ def processSwagger(filename, jsondata):
         del jsondata["definitions"]["apiObjectMeta"]["properties"]["name"]["pattern"]
         del jsondata["definitions"]["apiObjectMeta"]["properties"]["tenant"]["pattern"]
         del jsondata["definitions"]["apiObjectMeta"]["properties"]["namespace"]["pattern"]
-    # if filename == "cluster":
-    #     jsondata["definitions"]["clusterDistributedServiceCardSpec"]["required"] = []
-    # if filename == "workload":
-    #     jsondata["definitions"]["workloadWorkloadIntfSpec"]["required"] = []
     return jsondata
 
 if __name__ == "__main__":
