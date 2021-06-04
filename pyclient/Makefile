@@ -1,5 +1,6 @@
 default:
 	make getswagger
+	make build-generator
 	make genclient
 
 getswagger:
@@ -9,6 +10,4 @@ genclient:
 	bash gen.sh
 
 build-generator:
-	cd openapi-generator
-	mvn clean install -U -DskipTests
-	cd ..
+	cd openapi-generator && mvn clean install -U -DskipTests
