@@ -44,3 +44,10 @@ docker build . -t pyclient:0.1
 
 * Running python code natively (not in docker container)
 You'll need to install python3, pip, java and maven as documented in the Dockerfile, and set $PYTHONPATH 
+
+## Contributor's Guide
+Contributors are welcome. Please follow the following guidelines to contrbute to this repo
+* Please follow [this git workflow](./docs/git-workflow.md) to submit a pull-request
+* Rebase to the main branch
+* Pass all unit tests `make tests`
+* At least one approval on the pull request
