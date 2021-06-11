@@ -1,5 +1,5 @@
 {
-    "libName": "psmapi",
+    "libName": "apigroups",
     "packageName": "client",
     "modelPackage": "model",
     "apiPackage": "api"
