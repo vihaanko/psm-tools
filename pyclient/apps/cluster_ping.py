@@ -1,8 +1,8 @@
 #!/usr/bin/python3
-from datetime import date
+
 import os
-from apigroups.cluster import ClusterV1Api
-from apigroups.cluster import configuration, api_client
+from apigroups.client.apis import ClusterV1Api
+from apigroups.client import configuration, api_client
 import warnings
 warnings.simplefilter("ignore")
 
@@ -28,7 +28,7 @@ uptime_sec = int(uptime_total_sec % 60)
 
 print("\nCluster Uptime: {}d {}h {}m {}s".format(
     uptime_days, uptime_hours, uptime_minutes, uptime_sec))
-print("Cluster Condition: ", response["status"]["conditions"][0]["type"])
+print("Cluster Condition: ", response.status.conditions[0].type)
 
 nodes_unhealthy = False
 for node in response.status.quorum_status.members:
@@ -40,10 +40,11 @@ for node in response.status.quorum_status.members:
 if not nodes_unhealthy:
     print("\n\tAll nodes are healthy\n")
 
-# response = api_instance.get_distributed_service_card("asdasd")
-
 # DSCs and health
 response = api_instance.list_distributed_service_card()
 
 for dsc in response.items:
-    print("\tDSC " + dsc.meta.name + " is " + dsc.status.conditions[0].type)
+    if "conditions" in dsc.status and len(dsc.status.conditions)>0:
+        print("\tDSC " + dsc.meta.name + " is ", dsc.status.conditions[0].type)
+    else:
+        print("\tDSC " + dsc.meta.name + " health cannot be determined.")

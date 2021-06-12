@@ -1,3 +1,5 @@
 psmconfig.json
 apigroups/
+psmapi/
 swagger/
+*__pycache__*

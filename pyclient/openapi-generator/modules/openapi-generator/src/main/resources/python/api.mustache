@@ -3,8 +3,8 @@
 import re  # noqa: F401
 import sys  # noqa: F401
 
-from {{libName}}.{{group}}.{{packageName}}.api_client import ApiClient, Endpoint as _Endpoint
-from {{libName}}.{{group}}.{{packageName}}.model_utils import (  # noqa: F401
+from {{libName}}.{{packageName}}.api_client import ApiClient, Endpoint as _Endpoint
+from {{libName}}.{{packageName}}.model_utils import (  # noqa: F401
     check_allowed_values,
     check_validations,
     date,
@@ -13,7 +13,7 @@ from {{libName}}.{{group}}.{{packageName}}.model_utils import (  # noqa: F401
     none_type,
     validate_and_convert_types
 )
-import {{libName}}.{{group}}.{{packageName}} as {{packageName}}
+import {{libName}}.{{packageName}} as {{packageName}}
 {{#imports}}
 {{{import}}}
 {{/imports}}

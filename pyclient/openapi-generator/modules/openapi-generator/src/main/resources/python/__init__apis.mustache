@@ -1,23 +1,17 @@
-{{#apiInfo}}
-{{#apis}}
-{{#-first}}
+import importlib
+import os
 
-# flake8: noqa
+from os import listdir
+from os.path import isfile, join
 
-# Import all APIs into this package.
-# If you have many APIs here with many many models used in each API this may
-# raise a `RecursionError`.
-# In order to avoid this, import only the API that you directly need like:
-#
-#   from {{packagename}}.api.{{classVarName}} import {{classname}}
-#
-# or import this package, but before doing it, use:
-#
-#   import sys
-#   sys.setrecursionlimit(n)
+ownpath = __file__.replace("__init__.py", "")
 
-# Import APIs into API package:
-{{/-first}}
-from {{libName}}.{{group}}.{{packageName}}.{{apiPackage}}.{{classVarName}} import {{classname}}
-{{/apis}}
-{{/apiInfo}}
+__all__ = [ name for name in os.listdir(ownpath) if (os.path.isdir(os.path.join(ownpath, name)) and not name.startswith("_")) ]
+
+for i in __all__:
+    module = importlib.import_module('.'+i, "{{libName}}.{{packageName}}.apis")
+    globals().update(
+        {n: getattr(module, n) for n in module.__all__} if hasattr(module, '__all__') 
+        else 
+        {k: v for (k, v) in module.__dict__.items() if not k.startswith('_')
+    })

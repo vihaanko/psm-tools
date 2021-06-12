@@ -12,9 +12,10 @@ import os
 import sys
 import json
 import getpass
+from utils import update_psm_config, get_psm_config, write_psm_config
 
 from http import client as http_client
-from {{libName}}.{{group}}.{{packageName}}.exceptions import ApiValueError
+from {{libName}}.{{packageName}}.exceptions import ApiValueError
 
 
 JSON_SCHEMA_VALIDATION_KEYWORDS = {
@@ -191,11 +192,11 @@ conf = {{{packageName}}}.Configuration(
 
         self.cookie = None
         self.psm_config_path = psm_config_path
-        self.psm_config = self.get_psm_config()
+        self.psm_config = get_psm_config()
         if "psm-ip" not in self.psm_config:
             logging.error("'psm-ip' not set in PSM config file.")
             if self.interactive_mode:
-                self.psm_config = self.update_psm_config(this.psm_config)
+                self.psm_config = update_psm_config(this.psm_config)
         
         self.debugMode = False
         if ("debug" in self.psm_config and self.psm_config["debug"] == "true") or debugMode:
@@ -666,44 +667,6 @@ conf = {{{packageName}}}.Configuration(
         """Fix base path."""
         self._base_path = value
         self.server_index = None
-
-    def update_psm_config(self, path):
-        psmip = input("Enter PSM IP address:")
-        with open(path, "w") as f:
-            data = {"psmip": psmip}
-            json.dump(data, f)
-        return data
-
-    def get_psm_config(self):
-        configpath = self.psm_config_path
-        if not os.path.exists(self.psm_config_path):
-            logging.error("PSM config does not exist at "+ self.psm_config_path)
-            if self.interactive_mode:
-                cont = input("Create config at "+self.psm_config_path+" ? [y/n]")
-                if cont.lower() != 'y':
-                    sys.exit(1)
-                    return
-            else:
-                sys.exit(1)
-            if self.psm_config_path[0] == "~":
-                HOME = os.environ["HOME"]
-                configpath = HOME + configpath[1:]
-            foldersplit = configpath.split(os.sep)
-            if foldersplit[-1] and self.interactive_mode:
-                os.makedirs(foldersplit[:-1].join(os.sep))
-                data = self.update_psm_config(configpath)
-                return data
-            else:
-                logging.error("Invalid PSM config path")
-                sys.exit(1)
-        else:
-            with open(configpath, "r") as f:
-                psm_config = json.load(f)
-        return psm_config
-    
-    def write_psm_config(self, data):
-        with open(self.psm_config_path, "w") as f:
-            psm_config = json.dump(data, f)
     
     def login(self):
         loginpath = self._base_path+"/v1/login"
@@ -725,7 +688,7 @@ conf = {{{packageName}}}.Configuration(
         resp_cookie = response.cookies.items()[0]
         cookie = resp_cookie[0] + "=" + resp_cookie[1]
         self.cookie = cookie
-        psm_config = self.get_psm_config()
+        psm_config = get_psm_config()
         psm_config["token"] = self.cookie
-        self.write_psm_config(psm_config)
+        write_psm_config(self.psm_config_path, psm_config)
         return cookie

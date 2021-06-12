@@ -4,47 +4,11 @@ import re
 import os
 import sys
 import logging
+from utils import update_psm_config, get_psm_config
 
 HOME = os.environ["HOME"]
 psm_config_path = HOME+"/.psm/config.json"
 psm_config = {}
-
-def update_psm_config(path):
-    psmip = input("Enter PSM IP address: ")
-    with open(path, "w") as f:
-        config_data = {"psm-ip": psmip}
-        json.dump(config_data, f)
-    return config_data
-
-def get_psm_config():
-    config_data = {}
-    config_path = psm_config_path
-    if not os.path.exists(psm_config_path):
-        logging.warn("PSM config does not exist at "+ psm_config_path)
-        cont = input("Create confiig at "+psm_config_path+" ? [y/n]")
-        if cont.lower() != 'y':
-            sys.exit(1)
-            return
-        if psm_config_path[0] == "~":
-            HOME = os.environ["HOME"]
-            config_path = HOME + config_path[1:]
-        foldersplit = config_path.split(os.sep)
-        if foldersplit[-1]:
-            dirpath = (os.sep).join(foldersplit[:-1])
-            if not os.path.exists(dirpath):
-                os.makedirs((os.sep).join(foldersplit))
-            config_data = update_psm_config(config_path)
-        else:
-            logging.error("Invalid PSM config path")
-            sys.exit(1)
-    else:
-        with open(config_path, "r") as f:
-            config_data = json.load(f)
-    return config_data
-
-def write_psm_config(config_data):
-    with open(psm_config_path, "w") as f:
-        psm_config = json.dump(config_data, f)
 
 def downloadSwaggerFiles():
     host = psm_config["psm-ip"]
@@ -87,6 +51,9 @@ def processSwagger(filename, jsondata):
         del jsondata["definitions"]["apiObjectMeta"]["properties"]["name"]["pattern"]
         del jsondata["definitions"]["apiObjectMeta"]["properties"]["tenant"]["pattern"]
         del jsondata["definitions"]["apiObjectMeta"]["properties"]["namespace"]["pattern"]
+    if filename == "objstore":
+        del jsondata["paths"]["/objstore/v1/uploads/snapshots"]
+        del jsondata["paths"]["/objstore/v1/uploads/images"]
     return jsondata
 
 if __name__ == "__main__":
