@@ -22,7 +22,7 @@ def get_psm_config():
         if foldersplit[-1]:
             dirpath = (os.sep).join(foldersplit[:-1])
             if not os.path.exists(dirpath):
-                os.makedirs((os.sep).join(foldersplit))
+                os.makedirs((os.sep).join(foldersplit[:-1]))
             config_data = update_psm_config(config_path)
         else:
             logging.error("Invalid PSM config path")
@@ -34,10 +34,14 @@ def get_psm_config():
 
 def update_psm_config(path):
     psmip = input("Enter PSM IP address: ")
-    with open(path, "w") as f:
-        config_data = {"psm-ip": psmip}
-        json.dump(config_data, f)
-    return config_data
+    try:
+        with open(path, "w") as f:
+            config_data = {"psm-ip": psmip}
+            json.dump(config_data, f)
+        return config_data
+    except:
+        logging.error("Unable to write to PSM config at:", path)
+        sys.exit(1)
 
 def write_psm_config(config_path, config_data):
     with open(config_path, "w") as f:
