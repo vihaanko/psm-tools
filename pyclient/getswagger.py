@@ -37,25 +37,30 @@ def removeRequired(filename, jsondata):
 def processSwagger(filename, jsondata):
 
     jsondata = removeRequired(filename, jsondata)
-    if filename == "fwlog":
-        # fwlog api group
-        # remove minLength for fwlogList
-        del jsondata["definitions"]["apiListWatchOptions"]["properties"]["name"]["minLength"]
-        del jsondata["definitions"]["apiListWatchOptions"]["properties"]["tenant"]["minLength"]
-        del jsondata["definitions"]["apiListWatchOptions"]["properties"]["namespace"]["minLength"]
-        del jsondata["definitions"]["apiListWatchOptions"]["properties"]["name"]["pattern"]
-        del jsondata["definitions"]["apiListWatchOptions"]["properties"]["tenant"]["pattern"]
-        del jsondata["definitions"]["apiListWatchOptions"]["properties"]["namespace"]["pattern"]
 
-        del jsondata["definitions"]["apiObjectMeta"]["properties"]["name"]["minLength"]
-        del jsondata["definitions"]["apiObjectMeta"]["properties"]["tenant"]["minLength"]
-        del jsondata["definitions"]["apiObjectMeta"]["properties"]["namespace"]["minLength"]
-        del jsondata["definitions"]["apiObjectMeta"]["properties"]["name"]["pattern"]
-        del jsondata["definitions"]["apiObjectMeta"]["properties"]["tenant"]["pattern"]
-        del jsondata["definitions"]["apiObjectMeta"]["properties"]["namespace"]["pattern"]
+    '''
+    fwlog apigroup:
+        fwloglist.meta.name is always empty, serialization fails because of the checks on apiObjectMeta
+    since all apigroups are merged into the same folder now, checks on apiObjectMeta and apiListWatchOptions are removed from all swagger files
+    '''
+    del jsondata["definitions"]["apiListWatchOptions"]["properties"]["name"]["minLength"]
+    del jsondata["definitions"]["apiListWatchOptions"]["properties"]["tenant"]["minLength"]
+    del jsondata["definitions"]["apiListWatchOptions"]["properties"]["namespace"]["minLength"]
+    del jsondata["definitions"]["apiListWatchOptions"]["properties"]["name"]["pattern"]
+    del jsondata["definitions"]["apiListWatchOptions"]["properties"]["tenant"]["pattern"]
+    del jsondata["definitions"]["apiListWatchOptions"]["properties"]["namespace"]["pattern"]
+
+    del jsondata["definitions"]["apiObjectMeta"]["properties"]["name"]["minLength"]
+    del jsondata["definitions"]["apiObjectMeta"]["properties"]["tenant"]["minLength"]
+    del jsondata["definitions"]["apiObjectMeta"]["properties"]["namespace"]["minLength"]
+    del jsondata["definitions"]["apiObjectMeta"]["properties"]["name"]["pattern"]
+    del jsondata["definitions"]["apiObjectMeta"]["properties"]["tenant"]["pattern"]
+    del jsondata["definitions"]["apiObjectMeta"]["properties"]["namespace"]["pattern"]
+    
     if filename == "objstore":
         del jsondata["paths"]["/objstore/v1/uploads/snapshots"]
         del jsondata["paths"]["/objstore/v1/uploads/images"]
+    
     return jsondata
 
 if __name__ == "__main__":
