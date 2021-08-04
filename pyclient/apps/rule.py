@@ -41,13 +41,13 @@ def portRead(port):
 
 # Function to validate protocol
 def portValid(protocol, portNumber):
-    if (portNumber and protocol == "icmp"):
+    if (portNumber and protocol == 'icmp'):
         return (False, "Cannot put port number for icmp protocol")
 
-    if (protocol != "tcp" and protocol != "udp" and protocol != "icmp"):
+    if (protocol not in ['tcp', 'udp', 'icmp']):
         return (False, "Your protocol must be tcp, udp, or icmp")
 
-    if (protocol == "tcp" or protocol == "udp"):
+    if (protocol == 'tcp' or protocol == 'udp'):
         port = int(portNumber)
         if (port <= 0 or port >= 65535):
             return (False, "Invalid port number. Port number has to be between 0 and 65535.")
@@ -114,36 +114,38 @@ def handleErrorResponse(response):
 
 # Command line processing
 parser = argparse.ArgumentParser()
-parser.add_argument('--command', choices=['add', 'delete', 'modify'], type=str, required=True)
-parser.add_argument('--name', type=str, required=True)
-parser.add_argument('--action', choices=['permit', 'deny', 'reject'], type=str, required=True)
-parser.add_argument('--ip', type=str, required=True)
-parser.add_argument('--port', type=str, required=True)
-parser.add_argument('--nAction', type=str, required=False)
-parser.add_argument('--nIp', type=str, required=False)
-parser.add_argument('--nPort', type=str, required=False)
+parser.add_argument('--add', default=False, action="store_true")
+parser.add_argument('--delete', default=False, action="store_true")
+parser.add_argument('--modify', default=False, action="store_true")
+parser.add_argument('--name', type=str, required=True, help = 'Name of policy to preform commmand on')
+parser.add_argument('--action', choices=['permit', 'deny', 'reject'], type=str, required=True, help = 'Action for rule (permit, deny, reject)')
+parser.add_argument('--ip', type=str, required=True, help = 'Ip address for rule')
+parser.add_argument('--port', type=str, required=True, help = '(protocol/port number) for rule')
+parser.add_argument('--new_action', type=str, required=False, help = 'New action for rule (permit, deny, reject)')
+parser.add_argument('--new_ip', type=str, required=False, help = 'New ip address for rule')
+parser.add_argument('--new_port', type=str, required=False, help = 'New (protocol/port number) for rule')
 args = parser.parse_args()
 
 # If command is modify, then check if new values were specified
 # and set unspecified new values to old values
 
-if (args.command == "modify"):
-    if ((not args.nAction) and (not args.nIp) and (not args.nPort)):
+if (args.modify):
+    if ((not args.new_action) and (not args.new_ip) and (not args.new_port)):
         sys.exit("No changes made because no new values specified...")
-    if (not args.nAction):
-        args.nAction = args.action
-    if (not args.nIp):
-        args.nIp = args.ip
-    if (not args.nPort):
-        args.nPort = args.port
+    if (not args.new_action):
+        args.new_action = args.action
+    if (not args.new_ip):
+        args.new_ip = args.ip
+    if (not args.new_port):
+        args.new_port = args.port
 
-    (nProtocol, nPortNumber) = portRead(args.nPort)
+    (nProtocol, nPortNumber) = portRead(args.new_port)
     (nProtocolValid, error) = portValid(nProtocol, nPortNumber)
     if (nProtocolValid == False):
         sys.exit(error)
 else:
-    if ((args.nAction) or (args.nIp) or (args.nPort)):
-        sys.exit("nAction, nIp, and nPort are only valid for the modify command")
+    if ((args.new_action) or (args.new_ip) or (args.new_port)):
+        sys.exit("new values of [ip, port, action] are not required when adding a rule")
 
 # Check whether or not the user put port and protocol inputs correctly.
 (protocol, portNumber) = portRead(args.port)
@@ -179,27 +181,27 @@ rule = SecuritySGRule(action=args.action,
 # For delete, the program calls deleteRule
 # For add, the program calls addRule. addRule will fail when the policy is empty, so addFirstRule is called.
 # For modify, the program creates a new port and new rule based on the inputs for the new rule. It then calls updateRule.
-if (args.command == "delete"):
+if (args.delete):
     try:
         status = deleteRule(rule, oldPolicy, args.name)
         print(status)
     except Exception as ex:
         print("Unable to delete.")
         print(handleErrorResponse(ex.status))
-elif (args.command == "add"):
+elif (args.add):
     try:
         status = addRule(rule, oldPolicy, args.name)
         print(status)
     except Exception as ex:
         print("Unable to add.")
         print(handleErrorResponse(ex.status))
-elif (args.command == "modify"):
+elif (args.modify):
     try:
         nInputPort = SecurityProtoPort(ports=nPortNumber, protocol=nProtocol)
-        nRule = SecuritySGRule(action=args.nAction,
-                               from_ip_addresses=[args.nIp],
+        nRule = SecuritySGRule(action=args.new_action,
+                               from_ip_addresses=[args.new_ip],
                                proto_ports=[nInputPort],
-                               to_ip_addresses=[args.nIp])
+                               to_ip_addresses=[args.new_ip])
         updateRule(rule, nRule, oldPolicy, args.name)
     except Exception as ex:
         print("Unable to modify.")
