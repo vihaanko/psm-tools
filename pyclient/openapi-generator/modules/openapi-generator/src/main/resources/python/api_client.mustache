@@ -34,6 +34,9 @@ from {{libName}}.{{packageName}}.model_utils import (
     validate_and_convert_types
 )
 
+# for binary downloads
+from apigroups.client.model.objstore_stream_chunk import ObjstoreStreamChunk
+
 
 class ApiClient(object):
     """Generic API client for OpenAPI client library builds.
@@ -226,6 +229,11 @@ class ApiClient(object):
             raise tornado.gen.Return(return_data)
             {{/tornado}}
             return return_data
+
+        # for objstore file download
+        if len(response_type):
+            if response_type[0] == ObjstoreStreamChunk:
+                return response_data
 
         if response_type not in ["file", "bytes"]:
             match = None
