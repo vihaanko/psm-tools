@@ -74,7 +74,8 @@ def deleteRule(rule, policy, name):
         exists = rule in policy.spec.rules
 
     if (exists == True):
-        policy.spec.rules.remove(rule)
+        while (rule in policy.spec.rules):
+            policy.spec.rules.remove(rule)
         api_instance.update_network_security_policy("default", name, policy)
         return("Rule deleted!")
     else:
@@ -119,10 +120,12 @@ parser.add_argument('--delete', default=False, action="store_true")
 parser.add_argument('--modify', default=False, action="store_true")
 parser.add_argument('--name', type=str, required=True, help = 'Name of policy to preform commmand on')
 parser.add_argument('--action', choices=['permit', 'deny', 'reject'], type=str, required=True, help = 'Action for rule (permit, deny, reject)')
-parser.add_argument('--ip', type=str, required=True, help = 'Ip address for rule')
+parser.add_argument('--src_ip', type=str, required=True, help = 'Source ip address for rule')
+parser.add_argument('--dest_ip', type=str, required=True, help = 'Destination ip address for rule')
 parser.add_argument('--port', type=str, required=True, help = '(protocol/port number) for rule')
 parser.add_argument('--new_action', type=str, required=False, help = 'New action for rule (permit, deny, reject)')
-parser.add_argument('--new_ip', type=str, required=False, help = 'New ip address for rule')
+parser.add_argument('--new_src_ip', type=str, required=False, help = 'New source ip address for rule')
+parser.add_argument('--new_dest_ip', type=str, required=False, help = 'New destination ip address for rule')
 parser.add_argument('--new_port', type=str, required=False, help = 'New (protocol/port number) for rule')
 args = parser.parse_args()
 
@@ -130,12 +133,14 @@ args = parser.parse_args()
 # and set unspecified new values to old values
 
 if (args.modify):
-    if ((not args.new_action) and (not args.new_ip) and (not args.new_port)):
+    if ((not args.new_action) and (not args.new_src_ip) and (not args.new_dest_ip) and (not args.new_port)):
         sys.exit("No changes made because no new values specified...")
     if (not args.new_action):
         args.new_action = args.action
-    if (not args.new_ip):
-        args.new_ip = args.ip
+    if (not args.new_src_ip):
+        args.new_src_ip = args.src_ip
+    if (not args.new_dest_ip):
+        args.new_dest_ip = args.dest_ip
     if (not args.new_port):
         args.new_port = args.port
 
@@ -144,8 +149,8 @@ if (args.modify):
     if (nProtocolValid == False):
         sys.exit(error)
 else:
-    if ((args.new_action) or (args.new_ip) or (args.new_port)):
-        sys.exit("new values of [ip, port, action] are not required when adding a rule")
+    if ((args.new_action) or (args.new_src_ip) or (args.new_dest_ip) or (args.new_port)):
+        sys.exit("new values of [src_ip, dest_ip, port, action] are not required when adding a rule")
 
 # Check whether or not the user put port and protocol inputs correctly.
 (protocol, portNumber) = portRead(args.port)
@@ -159,7 +164,7 @@ try:
     oldPolicy = api_instance.get_network_security_policy("default", args.name)
 except Exception as ex:
     if (ex.status == 404):
-        print("Policy doesn't exist. Please choose the policy out of the following or use -f to create one if desired:")
+        print("Policy doesn't exist. Please choose the policy out of the following:")
         policies = api_instance.list_network_security_policy("default")
         for realPolicy in policies.items:
             print(realPolicy.meta.name)
@@ -173,9 +178,9 @@ inputPort = SecurityProtoPort(ports=portNumber, protocol=protocol)
 # Make rule instance based on inputs.
 # It is used to look for a rule or add a rule in a policy
 rule = SecuritySGRule(action=args.action,
-                      from_ip_addresses=[args.ip],
+                      from_ip_addresses=[args.src_ip],
                       proto_ports=[inputPort],
-                      to_ip_addresses=[args.ip])
+                      to_ip_addresses=[args.dest_ip])
 
 # Different conditions based on different commands:
 # For delete, the program calls deleteRule
@@ -199,9 +204,9 @@ elif (args.modify):
     try:
         nInputPort = SecurityProtoPort(ports=nPortNumber, protocol=nProtocol)
         nRule = SecuritySGRule(action=args.new_action,
-                               from_ip_addresses=[args.new_ip],
+                               from_ip_addresses=[args.new_src_ip],
                                proto_ports=[nInputPort],
-                               to_ip_addresses=[args.new_ip])
+                               to_ip_addresses=[args.new_dest_ip])
         updateRule(rule, nRule, oldPolicy, args.name)
     except Exception as ex:
         print("Unable to modify.")
