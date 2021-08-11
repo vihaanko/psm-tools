@@ -108,7 +108,7 @@ def deleteRule(r, p):
             print("Rule patched/deleted!")
         else:
             raise Exception
-            print("Double check inputs.")
+            print("Double check inputs. Rule doesn't exist.")
     except:
         print("No rules in the policy")
 
@@ -135,8 +135,8 @@ elif (args.patch):
     try:
         deleteRule(rule, oldPolicy)
     except Exception as ex:
-        print("Unable to patch, given inputs are wrong. Check your rule and your policy.")
-        sys.exit("Rule " + str(rule) + " doesn't exist")
+        print("Unable to patch, rule may not the exist. Check rule and policy.")
+        sys.exit("Rule: " + str(rule))
 else:
     if (ruleExists(rule, oldPolicy)):
         print("Rule already exists")
