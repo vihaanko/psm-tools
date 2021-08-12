@@ -9,8 +9,8 @@ from apigroups.client.models import SecurityProtoPort
 import warnings
 import argparse
 import sys
-from utils.rule_utils import portRead
-from utils.rule_utils import portValid
+from utils.rule_utils import protoPortRead
+from utils.rule_utils import protoPortValid
 
 warnings.simplefilter("ignore")
 
@@ -27,22 +27,28 @@ configuration.verify_ssl = False
 client = api_client.ApiClient(configuration)
 api_instance = SecurityV1Api(client)
 
+class UniqueStore(argparse.Action):
+    def __call__(self, parser, namespace, values, option_string):
+        if getattr(namespace, self.dest, self.default) is not self.default:
+            parser.error(option_string + " appears several times.")
+        setattr(namespace, self.dest, values)
+
 # Read Command Line Args
 parser = argparse.ArgumentParser()
-parser.add_argument('--action', choices=['permit', 'deny', 'reject'], type=str, required=True)
-parser.add_argument('--force', default=False, action="store_true")
-parser.add_argument('--patch', default=False, action="store_true")
-parser.add_argument('--policy_name', type=str, required=True)
-parser.add_argument('--from_ip', type=str, required=True)
-parser.add_argument('--to_ip', type=str, required=True)
-parser.add_argument('--port', type=str, required=True)
+parser.add_argument('--action', choices=['permit', 'deny', 'reject'], type=str, required=True, action = UniqueStore, help = "Action for rule")
+parser.add_argument('--force', default=False, action="store_true", help = "Force create a new policy with specified rule")
+parser.add_argument('--patch', default=False, action="store_true", help = "Patch/delete an existing rule")
+parser.add_argument('--policy_name', type=str, required=True, action = UniqueStore, help = "Name of policy of which the rule should/is in")
+parser.add_argument('--from_ip', type=str, required=True, action = UniqueStore, help = "Source IP address")
+parser.add_argument('--to_ip', type=str, required=True, action = UniqueStore, help = "Destination IP address")
+parser.add_argument('--port', type=str, required=True, action = UniqueStore, help = "protocol/port number, ex.tcp/80")
 args = parser.parse_args()
 
 #Create default variable
 default = "default"
 
-(protocol, portNumber) = portRead(args.port)
-(protocolValid, error) = portValid(protocol, portNumber)
+(protocol, portNumber) = protoPortRead(args.port)
+(protocolValid, error) = protoPortValid(protocol, portNumber)
 if (protocolValid == False):
     sys.exit(error)
 
