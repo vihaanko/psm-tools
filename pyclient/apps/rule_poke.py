@@ -116,7 +116,7 @@ def deleteRule(r, p):
             raise Exception
             print("Double check inputs. Rule doesn't exist.")
     except:
-        print("No rules in the policy")
+        print("Rule wasn't found in policy.")
 
 def ruleExists(r, p):
     try:
